@@ -6,8 +6,8 @@ import { AppHeader } from "./AppHeader";
 
 export function AppLayout() {
   useEffect(() => {
-    // Get saved theme or use default
-    const savedTheme = localStorage.getItem("app-theme") || "default";
+    // Get saved theme or use dark-purple as default
+    const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     document.documentElement.dataset.theme = savedTheme;
   }, []);
 

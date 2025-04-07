@@ -47,10 +47,10 @@
   }
   
   [data-theme="dark-purple"] {
-    --background: 260 35% 12%;
+    --background: 260 35% 7%;
     --foreground: 0 0% 98%;
 
-    --card: 261 35% 15%;
+    --card: 261 35% 12%;
     --card-foreground: 0 0% 98%;
 
     --popover: 261 35% 15%;
@@ -265,8 +265,8 @@
 [data-theme="dark-purple"] .performance-card,
 [data-theme="dark-purple"] .stat-card,
 [data-theme="dark-purple"] .card {
-  @apply bg-opacity-30 backdrop-blur-sm border-purple-800/40;
-  background-color: rgba(55, 48, 87, 0.4);
+  @apply bg-opacity-20 backdrop-blur-sm border-purple-800/40;
+  background-color: rgba(38, 30, 65, 0.4);
 }
 
 [data-theme="dark-purple"] .performance-card::before {
@@ -281,6 +281,28 @@
   @apply bg-opacity-20 backdrop-blur-sm;
 }
 
+/* Add glassy table styles */
+[data-theme="dark-purple"] .table-container {
+  @apply rounded-xl overflow-hidden border border-purple-800/40;
+}
+
+[data-theme="dark-purple"] table {
+  @apply bg-black/15 backdrop-blur-lg;
+}
+
+[data-theme="dark-purple"] th {
+  @apply bg-black/30 text-white/90 border-b border-purple-800/30;
+}
+
+[data-theme="dark-purple"] td {
+  @apply border-b border-purple-800/20 text-white/80;
+}
+
+[data-theme="dark-purple"] tr:hover td {
+  @apply bg-purple-900/20;
+}
+
+/* Rest of existing styles */
 .gradient-border {
   position: relative;
   border-radius: 0.5rem;
@@ -298,7 +320,7 @@
 }
 
 [data-theme="dark-purple"] .gradient-border {
-  background: rgba(55, 48, 87, 0.4);
+  background: rgba(38, 30, 65, 0.4);
 }
 
 [data-theme="dark-purple"] .gradient-border::before {
