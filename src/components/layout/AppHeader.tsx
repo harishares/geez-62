@@ -46,6 +46,9 @@ export function AppHeader() {
               <DropdownMenuItem onClick={() => handleThemeChange("default")}>
                 Default Theme
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleThemeChange("dark-purple")}>
+                Dark Purple
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleThemeChange("blue")}>
                 Blue Theme
               </DropdownMenuItem>

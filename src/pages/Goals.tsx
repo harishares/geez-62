@@ -1,9 +1,9 @@
-
 import { Check, Plus, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Sample data for goals
 const activeGoals = [
@@ -89,21 +89,22 @@ export default function Goals() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Goals</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Quest Log</h1>
           <p className="text-muted-foreground">
-            Set, track, and achieve your fitness targets.
+            Track your daily and personal quests
           </p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Goal
+          New Quest
         </Button>
       </div>
 
-      <Tabs defaultValue="active">
-        <TabsList>
-          <TabsTrigger value="active">Active Goals</TabsTrigger>
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="w-full justify-start mb-4">
+          <TabsTrigger value="active">Daily Quests</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
+          <TabsTrigger value="personal">Personal Quests</TabsTrigger>
         </TabsList>
 
         <TabsContent value="active" className="mt-6">
@@ -114,7 +115,7 @@ export default function Goals() {
                 : (goal.current / goal.target) * 100;
 
               return (
-                <Card key={goal.id} className="overflow-hidden">
+                <Card key={goal.id} className="overflow-hidden border border-purple-800/40 bg-black/20 backdrop-blur-sm">
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between mb-1">
                       <span
@@ -137,26 +138,22 @@ export default function Goals() {
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <Checkbox id={`goal-${goal.id}`} className="mr-2" />
+                          <label htmlFor={`goal-${goal.id}`} className="text-sm">Complete</label>
+                        </div>
                         <div>
                           <span className="text-xl font-bold">{goal.current}</span>
                           <span className="text-muted-foreground text-sm ml-1">
                             / {goal.target} {goal.unit}
                           </span>
                         </div>
-                        <span className="text-sm font-medium">
-                          {Math.round(percentage)}%
-                        </span>
                       </div>
                       <Progress value={percentage} className="h-2" />
-                      <p className="text-xs text-muted-foreground">
-                        {goal.isTimeReduction 
-                          ? `Need to reduce by ${goal.current - goal.target} minutes to reach target` 
-                          : `${goal.target - goal.current} ${goal.unit} remaining to goal`}
-                      </p>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between border-t pt-4 pb-4">
-                    <Button variant="outline" size="sm">
+                  <CardFooter className="flex justify-between border-t border-border/40 pt-4 pb-4">
+                    <Button variant="outline" size="sm" className="border-purple-500/30">
                       Update Progress
                     </Button>
                     <Button variant="ghost" size="sm">
@@ -167,16 +164,16 @@ export default function Goals() {
               );
             })}
             
-            <Card className="border-dashed flex items-center justify-center h-[300px]">
+            <Card className="border-dashed flex items-center justify-center h-[300px] border-purple-800/40 bg-black/20 backdrop-blur-sm">
               <div className="text-center p-6">
                 <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
                   <Plus className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="font-medium text-lg mb-2">Add New Goal</h3>
+                <h3 className="font-medium text-lg mb-2">Add New Quest</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Create a new performance target to track
+                  Create a new quest to track
                 </p>
-                <Button>Create Goal</Button>
+                <Button>Create Quest</Button>
               </div>
             </Card>
           </div>

@@ -17,7 +17,7 @@ export function AppLayout() {
       
       <div className="flex-1 flex flex-col">
         <AppHeader />
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 bg-[radial-gradient(ellipse_at_top,rgba(95,75,139,0.2),transparent)]">
           <Outlet />
         </main>
       </div>
