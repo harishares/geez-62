@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   ActivitySquare, 
   BarChart3, 
@@ -62,6 +62,7 @@ const navItems = [
 
 export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   return (
     <aside 
@@ -86,7 +87,7 @@ export function AppSidebar() {
           variant="ghost" 
           size="icon" 
           onClick={() => setCollapsed(prev => !prev)}
-          className="ml-auto"
+          className="ml-auto hover:bg-sidebar-accent/40 hover:text-sidebar-accent-foreground transition-all"
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </Button>
@@ -94,26 +95,44 @@ export function AppSidebar() {
       
       <nav className="p-2 flex-1">
         <ul className="space-y-1">
-          {navItems.map((item) => (
-            <li key={item.name}>
-              <Link
-                to={item.path}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors",
-                  "text-sidebar-foreground hover:text-sidebar-accent-foreground",
-                  window.location.pathname === item.path && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                )}
-              >
-                <item.icon size={20} className="flex-shrink-0" />
-                {!collapsed && <span>{item.name}</span>}
-              </Link>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <li key={item.name}>
+                <Link
+                  to={item.path}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200",
+                    "text-sidebar-foreground group relative overflow-hidden",
+                    isActive 
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
+                      : "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                  )}
+                >
+                  <item.icon size={20} className={cn(
+                    "flex-shrink-0 transition-transform duration-300",
+                    !isActive && "group-hover:scale-110"
+                  )} />
+                  {!collapsed && (
+                    <span className={cn(
+                      "transition-transform duration-300",
+                      !isActive && "group-hover:translate-x-1"
+                    )}>
+                      {item.name}
+                    </span>
+                  )}
+                  {isActive && (
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></span>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
       
       <div className="p-4 border-t border-border">
-        <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
+        <Link to="/login" className={cn("flex items-center gap-3 hover:opacity-80 transition-opacity", collapsed && "justify-center")}>
           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
             <span className="font-medium text-xs">JD</span>
           </div>
@@ -123,7 +142,7 @@ export function AppSidebar() {
               <p className="text-xs text-muted-foreground">john@example.com</p>
             </div>
           )}
-        </div>
+        </Link>
       </div>
     </aside>
   );

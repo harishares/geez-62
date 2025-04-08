@@ -1,6 +1,7 @@
 
-import { BookOpen, Filter, GraduationCap, Plus, Search } from "lucide-react";
+import { BookOpen, Filter, GraduationCap, Plus, Search, ExternalLink, Check, Play, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -18,6 +19,8 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "@/hooks/use-toast";
 
 export default function Learning() {
   // Sample data for learning resources
@@ -54,6 +57,75 @@ export default function Learning() {
     },
   ];
 
+  // Free courses data
+  const freeCourses = [
+    {
+      id: 1,
+      type: "Video Course",
+      title: "Python for Beginners",
+      provider: "freeCodeCamp",
+      platform: "YouTube",
+      duration: "4.5 hours",
+      students: "2.3M+",
+      description: "Complete Python tutorial covering all basics from variables to OOP concepts.",
+      topics: ["Programming", "Python", "Data Structures"],
+      link: "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      featured: true,
+    },
+    {
+      id: 2,
+      type: "MOOC",
+      title: "CS50: Introduction to Computer Science",
+      provider: "Harvard University",
+      platform: "edX",
+      duration: "12 weeks",
+      students: "3.7M+",
+      description: "Harvard's introduction to the intellectual enterprises of computer science.",
+      topics: ["Computer Science", "Programming", "Algorithms"],
+      link: "https://www.edx.org/course/introduction-computer-science-harvardx-cs50x",
+      featured: false,
+    },
+    {
+      id: 3,
+      type: "Interactive Course",
+      title: "Responsive Web Design",
+      provider: "freeCodeCamp",
+      platform: "freeCodeCamp.org",
+      duration: "300 hours",
+      students: "1.4M+",
+      description: "Learn HTML, CSS, and responsive design principles with interactive exercises.",
+      topics: ["Web Development", "HTML", "CSS", "Responsive Design"],
+      link: "https://www.freecodecamp.org/learn/responsive-web-design/",
+      featured: false,
+    },
+    {
+      id: 4,
+      type: "Video Course",
+      title: "JavaScript Crash Course",
+      provider: "Traversy Media",
+      platform: "YouTube",
+      duration: "1.5 hours",
+      students: "1.8M+",
+      description: "Quick introduction to JavaScript fundamentals for beginners.",
+      topics: ["Web Development", "JavaScript", "Frontend"],
+      link: "https://www.youtube.com/watch?v=hdI2bqOjy3c",
+      featured: false,
+    },
+    {
+      id: 5,
+      type: "MOOC",
+      title: "Machine Learning",
+      provider: "Stanford University",
+      platform: "Coursera",
+      duration: "11 weeks",
+      students: "4.8M+",
+      description: "Learn the fundamentals of machine learning and how to apply these techniques.",
+      topics: ["AI", "Machine Learning", "Data Science"],
+      link: "https://www.coursera.org/learn/machine-learning",
+      featured: true,
+    },
+  ];
+
   const certifications = [
     {
       id: 1,
@@ -80,6 +152,17 @@ export default function Learning() {
     Tutorial: "bg-secondary/20 text-secondary border-secondary/20",
     "E-Book": "bg-accent/20 text-accent border-accent/20",
     Certificate: "bg-purple-500/20 text-purple-500 border-purple-500/20",
+    "Video Course": "bg-red-500/20 text-red-400 border-red-500/20",
+    "MOOC": "bg-blue-500/20 text-blue-400 border-blue-500/20",
+    "Interactive Course": "bg-green-500/20 text-green-400 border-green-500/20",
+  };
+
+  const handleEnroll = (courseId: number) => {
+    toast({
+      title: "Enrolled Successfully",
+      description: "You have been enrolled in this course. Start learning now!",
+      variant: "default",
+    });
   };
 
   return (
@@ -101,27 +184,39 @@ export default function Learning() {
               className="pl-8"
             />
           </div>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="hover:bg-purple-900/20 hover:border-purple-500/50 transition-colors">
             <Filter className="h-4 w-4" />
           </Button>
         </div>
-        <Button>
+        <AnimatedButton glowColor="rgba(139, 92, 246, 0.6)">
           <Plus className="h-4 w-4 mr-2" />
           Explore Resources
-        </Button>
+        </AnimatedButton>
       </div>
 
-      <Tabs defaultValue="inprogress">
+      <Tabs defaultValue="free">
         <div className="flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="inprogress">In Progress</TabsTrigger>
-            <TabsTrigger value="recommended">Recommended</TabsTrigger>
-            <TabsTrigger value="completed">Completed</TabsTrigger>
-            <TabsTrigger value="certifications">Certifications</TabsTrigger>
+          <TabsList className="p-1 bg-black/20 backdrop-blur-sm border border-purple-800/30">
+            <TabsTrigger value="free" className="spark-border data-[state=active]:bg-purple-800/30">
+              <GraduationCap className="h-4 w-4 mr-2" />
+              Free Courses
+            </TabsTrigger>
+            <TabsTrigger value="inprogress" className="spark-border data-[state=active]:bg-purple-800/30">
+              <BookOpen className="h-4 w-4 mr-2" />
+              In Progress
+            </TabsTrigger>
+            <TabsTrigger value="recommended" className="spark-border data-[state=active]:bg-purple-800/30">
+              <Award className="h-4 w-4 mr-2" />
+              Recommended
+            </TabsTrigger>
+            <TabsTrigger value="certifications" className="spark-border data-[state=active]:bg-purple-800/30">
+              <Award className="h-4 w-4 mr-2" />
+              Certifications
+            </TabsTrigger>
           </TabsList>
           <div className="hidden sm:block">
             <Select defaultValue="recommended">
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] border-purple-800/30 bg-black/20 backdrop-blur-sm">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -133,6 +228,86 @@ export default function Learning() {
             </Select>
           </div>
         </div>
+
+        <TabsContent value="free" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
+            <CardHeader className="pb-2">
+              <CardTitle>Free Courses & Resources</CardTitle>
+              <CardDescription>
+                High-quality learning materials available at no cost
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {freeCourses.map((course) => (
+                  <div
+                    key={course.id}
+                    className={`flex flex-col p-4 rounded-lg border ${course.featured ? 'border-purple-500/50' : 'border-purple-800/30'} hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm ${course.featured ? 'shadow-[0_0_12px_rgba(139,92,246,0.3)]' : ''}`}
+                  >
+                    {course.featured && (
+                      <Badge variant="default" className="self-start mb-2 bg-gradient-to-r from-purple-600 to-blue-600">
+                        Featured Course
+                      </Badge>
+                    )}
+                    
+                    <div className="flex justify-between mb-2">
+                      <div
+                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
+                          categoryColors[
+                            course.type as keyof typeof categoryColors
+                          ] || "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                        }`}
+                      >
+                        {course.type}
+                      </div>
+                      <span className="text-xs text-white/70">
+                        {course.duration} • {course.students} students
+                      </span>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <div className="font-medium text-white/90 text-lg">{course.title}</div>
+                      <p className="text-sm text-white/70">
+                        {course.provider} • {course.platform}
+                      </p>
+                      <p className="text-sm text-white/70 mt-1 line-clamp-2">
+                        {course.description}
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-1 mb-4">
+                      {course.topics.map((topic, i) => (
+                        <span key={i} className="inline-flex px-2 py-0.5 bg-purple-500/10 text-purple-300 text-xs rounded border border-purple-500/20">
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+                    
+                    <div className="flex justify-between items-center mt-auto">
+                      <AnimatedButton 
+                        variant="outline" 
+                        size="sm"
+                        className="border-purple-500/30 hover:border-purple-400/60"
+                        onClick={() => window.open(course.link, "_blank")}
+                      >
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        Visit Course
+                      </AnimatedButton>
+                      <AnimatedButton 
+                        size="sm"
+                        className="bg-purple-600 hover:bg-purple-700"
+                        onClick={() => handleEnroll(course.id)}
+                      >
+                        <Play className="h-3 w-3 mr-1" />
+                        Enroll Free
+                      </AnimatedButton>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="inprogress" className="mt-4">
           <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
@@ -177,7 +352,9 @@ export default function Learning() {
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-sm">
                         <span>{resource.progress}% complete</span>
-                        <Button variant="ghost" size="sm">Resume</Button>
+                        <AnimatedButton variant="ghost" size="sm">
+                          Resume
+                        </AnimatedButton>
                       </div>
                       <Progress value={resource.progress} className="h-2" />
                     </div>
@@ -224,9 +401,13 @@ export default function Learning() {
                       </div>
                     </div>
 
-                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
+                    <AnimatedButton 
+                      variant="outline" 
+                      size="sm" 
+                      className="mt-2 sm:mt-0 border-purple-500/30 hover:border-purple-400/60"
+                    >
                       Enroll
-                    </Button>
+                    </AnimatedButton>
                   </div>
                 ))}
               </div>
