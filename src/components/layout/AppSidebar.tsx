@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import { 
   ActivitySquare, 
   BarChart3, 
-  CalendarDays, 
+  BookOpen,
   ChevronLeft, 
   ChevronRight, 
+  GraduationCap,
   Home, 
+  Network,
   Settings, 
+  Sparkles,
   Target
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,9 +24,9 @@ const navItems = [
     icon: Home
   },
   {
-    name: "Activities",
-    path: "/activities",
-    icon: ActivitySquare
+    name: "Smart Tools",
+    path: "/smart-tools",
+    icon: Sparkles
   },
   {
     name: "Progress",
@@ -31,14 +34,24 @@ const navItems = [
     icon: BarChart3
   },
   {
-    name: "Goals",
-    path: "/goals",
-    icon: Target
+    name: "Events",
+    path: "/events",
+    icon: ActivitySquare
   },
   {
-    name: "Calendar",
-    path: "/calendar",
-    icon: CalendarDays
+    name: "Learning",
+    path: "/learning",
+    icon: BookOpen
+  },
+  {
+    name: "Networking",
+    path: "/networking",
+    icon: Network
+  },
+  {
+    name: "Earn",
+    path: "/earn",
+    icon: Target
   },
   {
     name: "Settings",
