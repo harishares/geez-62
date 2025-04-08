@@ -1,5 +1,5 @@
 
-import { Filter, Plus, Search } from "lucide-react";
+import { Filter, Network, GraduationCap, Coins, Plus, Search, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,70 +19,132 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Activities() {
-  // In a real app, activity data would come from state or API
-  const activities = [
+  // Sample data for the new sections
+  const events = [
     {
       id: 1,
-      type: "Running",
-      date: "April 7, 2025",
-      time: "7:30 AM",
-      duration: "45 min",
-      distance: "5.2 km",
-      pace: "5:30 min/km",
-      calories: "320",
-      notes: "Morning run along the river path. Felt good!",
+      type: "Workshop",
+      title: "AI for Beginners",
+      date: "April 12, 2025",
+      time: "3:00 PM - 5:00 PM",
+      location: "Virtual",
+      description: "Learn the basics of artificial intelligence and how it's changing the world.",
     },
     {
       id: 2,
-      type: "Cycling",
-      date: "April 6, 2025",
-      time: "6:15 PM",
-      duration: "1h 10min",
-      distance: "20.5 km",
-      pace: "17.5 km/h",
-      calories: "450",
-      notes: "Evening ride on the mountain trails. Beautiful sunset.",
+      type: "Hackathon",
+      title: "GenZ Code Jam",
+      date: "April 15-16, 2025",
+      time: "9:00 AM - 6:00 PM",
+      location: "Innovation Hub",
+      description: "48-hour coding challenge with prizes for the most innovative solutions.",
     },
     {
       id: 3,
-      type: "Swimming",
-      date: "April 4, 2025",
-      time: "8:00 AM",
-      duration: "30 min",
-      distance: "1 km",
-      pace: "3:00 min/100m",
-      calories: "280",
-      notes: "Pool session focusing on technique. Made good progress.",
-    },
-    {
-      id: 4,
-      type: "Running",
-      date: "April 2, 2025",
-      time: "6:45 AM",
-      duration: "50 min",
-      distance: "6.5 km",
-      pace: "5:10 min/km",
-      calories: "380",
-      notes: "Interval training in the park. Pushed hard on the sprints.",
-    },
-    {
-      id: 5,
-      type: "Weight Training",
-      date: "April 1, 2025",
-      time: "5:30 PM",
-      duration: "55 min",
-      sets: "15",
-      reps: "120",
-      calories: "340",
-      notes: "Upper body day. Increased weight on bench press.",
+      type: "Webinar",
+      title: "Future of Tech",
+      date: "April 20, 2025",
+      time: "5:30 PM - 7:00 PM",
+      location: "Virtual",
+      description: "Industry experts discuss emerging technology trends for the next decade.",
     },
   ];
 
-  const activityTypeColors = {
-    Running: "bg-primary/10 text-primary border-primary/20",
-    Cycling: "bg-secondary/10 text-secondary border-secondary/20",
-    Swimming: "bg-accent/10 text-accent border-accent/20",
-    "Weight Training": "bg-purple-500/10 text-purple-500 border-purple-500/20",
+  const learningResources = [
+    {
+      id: 1,
+      type: "Course",
+      title: "Full-Stack Development",
+      provider: "CodeAcademy",
+      duration: "8 weeks",
+      description: "Comprehensive course covering modern web development technologies.",
+      rating: "4.8/5",
+    },
+    {
+      id: 2,
+      type: "Tutorial",
+      title: "Machine Learning Basics",
+      provider: "AI Institute",
+      duration: "3 hours",
+      description: "Step-by-step guide to understanding and implementing ML algorithms.",
+      rating: "4.6/5",
+    },
+    {
+      id: 3,
+      type: "E-Book",
+      title: "Blockchain Fundamentals",
+      provider: "Tech Publications",
+      duration: "205 pages",
+      description: "In-depth exploration of blockchain technology and its applications.",
+      rating: "4.5/5",
+    },
+  ];
+
+  const networking = [
+    {
+      id: 1,
+      type: "Community",
+      title: "Student Tech Alliance",
+      members: "12,500+",
+      universities: "75+",
+      description: "Connect with tech students across multiple universities for collaboration and networking.",
+    },
+    {
+      id: 2,
+      type: "Mentorship",
+      title: "Industry Connect",
+      mentors: "350+",
+      fields: "25+",
+      description: "Get matched with industry professionals for career guidance and mentorship.",
+    },
+    {
+      id: 3,
+      type: "Project Teams",
+      title: "Cross-Campus Innovation",
+      projects: "120+",
+      universities: "35+",
+      description: "Join interdisciplinary project teams with students from different universities.",
+    },
+  ];
+
+  const careers = [
+    {
+      id: 1,
+      type: "Internship",
+      company: "TechGiant Inc.",
+      position: "Software Engineer Intern",
+      location: "Remote",
+      duration: "3 months",
+      deadline: "April 30, 2025",
+    },
+    {
+      id: 2,
+      type: "Fellowship",
+      company: "Future Labs",
+      position: "AI Research Fellow",
+      location: "New York, NY",
+      duration: "6 months",
+      deadline: "May 15, 2025",
+    },
+    {
+      id: 3,
+      type: "Entry Level",
+      company: "StartupX",
+      position: "Junior UX Designer",
+      location: "San Francisco, CA",
+      duration: "Full-time",
+      deadline: "Open until filled",
+    },
+  ];
+
+  const categoryColors = {
+    Workshop: "bg-primary/20 text-primary border-primary/20",
+    Hackathon: "bg-secondary/20 text-secondary border-secondary/20",
+    Webinar: "bg-accent/20 text-accent border-accent/20",
+    Course: "bg-purple-500/20 text-purple-500 border-purple-500/20",
+    Tutorial: "bg-blue-500/20 text-blue-500 border-blue-500/20",
+    Community: "bg-green-500/20 text-green-500 border-green-500/20",
+    Internship: "bg-yellow-500/20 text-yellow-500 border-yellow-500/20",
   };
 
   return (
@@ -90,7 +152,7 @@ export default function Activities() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Activities</h1>
         <p className="text-muted-foreground">
-          View and manage your tracked activities.
+          Discover events, learning resources, networking opportunities, and careers.
         </p>
       </div>
 
@@ -114,13 +176,13 @@ export default function Activities() {
         </Button>
       </div>
 
-      <Tabs defaultValue="all">
+      <Tabs defaultValue="events">
         <div className="flex items-center justify-between">
           <TabsList>
-            <TabsTrigger value="all">All Activities</TabsTrigger>
-            <TabsTrigger value="running">Running</TabsTrigger>
-            <TabsTrigger value="cycling">Cycling</TabsTrigger>
-            <TabsTrigger value="other">Other</TabsTrigger>
+            <TabsTrigger value="events">Events</TabsTrigger>
+            <TabsTrigger value="learning">Learning</TabsTrigger>
+            <TabsTrigger value="networking">Networking</TabsTrigger>
+            <TabsTrigger value="careers">Careers</TabsTrigger>
           </TabsList>
           <div className="hidden sm:block">
             <Select defaultValue="newest">
@@ -130,74 +192,52 @@ export default function Activities() {
               <SelectContent>
                 <SelectItem value="newest">Newest first</SelectItem>
                 <SelectItem value="oldest">Oldest first</SelectItem>
-                <SelectItem value="duration-desc">Longest duration</SelectItem>
-                <SelectItem value="duration-asc">Shortest duration</SelectItem>
+                <SelectItem value="popular">Most popular</SelectItem>
+                <SelectItem value="recommended">Recommended</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <TabsContent value="all" className="mt-4">
-          <Card>
+        <TabsContent value="events" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
             <CardHeader className="pb-2">
-              <CardTitle>All Activities</CardTitle>
+              <CardTitle>Upcoming Events</CardTitle>
               <CardDescription>
-                Showing all of your tracked activities
+                Discover workshops, hackathons, webinars, and more
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {activities.map((activity) => (
+                {events.map((event) => (
                   <div
-                    key={activity.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                    key={event.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border border-purple-800/30 hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3 sm:mb-0">
                       <div
                         className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
-                          activityTypeColors[
-                            activity.type as keyof typeof activityTypeColors
-                          ]
+                          categoryColors[
+                            event.type as keyof typeof categoryColors
+                          ] || "bg-purple-500/10 text-purple-500 border-purple-500/20"
                         }`}
                       >
-                        {activity.type}
+                        {event.type}
                       </div>
                       <div>
-                        <div className="font-medium">
-                          {activity.date} • {activity.time}
-                        </div>
-                        <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
-                          {activity.notes}
+                        <div className="font-medium text-white/90">{event.title}</div>
+                        <p className="text-sm text-white/70">
+                          {event.date} • {event.time} • {event.location}
+                        </p>
+                        <p className="text-sm text-white/70 line-clamp-1 mt-1">
+                          {event.description}
                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-4 sm:flex sm:items-center sm:gap-6">
-                      <div className="text-center">
-                        <p className="text-xs text-muted-foreground">Duration</p>
-                        <p className="font-medium">{activity.duration}</p>
-                      </div>
-                      {activity.distance && (
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">
-                            Distance
-                          </p>
-                          <p className="font-medium">{activity.distance}</p>
-                        </div>
-                      )}
-                      {activity.pace && (
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">Pace</p>
-                          <p className="font-medium">{activity.pace}</p>
-                        </div>
-                      )}
-                      {activity.sets && (
-                        <div className="text-center">
-                          <p className="text-xs text-muted-foreground">Sets</p>
-                          <p className="font-medium">{activity.sets}</p>
-                        </div>
-                      )}
-                    </div>
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
+                      Register
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -205,49 +245,143 @@ export default function Activities() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="running" className="mt-4">
-          <Card>
+        <TabsContent value="learning" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
             <CardHeader>
-              <CardTitle>Running Activities</CardTitle>
+              <CardTitle>Learning Resources</CardTitle>
               <CardDescription>
-                Showing only your running sessions
+                Courses, tutorials, and materials to expand your knowledge
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-center p-8 text-muted-foreground">
-                Similar layout to All Activities tab, but filtered for Running only
+              <div className="space-y-4">
+                {learningResources.map((resource) => (
+                  <div
+                    key={resource.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border border-purple-800/30 hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3 sm:mb-0">
+                      <div
+                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
+                          categoryColors[
+                            resource.type as keyof typeof categoryColors
+                          ] || "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                        }`}
+                      >
+                        {resource.type}
+                      </div>
+                      <div>
+                        <div className="font-medium text-white/90">{resource.title}</div>
+                        <p className="text-sm text-white/70">
+                          {resource.provider} • {resource.duration} • Rating: {resource.rating}
+                        </p>
+                        <p className="text-sm text-white/70 line-clamp-1 mt-1">
+                          {resource.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
+                      Access
+                    </Button>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="cycling" className="mt-4">
-          <Card>
+        <TabsContent value="networking" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
             <CardHeader>
-              <CardTitle>Cycling Activities</CardTitle>
+              <CardTitle>Networking</CardTitle>
               <CardDescription>
-                Showing only your cycling sessions
+                Cross-university student connections and communities
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-center p-8 text-muted-foreground">
-                Similar layout to All Activities tab, but filtered for Cycling only
+              <div className="space-y-4">
+                {networking.map((network) => (
+                  <div
+                    key={network.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border border-purple-800/30 hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3 sm:mb-0">
+                      <div
+                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
+                          categoryColors[
+                            network.type as keyof typeof categoryColors
+                          ] || "bg-green-500/10 text-green-500 border-green-500/20"
+                        }`}
+                      >
+                        {network.type}
+                      </div>
+                      <div>
+                        <div className="font-medium text-white/90">{network.title}</div>
+                        <p className="text-sm text-white/70">
+                          {network.members ? `Members: ${network.members}` : ""} 
+                          {network.universities ? ` • Universities: ${network.universities}` : ""}
+                          {network.mentors ? `Mentors: ${network.mentors}` : ""}
+                          {network.fields ? ` • Fields: ${network.fields}` : ""}
+                          {network.projects ? `Projects: ${network.projects}` : ""}
+                        </p>
+                        <p className="text-sm text-white/70 line-clamp-1 mt-1">
+                          {network.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
+                      Connect
+                    </Button>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="other" className="mt-4">
-          <Card>
+        <TabsContent value="careers" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
             <CardHeader>
-              <CardTitle>Other Activities</CardTitle>
+              <CardTitle>Career Opportunities</CardTitle>
               <CardDescription>
-                Showing your swimming, weight training, and other activities
+                Internships, fellowships, and entry-level positions
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-center p-8 text-muted-foreground">
-                Similar layout to All Activities tab, but filtered for other activity types
+              <div className="space-y-4">
+                {careers.map((career) => (
+                  <div
+                    key={career.id}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-lg border border-purple-800/30 hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3 sm:mb-0">
+                      <div
+                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
+                          categoryColors[
+                            career.type as keyof typeof categoryColors
+                          ] || "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
+                        }`}
+                      >
+                        {career.type}
+                      </div>
+                      <div>
+                        <div className="font-medium text-white/90">{career.position}</div>
+                        <p className="text-sm text-white/70">
+                          {career.company} • {career.location} • {career.duration}
+                        </p>
+                        <p className="text-sm text-white/70 mt-1">
+                          Apply by: {career.deadline}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
+                      Apply
+                    </Button>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
