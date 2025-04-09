@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
@@ -16,9 +16,9 @@ export function AppLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full -z-10 opacity-75">
+      <div className="fixed inset-0 w-full h-full -z-10">
         <img 
           src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
           alt="Digital Network Background" 
