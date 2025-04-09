@@ -1,11 +1,10 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { AnimatedBackground } from "./AnimatedBackground";
 
 export function AppLayout() {
   const isMobile = useIsMobile();
@@ -18,8 +17,14 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Animated Background */}
-      <AnimatedBackground />
+      {/* Background Image */}
+      <div className="absolute inset-0 w-full h-full -z-10 opacity-75">
+        <img 
+          src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
+          alt="Digital Network Background" 
+          className="object-cover w-full h-full"
+        />
+      </div>
       
       {!isMobile && <AppSidebar />}
       
