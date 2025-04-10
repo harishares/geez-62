@@ -11,7 +11,15 @@ import {
 } from "@/components/ui/dialog";
 import { Camera, X, Check } from "lucide-react";
 import Cropper from "react-easy-crop";
-import { Point, Area } from "react-easy-crop/types";
+
+// Import types directly from react-easy-crop instead of /types
+type Point = { x: number; y: number };
+type Area = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
 
 type ProfilePhotoUploaderProps = {
   onPhotoChange: (photoUrl: string) => void;

@@ -76,24 +76,16 @@ const navItems = [
 type AppSidebarProps = {
   isMobileSheet?: boolean;
   onNavigate?: () => void;
+  profilePhoto?: string | null;
 };
 
-export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProps) {
+export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   
   // Flag to check if user is logged in (simple simulation)
   const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-  
-  useEffect(() => {
-    // Load profile photo from localStorage if available
-    const savedPhoto = localStorage.getItem("userProfilePhoto");
-    if (savedPhoto) {
-      setProfilePhoto(savedPhoto);
-    }
-  }, []);
   
   const handleProfileClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -109,7 +101,8 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
   };
 
   const handleProfilePhotoChange = (photoUrl: string) => {
-    setProfilePhoto(photoUrl);
+    // Store in localStorage to persist across the app
+    localStorage.setItem("userProfilePhoto", photoUrl);
   };
 
   return (

@@ -11,11 +11,18 @@ export function AppLayout() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const [currentTask, setCurrentTask] = useState("Current Task");
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
     // Get saved theme or use dark-purple as default
     const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     document.documentElement.dataset.theme = savedTheme;
+    
+    // Load profile photo from localStorage if available
+    const savedPhoto = localStorage.getItem("userProfilePhoto");
+    if (savedPhoto) {
+      setProfilePhoto(savedPhoto);
+    }
     
     // Update task name based on current route
     const pathSegments = location.pathname.split("/");
@@ -35,10 +42,10 @@ export function AppLayout() {
         />
       </div>
       
-      {!isMobile && <AppSidebar />}
+      {!isMobile && <AppSidebar profilePhoto={profilePhoto} />}
       
       <div className="flex-1 flex flex-col">
-        <AppHeader />
+        <AppHeader profilePhoto={profilePhoto} />
         <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <Outlet />
         </main>

@@ -4,6 +4,7 @@ import { Clock, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { format } from "date-fns";
 
 type TaskTimerProps = {
   taskName?: string;
@@ -13,22 +14,45 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
   // 24 hours in seconds (24 * 60 * 60)
   const [timeLeft, setTimeLeft] = useState(86400); 
   const [isActive, setIsActive] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // Update current time every second
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
     // Load saved time from localStorage if available
     const savedTime = localStorage.getItem("dailyTimer");
-    if (savedTime) {
+    const savedTimestamp = localStorage.getItem("dailyTimerTimestamp");
+    
+    if (savedTime && savedTimestamp) {
       const parsedTime = parseInt(savedTime, 10);
-      setTimeLeft(parsedTime > 0 ? parsedTime : 86400);
+      const lastTimestamp = parseInt(savedTimestamp, 10);
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      const elapsedSeconds = currentTimestamp - lastTimestamp;
+      
+      // Calculate remaining time considering elapsed time since last save
+      let remainingTime = parsedTime - elapsedSeconds;
+      
+      // Ensure time doesn't go below zero
+      remainingTime = remainingTime > 0 ? remainingTime : 86400;
+      
+      setTimeLeft(remainingTime);
     }
     
+    return () => clearInterval(timeInterval);
+  }, []);
+  
+  useEffect(() => {
     if (isActive) {
       intervalRef.current = setInterval(() => {
         setTimeLeft(prevTime => {
           const newTime = prevTime <= 1 ? 86400 : prevTime - 1;
-          // Save to localStorage
+          // Save to localStorage with current timestamp
           localStorage.setItem("dailyTimer", newTime.toString());
+          localStorage.setItem("dailyTimerTimestamp", Math.floor(Date.now() / 1000).toString());
           
           if (prevTime <= 1) {
             // Timer finished
@@ -53,7 +77,9 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
   const toggleTimer = () => {
     setIsActive(!isActive);
     
+    // Save the current timestamp when starting the timer
     if (!isActive) {
+      localStorage.setItem("dailyTimerTimestamp", Math.floor(Date.now() / 1000).toString());
       toast({
         title: "Daily Timer Started",
         description: `Tracking time for: ${taskName}`,
@@ -65,6 +91,7 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
     setTimeLeft(86400); // 24 hours
     setIsActive(false);
     localStorage.setItem("dailyTimer", "86400");
+    localStorage.setItem("dailyTimerTimestamp", Math.floor(Date.now() / 1000).toString());
     toast({
       title: "Timer Reset",
       description: "Daily timer has been reset to 24 hours",
@@ -120,6 +147,10 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
           >
             <RotateCcw className="h-3 w-3" />
           </Button>
+        </div>
+        
+        <div className="text-xs text-center mt-1 opacity-70">
+          {format(currentTime, 'h:mm a')} ({Intl.DateTimeFormat().resolvedOptions().timeZone})
         </div>
       </div>
     </Card>

@@ -16,19 +16,20 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
-export function AppHeader() {
+type AppHeaderProps = {
+  profilePhoto?: string | null;
+};
+
+export function AppHeader({ profilePhoto }: AppHeaderProps) {
   const [theme, setTheme] = useState("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load profile photo from localStorage if available
-    const savedPhoto = localStorage.getItem("userProfilePhoto");
-    if (savedPhoto) {
-      setProfilePhoto(savedPhoto);
-    }
+    // Get saved theme
+    const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
+    setTheme(savedTheme);
   }, []);
 
   const handleThemeChange = (newTheme: string) => {
@@ -54,7 +55,7 @@ export function AppHeader() {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 bg-sidebar">
               <div className="h-full overflow-y-auto">
-                <AppSidebar isMobileSheet={true} onNavigate={() => setSidebarOpen(false)} />
+                <AppSidebar isMobileSheet={true} onNavigate={() => setSidebarOpen(false)} profilePhoto={profilePhoto} />
               </div>
             </SheetContent>
           </Sheet>
