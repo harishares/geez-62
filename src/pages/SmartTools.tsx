@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Bell, BrainCircuit, Clock, Filter, Lightbulb, Plus, Search, Sparkles, User } from "lucide-react";
+import { Bell, BrainCircuit, Clock, Filter, Lightbulb, Plus, Search, Sparkles, User, Bot, Database, Code, FileText, MessageSquare, Cpu, Lock, GitBranch, Book, VideoIcon, Globe, CloudLightning } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,10 +15,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Dialog,
@@ -33,6 +34,131 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { TaskTimer } from "@/components/ui/task-timer";
+
+// New AI Tools data
+const aiTools = [
+  {
+    id: 1,
+    name: "Claude 3 Opus",
+    category: "Large Language Model",
+    description: "Advanced reasoning and complex instruction capability with 200K context window.",
+    image: "https://placehold.co/300/3a1c71/white?text=Claude",
+    tags: ["AI Assistant", "New", "Text Generation"],
+    link: "https://claude.ai",
+    icon: Bot
+  },
+  {
+    id: 2,
+    name: "ChatGPT-4o",
+    category: "Conversational AI",
+    description: "OpenAI's multimodal model with vision capabilities and improved reasoning.",
+    image: "https://placehold.co/300/10a37f/white?text=GPT-4o",
+    tags: ["Multimodal", "Vision", "Popular"],
+    link: "https://chat.openai.com",
+    icon: MessageSquare
+  },
+  {
+    id: 3,
+    name: "Perplexity AI",
+    category: "Research Assistant",
+    description: "Answers questions with cited sources and real-time information retrieval.",
+    image: "https://placehold.co/300/8134af/white?text=Perplexity",
+    tags: ["Research", "Citations", "Information"],
+    link: "https://perplexity.ai",
+    icon: Book
+  },
+  {
+    id: 4,
+    name: "Midjourney v6",
+    category: "Image Generation",
+    description: "Creates detailed images from text prompts with photorealistic capabilities.",
+    image: "https://placehold.co/300/1c2541/white?text=Midjourney",
+    tags: ["Image", "Art", "Design"],
+    link: "https://midjourney.com",
+    icon: FileText
+  },
+  {
+    id: 5,
+    name: "GitHub Copilot",
+    category: "Code Assistant",
+    description: "AI pair programmer that suggests code completions as you type.",
+    image: "https://placehold.co/300/2d333b/white?text=Copilot",
+    tags: ["Coding", "Productivity", "Development"],
+    link: "https://github.com/features/copilot",
+    icon: GitBranch
+  },
+  {
+    id: 6,
+    name: "Anthropic Claude API",
+    category: "Developer Tool",
+    description: "API access to Claude models for custom AI application development.",
+    image: "https://placehold.co/300/3a1c71/white?text=API",
+    tags: ["API", "Development", "Integration"],
+    link: "https://anthropic.com/api",
+    icon: Code
+  },
+  {
+    id: 7,
+    name: "Whisper API",
+    category: "Speech to Text",
+    description: "OpenAI's speech recognition model with multilingual capabilities.",
+    image: "https://placehold.co/300/10a37f/white?text=Whisper",
+    tags: ["Audio", "Transcription", "Multilingual"],
+    link: "https://openai.com/research/whisper",
+    icon: Cpu
+  },
+  {
+    id: 8,
+    name: "Gemini Pro",
+    category: "Multimodal AI",
+    description: "Google's most capable multimodal model with coding and reasoning abilities.",
+    image: "https://placehold.co/300/4285f4/white?text=Gemini",
+    tags: ["Google", "Multimodal", "New"],
+    link: "https://gemini.google.com",
+    icon: Globe
+  },
+  {
+    id: 9,
+    name: "DALL-E 3",
+    category: "Image Generation",
+    description: "Creates realistic images and art from natural language descriptions.",
+    image: "https://placehold.co/300/10a37f/white?text=DALL-E",
+    tags: ["Images", "Creative", "Design"],
+    link: "https://openai.com/dall-e-3",
+    icon: FileText
+  },
+  {
+    id: 10,
+    name: "Sora",
+    category: "Video Generation",
+    description: "OpenAI's text-to-video model for creating realistic videos from text prompts.",
+    image: "https://placehold.co/300/10a37f/white?text=Sora",
+    tags: ["Video", "New", "Creative"],
+    link: "https://openai.com/sora",
+    icon: VideoIcon
+  },
+  {
+    id: 11,
+    name: "LangChain",
+    category: "Developer Framework",
+    description: "Framework for developing applications powered by language models.",
+    image: "https://placehold.co/300/5a67d8/white?text=LangChain",
+    tags: ["Framework", "Development", "Integration"],
+    link: "https://langchain.com",
+    icon: CloudLightning
+  },
+  {
+    id: 12,
+    name: "Mistral AI",
+    category: "Foundation Model",
+    description: "Open weights models with strong performance and efficient inference.",
+    image: "https://placehold.co/300/1e40af/white?text=Mistral",
+    tags: ["Open Source", "Efficient", "New"],
+    link: "https://mistral.ai",
+    icon: Lock
+  }
+];
 
 export default function SmartTools() {
   // State for reminders
@@ -218,6 +344,22 @@ export default function SmartTools() {
     });
   };
 
+  // State for AI tools filtering
+  const [toolsFilter, setToolsFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  
+  // Filter AI tools based on search and category
+  const filteredTools = aiTools.filter(tool => {
+    const matchesSearch = toolsFilter === "" || 
+      tool.name.toLowerCase().includes(toolsFilter.toLowerCase()) ||
+      tool.description.toLowerCase().includes(toolsFilter.toLowerCase()) ||
+      tool.tags.some(tag => tag.toLowerCase().includes(toolsFilter.toLowerCase()));
+      
+    const matchesCategory = categoryFilter === "All" || tool.category.includes(categoryFilter);
+    
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="space-y-6">
       <div>
@@ -235,6 +377,8 @@ export default function SmartTools() {
               type="search"
               placeholder="Search tools..."
               className="pl-8"
+              value={toolsFilter}
+              onChange={(e) => setToolsFilter(e.target.value)}
             />
           </div>
           <Button variant="outline" size="icon">
@@ -269,15 +413,89 @@ export default function SmartTools() {
         </Dialog>
       </div>
 
-      <Tabs defaultValue="smart-alerts">
+      <Tabs defaultValue="ai-tools">
         <div className="flex items-center justify-between">
           <TabsList>
+            <TabsTrigger value="ai-tools">AI Tools</TabsTrigger>
             <TabsTrigger value="smart-alerts">Smart Alerts</TabsTrigger>
             <TabsTrigger value="focus">Focus Sessions</TabsTrigger>
             <TabsTrigger value="study-assistant">Study Assistant</TabsTrigger>
             <TabsTrigger value="resume-builder">Resume Builder</TabsTrigger>
           </TabsList>
         </div>
+
+        <TabsContent value="ai-tools" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle>Latest AI Tools and Resources</CardTitle>
+                  <CardDescription>
+                    Cutting-edge AI tools to enhance your learning and productivity
+                  </CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Select 
+                    value={categoryFilter} 
+                    onValueChange={setCategoryFilter}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Filter by category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="All">All Categories</SelectItem>
+                      <SelectItem value="Large Language Model">Language Models</SelectItem>
+                      <SelectItem value="Image Generation">Image Generation</SelectItem>
+                      <SelectItem value="Video">Video Tools</SelectItem>
+                      <SelectItem value="Code">Coding Tools</SelectItem>
+                      <SelectItem value="Research">Research Tools</SelectItem>
+                      <SelectItem value="Developer">Developer Tools</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredTools.map((tool) => (
+                  <Card key={tool.id} className="overflow-hidden border border-purple-800/30 bg-black/15 backdrop-blur-sm hover:border-purple-600/50 transition-all duration-300">
+                    <div className="h-36 overflow-hidden bg-gradient-to-br from-purple-900/50 to-blue-900/50">
+                      <div className="flex h-full items-center justify-center">
+                        <tool.icon className="h-16 w-16 text-white/70" />
+                      </div>
+                    </div>
+                    <CardHeader className="p-4 pb-0">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">{tool.name}</CardTitle>
+                      </div>
+                      <CardDescription className="text-xs text-white/70">{tool.category}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2">
+                      <p className="text-sm text-white/80 mb-3">{tool.description}</p>
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {tool.tags.map((tag, idx) => (
+                          <Badge key={idx} variant="outline" className="text-xs bg-purple-900/20">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="p-4 pt-0 flex justify-end">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        className="border-purple-600/30 hover:border-purple-500"
+                        onClick={() => window.open(tool.link, '_blank')}
+                      >
+                        Visit Tool
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="smart-alerts" className="mt-4">
           <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
@@ -607,7 +825,10 @@ export default function SmartTools() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
-    </div>
-  );
-}
+        
+        <TabsContent value="study-assistant" className="mt-4">
+          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
+            <CardHeader>
+              <CardTitle>AI Study Assistant</CardTitle>
+              <CardDescription>Get personalized help with your studies</CardDescription>
+            </Card
