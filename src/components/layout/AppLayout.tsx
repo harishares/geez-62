@@ -1,19 +1,28 @@
 
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { TaskTimer } from "@/components/ui/task-timer";
 
 export function AppLayout() {
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const [currentTask, setCurrentTask] = useState("Current Task");
 
   useEffect(() => {
     // Get saved theme or use dark-purple as default
     const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     document.documentElement.dataset.theme = savedTheme;
-  }, []);
+    
+    // Update task name based on current route
+    const pathSegments = location.pathname.split("/");
+    const currentPath = pathSegments[1] || "dashboard";
+    const formattedPath = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
+    setCurrentTask(formattedPath === "Dashboard" ? "General Work" : `${formattedPath} Task`);
+  }, [location.pathname]);
 
   return (
     <div className="flex min-h-screen overflow-hidden">
@@ -36,6 +45,9 @@ export function AppLayout() {
         
         {isMobile && <MobileNavigation />}
       </div>
+      
+      {/* TaskTimer visible on all pages */}
+      <TaskTimer taskName={currentTask} />
     </div>
   );
 }
