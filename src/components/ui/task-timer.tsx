@@ -1,10 +1,11 @@
 
 import { useState, useEffect, useRef } from "react";
-import { Clock, RotateCcw } from "lucide-react";
+import { Clock, RotateCcw, GripHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import Draggable from "react-draggable";
 
 type TaskTimerProps = {
   taskName?: string;
@@ -15,15 +16,30 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
   const [timeLeft, setTimeLeft] = useState(86400); 
   const [isActive, setIsActive] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [position, setPosition] = useState(() => {
+    // Try to load saved position from localStorage
+    const savedPosition = localStorage.getItem("timerPosition");
+    return savedPosition ? JSON.parse(savedPosition) : { x: 0, y: 0 };
+  });
+  
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const nodeRef = useRef(null); // For Draggable
 
+  // Initialize timer based on current time
   useEffect(() => {
-    // Update current time every second
-    const timeInterval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    // Load saved time from localStorage if available
+    // Calculate seconds left in the day based on current time
+    const now = new Date();
+    const endOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59
+    );
+    const secondsUntilEndOfDay = Math.floor((endOfDay.getTime() - now.getTime()) / 1000);
+    
+    // Get saved time from localStorage if available
     const savedTime = localStorage.getItem("dailyTimer");
     const savedTimestamp = localStorage.getItem("dailyTimerTimestamp");
     
@@ -37,10 +53,18 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
       let remainingTime = parsedTime - elapsedSeconds;
       
       // Ensure time doesn't go below zero
-      remainingTime = remainingTime > 0 ? remainingTime : 86400;
+      remainingTime = remainingTime > 0 ? remainingTime : secondsUntilEndOfDay;
       
       setTimeLeft(remainingTime);
+    } else {
+      // If no saved time, start with time until end of day
+      setTimeLeft(secondsUntilEndOfDay);
     }
+
+    // Update current time every second
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
     
     return () => clearInterval(timeInterval);
   }, []);
@@ -49,7 +73,18 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
     if (isActive) {
       intervalRef.current = setInterval(() => {
         setTimeLeft(prevTime => {
-          const newTime = prevTime <= 1 ? 86400 : prevTime - 1;
+          const now = new Date();
+          const endOfDay = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            23,
+            59,
+            59
+          );
+          const secondsUntilEndOfDay = Math.floor((endOfDay.getTime() - now.getTime()) / 1000);
+          
+          const newTime = prevTime <= 1 ? secondsUntilEndOfDay : prevTime - 1;
           // Save to localStorage with current timestamp
           localStorage.setItem("dailyTimer", newTime.toString());
           localStorage.setItem("dailyTimerTimestamp", Math.floor(Date.now() / 1000).toString());
@@ -59,7 +94,7 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
             setIsActive(false);
             toast({
               title: "Daily Time Complete!",
-              description: "Your 24-hour period has ended. Starting a new day!",
+              description: "Your day has ended. Starting a new day!",
             });
           }
           return newTime;
@@ -88,13 +123,24 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
   };
 
   const resetTimer = () => {
-    setTimeLeft(86400); // 24 hours
+    const now = new Date();
+    const endOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59
+    );
+    const secondsUntilEndOfDay = Math.floor((endOfDay.getTime() - now.getTime()) / 1000);
+    
+    setTimeLeft(secondsUntilEndOfDay);
     setIsActive(false);
-    localStorage.setItem("dailyTimer", "86400");
+    localStorage.setItem("dailyTimer", secondsUntilEndOfDay.toString());
     localStorage.setItem("dailyTimerTimestamp", Math.floor(Date.now() / 1000).toString());
     toast({
       title: "Timer Reset",
-      description: "Daily timer has been reset to 24 hours",
+      description: "Daily timer has been reset to end of day",
     });
   };
 
@@ -105,54 +151,74 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  // Handle drag stop event
+  const handleDragStop = (e: any, data: { x: number, y: number }) => {
+    setPosition({ x: data.x, y: data.y });
+    localStorage.setItem("timerPosition", JSON.stringify({ x: data.x, y: data.y }));
+  };
+
   // Calculate progress percentage for animation
   const progress = (timeLeft / 86400) * 100;
 
   return (
-    <Card className="fixed top-20 right-4 z-50 shadow-lg w-auto bg-purple-900/60 backdrop-blur-sm border-purple-700/70 text-white animate-float">
-      <div className="p-3 flex flex-col">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" />
-            <span className="text-xs font-medium">Daily Timer</span>
+    <Draggable
+      nodeRef={nodeRef}
+      bounds="parent"
+      defaultPosition={position}
+      onStop={handleDragStop}
+      handle=".timer-handle"
+    >
+      <Card 
+        ref={nodeRef}
+        className="absolute top-20 right-4 z-50 shadow-lg w-auto bg-purple-900/60 backdrop-blur-sm border-purple-700/70 text-white animate-float cursor-move"
+      >
+        <div className="p-3 flex flex-col">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-1.5">
+              <Clock className="h-4 w-4" />
+              <span className="text-xs font-medium">Daily Timer</span>
+            </div>
+            <div className="flex items-center">
+              <GripHorizontal className="h-4 w-4 mr-2 timer-handle cursor-move opacity-70 hover:opacity-100" />
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-6 w-6 p-0 hover:bg-white/10" 
+                onClick={toggleTimer}
+              >
+                <span className="sr-only">Toggle Timer</span>
+                <span className="text-xs">{isActive ? "Pause" : "Start"}</span>
+              </Button>
+            </div>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-6 w-6 p-0 hover:bg-white/10" 
-            onClick={toggleTimer}
-          >
-            <span className="sr-only">Toggle Timer</span>
-            <span className="text-xs">{isActive ? "Pause" : "Start"}</span>
-          </Button>
-        </div>
-        
-        <div className="text-center mb-1.5 relative">
-          <span className="text-xl font-bold tracking-wider">{formatTime(timeLeft)}</span>
-          <div className="w-full h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
-            <div 
-              className="h-full bg-purple-400 transition-all duration-1000 ease-linear"
-              style={{ width: `${progress}%` }}
-            ></div>
+          
+          <div className="text-center mb-1.5 relative">
+            <span className="text-xl font-bold tracking-wider">{formatTime(timeLeft)}</span>
+            <div className="w-full h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
+              <div 
+                className="h-full bg-purple-400 transition-all duration-1000 ease-linear"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <span className="text-xs opacity-70">{taskName}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-6 w-6 p-0 hover:bg-white/10 hover:scale-110 transition-transform" 
+              onClick={resetTimer}
+            >
+              <RotateCcw className="h-3 w-3" />
+            </Button>
+          </div>
+          
+          <div className="text-xs text-center mt-1 opacity-70">
+            {format(currentTime, 'h:mm a')} ({Intl.DateTimeFormat().resolvedOptions().timeZone})
           </div>
         </div>
-        
-        <div className="flex justify-between items-center">
-          <span className="text-xs opacity-70">{taskName}</span>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-6 w-6 p-0 hover:bg-white/10 hover:scale-110 transition-transform" 
-            onClick={resetTimer}
-          >
-            <RotateCcw className="h-3 w-3" />
-          </Button>
-        </div>
-        
-        <div className="text-xs text-center mt-1 opacity-70">
-          {format(currentTime, 'h:mm a')} ({Intl.DateTimeFormat().resolvedOptions().timeZone})
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </Draggable>
   );
 }
