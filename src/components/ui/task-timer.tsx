@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from "react";
-import { Clock, Pause, Play, RotateCcw } from "lucide-react";
+import { Clock, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -10,30 +10,35 @@ type TaskTimerProps = {
 };
 
 export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // Default 25 minutes in seconds
+  // 24 hours in seconds (24 * 60 * 60)
+  const [timeLeft, setTimeLeft] = useState(86400); 
   const [isActive, setIsActive] = useState(false);
-  const [timerType, setTimerType] = useState<"focus" | "break">("focus");
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // Load saved time from localStorage if available
+    const savedTime = localStorage.getItem("dailyTimer");
+    if (savedTime) {
+      const parsedTime = parseInt(savedTime, 10);
+      setTimeLeft(parsedTime > 0 ? parsedTime : 86400);
+    }
+    
     if (isActive) {
       intervalRef.current = setInterval(() => {
         setTimeLeft(prevTime => {
+          const newTime = prevTime <= 1 ? 86400 : prevTime - 1;
+          // Save to localStorage
+          localStorage.setItem("dailyTimer", newTime.toString());
+          
           if (prevTime <= 1) {
             // Timer finished
             setIsActive(false);
             toast({
-              title: `${timerType === "focus" ? "Focus" : "Break"} Time Complete!`,
-              description: timerType === "focus" 
-                ? "Take a break now." 
-                : "Ready to start focusing again?",
+              title: "Daily Time Complete!",
+              description: "Your 24-hour period has ended. Starting a new day!",
             });
-            // Auto switch to other timer type when done
-            setTimerType(timerType === "focus" ? "break" : "focus");
-            // Set new time based on type
-            return timerType === "focus" ? 5 * 60 : 25 * 60; // 5 min break, 25 min focus
           }
-          return prevTime - 1;
+          return newTime;
         });
       }, 1000);
     } else if (!isActive && intervalRef.current) {
@@ -43,67 +48,55 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isActive, timerType]);
+  }, [isActive]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
     
-    if (!isActive && timeLeft === (timerType === "focus" ? 25 * 60 : 5 * 60)) {
+    if (!isActive) {
       toast({
-        title: `${timerType === "focus" ? "Focus" : "Break"} Timer Started`,
-        description: timerType === "focus" 
-          ? `Focusing on: ${taskName}` 
-          : "Taking a short break",
+        title: "Daily Timer Started",
+        description: `Tracking time for: ${taskName}`,
       });
     }
   };
 
   const resetTimer = () => {
-    setTimeLeft(timerType === "focus" ? 25 * 60 : 5 * 60);
+    setTimeLeft(86400); // 24 hours
     setIsActive(false);
+    localStorage.setItem("dailyTimer", "86400");
     toast({
       title: "Timer Reset",
-      description: `${timerType === "focus" ? "Focus" : "Break"} timer has been reset`,
-    });
-  };
-
-  const toggleTimerType = () => {
-    const newType = timerType === "focus" ? "break" : "focus";
-    setTimerType(newType);
-    setTimeLeft(newType === "focus" ? 25 * 60 : 5 * 60);
-    setIsActive(false);
-    toast({
-      title: `Switched to ${newType === "focus" ? "Focus" : "Break"} Time`,
-      description: `Now in ${newType} mode.`,
+      description: "Daily timer has been reset to 24 hours",
     });
   };
 
   const formatTime = (totalSeconds: number) => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const remainingSeconds = totalSeconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   // Calculate progress percentage for animation
-  const totalTime = timerType === "focus" ? 25 * 60 : 5 * 60;
-  const progress = (timeLeft / totalTime) * 100;
+  const progress = (timeLeft / 86400) * 100;
 
   return (
-    <Card className={`fixed top-20 right-4 z-50 shadow-lg w-auto ${timerType === "focus" ? "bg-purple-900/60" : "bg-blue-900/60"} backdrop-blur-sm border-${timerType === "focus" ? "purple" : "blue"}-700/70 text-white animate-float`}>
+    <Card className="fixed top-20 right-4 z-50 shadow-lg w-auto bg-purple-900/60 backdrop-blur-sm border-purple-700/70 text-white animate-float">
       <div className="p-3 flex flex-col">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" />
-            <span className="text-xs font-medium">{timerType === "focus" ? "Focus Time" : "Break Time"}</span>
+            <span className="text-xs font-medium">Daily Timer</span>
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             className="h-6 w-6 p-0 hover:bg-white/10" 
-            onClick={toggleTimerType}
+            onClick={toggleTimer}
           >
-            <span className="sr-only">Switch Timer Type</span>
-            <span className="text-xs">{timerType === "focus" ? "Break" : "Focus"}</span>
+            <span className="sr-only">Toggle Timer</span>
+            <span className="text-xs">{isActive ? "Pause" : "Start"}</span>
           </Button>
         </div>
         
@@ -111,28 +104,21 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
           <span className="text-xl font-bold tracking-wider">{formatTime(timeLeft)}</span>
           <div className="w-full h-1 bg-white/10 rounded-full mt-1 overflow-hidden">
             <div 
-              className={`h-full ${timerType === "focus" ? "bg-purple-400" : "bg-blue-400"} transition-all duration-1000 ease-linear`}
+              className="h-full bg-purple-400 transition-all duration-1000 ease-linear"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
         
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-between items-center">
+          <span className="text-xs opacity-70">{taskName}</span>
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 w-7 p-1 hover:bg-white/10 hover:scale-110 transition-transform" 
-            onClick={toggleTimer}
-          >
-            {isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-7 w-7 p-1 hover:bg-white/10 hover:scale-110 transition-transform" 
+            className="h-6 w-6 p-0 hover:bg-white/10 hover:scale-110 transition-transform" 
             onClick={resetTimer}
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3 w-3" />
           </Button>
         </div>
       </div>

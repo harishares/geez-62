@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Bell, Search, Palette, Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Bell, Search, Palette, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -13,17 +13,33 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { AppSidebar } from "./AppSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 export function AppHeader() {
   const [theme, setTheme] = useState("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load profile photo from localStorage if available
+    const savedPhoto = localStorage.getItem("userProfilePhoto");
+    if (savedPhoto) {
+      setProfilePhoto(savedPhoto);
+    }
+  }, []);
 
   const handleThemeChange = (newTheme: string) => {
     setTheme(newTheme);
     document.documentElement.dataset.theme = newTheme;
     localStorage.setItem("app-theme", newTheme);
     toast.success(`Theme changed to ${newTheme}`);
+  };
+
+  const navigateToSettings = () => {
+    navigate("/settings");
   };
 
   return (
@@ -84,6 +100,23 @@ export function AppHeader() {
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-5 w-5" />
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent" />
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="relative"
+            onClick={navigateToSettings}
+          >
+            <Avatar className="h-8 w-8">
+              {profilePhoto ? (
+                <AvatarImage src={profilePhoto} alt="Profile" />
+              ) : (
+                <AvatarFallback>
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              )}
+            </Avatar>
           </Button>
         </div>
       </div>

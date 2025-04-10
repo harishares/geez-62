@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   ActivitySquare, 
@@ -18,6 +17,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
@@ -79,11 +80,20 @@ type AppSidebarProps = {
 
 export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   
   // Flag to check if user is logged in (simple simulation)
   const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+  
+  useEffect(() => {
+    // Load profile photo from localStorage if available
+    const savedPhoto = localStorage.getItem("userProfilePhoto");
+    if (savedPhoto) {
+      setProfilePhoto(savedPhoto);
+    }
+  }, []);
   
   const handleProfileClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -96,6 +106,10 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
       // If not logged in, go to login page
       navigate("/login");
     }
+  };
+
+  const handleProfilePhotoChange = (photoUrl: string) => {
+    setProfilePhoto(photoUrl);
   };
 
   return (
@@ -177,8 +191,14 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
           )}
           onClick={handleProfileClick}
         >
-          <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-            <span className="font-medium text-xs">JD</span>
+          <div className="h-8 w-8 rounded-full overflow-hidden">
+            <Avatar className="h-full w-full">
+              {profilePhoto ? (
+                <AvatarImage src={profilePhoto} alt="Profile" />
+              ) : (
+                <AvatarFallback className="text-xs">JD</AvatarFallback>
+              )}
+            </Avatar>
           </div>
           {(!collapsed || isMobileSheet) && (
             <div>

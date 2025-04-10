@@ -46,7 +46,7 @@ export function AppLayout() {
         {isMobile && <MobileNavigation />}
       </div>
       
-      {/* TaskTimer visible on all pages */}
+      {/* Single TaskTimer visible on all pages */}
       <TaskTimer taskName={currentTask} />
     </div>
   );
