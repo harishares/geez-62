@@ -15,6 +15,7 @@ import { AppSidebar } from "./AppSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import { useCapacitor } from "@/hooks/use-capacitor";
 
 type AppHeaderProps = {
   profilePhoto?: string | null;
@@ -23,8 +24,10 @@ type AppHeaderProps = {
 export function AppHeader({ profilePhoto }: AppHeaderProps) {
   const [theme, setTheme] = useState("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { showNotification } = useCapacitor();
 
   useEffect(() => {
     // Get saved theme
@@ -41,6 +44,11 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
 
   const navigateToSettings = () => {
     navigate("/settings");
+  };
+
+  const handleNotification = async () => {
+    toast.success("Notification sent!");
+    await showNotification("GEN Z CLG", "You have a new notification!");
   };
 
   return (
@@ -64,6 +72,7 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
         <h1 className="text-lg font-semibold md:text-xl">GEN Z CLG</h1>
         
         <div className="flex items-center gap-2 md:gap-4">
+          {/* Search for desktop */}
           <div className="relative hidden md:flex items-center">
             <Search className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -73,13 +82,35 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
             />
           </div>
           
+          {/* Search for mobile */}
+          {isMobile && (
+            <Sheet open={searchOpen} onOpenChange={setSearchOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Search className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="top" className="h-auto pt-12">
+                <div className="relative w-full mb-4">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    autoFocus
+                    type="search"
+                    placeholder="Search..."
+                    className="pl-9 w-full"
+                  />
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <Palette className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="bg-background/95 backdrop-blur-sm border-border">
               <DropdownMenuItem onClick={() => handleThemeChange("default")}>
                 Default Theme
               </DropdownMenuItem>
@@ -98,7 +129,12 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <Button variant="ghost" size="icon" className="relative">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="relative"
+            onClick={handleNotification}
+          >
             <Bell className="h-5 w-5" />
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent" />
           </Button>

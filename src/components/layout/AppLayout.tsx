@@ -33,7 +33,7 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-screen overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with mobile optimization */}
       <div className="fixed inset-0 w-full h-full -z-10">
         <img 
           src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
@@ -44,10 +44,12 @@ export function AppLayout() {
       
       {!isMobile && <AppSidebar profilePhoto={profilePhoto} />}
       
-      <div className="flex-1 flex flex-col relative">
+      <div className="flex-1 flex flex-col relative w-full">
         <AppHeader profilePhoto={profilePhoto} />
-        <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
-          <Outlet />
+        <main className="flex-1 p-4 md:p-6 overflow-auto bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
         
         {isMobile && <MobileNavigation />}

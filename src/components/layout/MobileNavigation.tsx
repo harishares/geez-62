@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const mobileNavItems = [
   {
@@ -81,16 +82,24 @@ export function MobileNavigation() {
   
   const NavItem = ({ item, onClick }: { item: typeof mobileNavItems[0], onClick?: () => void }) => {
     const isActive = location.pathname === item.path;
+    
+    const handleClick = (e: React.MouseEvent) => {
+      if (onClick) onClick();
+      
+      // Show toast when clicking navigation items to indicate functionality
+      toast.success(`Navigating to ${item.name}`);
+    };
+    
     return (
       <Link
         to={item.path}
-        onClick={onClick}
+        onClick={handleClick}
         className={cn(
           "flex flex-col items-center gap-1 p-2 rounded-md transition-all duration-200",
           "text-sidebar-foreground",
           isActive 
             ? "text-sidebar-accent-foreground font-medium" 
-            : "text-sidebar-foreground/80"
+            : "text-sidebar-foreground/80 hover:text-sidebar-foreground"
         )}
       >
         <item.icon size={20} />
