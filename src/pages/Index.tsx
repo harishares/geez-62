@@ -1,11 +1,11 @@
+// Update this page (the content is just a fallback if you fail to update the page)
 
 const Index = () => {
   return (
-    <div className="min-h-[calc(100vh-theme(spacing.16))] flex items-center justify-center relative">
-      <div className="text-center z-10 p-8 backdrop-blur-sm bg-background/30 rounded-xl border border-primary/20 shadow-lg">
-        <h1 className="text-4xl font-bold mb-4 text-white">Welcome to GEN Z CLG</h1>
-        <p className="text-xl text-purple-200">Connect. Learn. Earn.</p>
-        <p className="mt-6 text-purple-100/80">Your gateway to a collaborative learning experience</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
+        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
       </div>
     </div>
   );
