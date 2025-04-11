@@ -6,7 +6,9 @@ export function useCapacitor() {
   
   useEffect(() => {
     // Check if running in Capacitor native environment
-    setIsNative(window.Capacitor?.isNativePlatform() || false);
+    if (window.Capacitor) {
+      setIsNative(window.Capacitor.isNativePlatform() || false);
+    }
   }, []);
   
   return {
