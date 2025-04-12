@@ -43,15 +43,24 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Landing page route */}
+            {/* Landing page redirect */}
             <Route path="/welcome" element={isLoggedIn ? <Navigate to="/" replace /> : <Index />} />
             
+            {/* Root path - redirect to dashboard if logged in, otherwise to login page */}
+            <Route path="/" element={
+              isLoggedIn ? 
+                <Navigate to="/dashboard" replace /> : 
+                <Navigate to="/login" replace />
+            } />
+            
             {/* Login route */}
-            <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login />} />
+            
+            {/* Dashboard as a separate route for direct navigation */}
+            <Route path="/dashboard" element={isLoggedIn ? <AppLayout><Dashboard /></AppLayout> : <Navigate to="/login" replace />} />
             
             {/* Protected routes - require login */}
             <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>
-              <Route path="/" element={<Dashboard />} />
               <Route path="/smart-tools" element={<SmartTools />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/rank" element={<Rank />} />
