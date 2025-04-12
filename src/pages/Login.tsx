@@ -2,10 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useCapacitor } from "@/hooks/use-capacitor";
 
 export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { showNotification, isNative } = useCapacitor();
 
   // Simulate login with Google
   const handleGoogleLogin = () => {
@@ -15,8 +18,35 @@ export default function Login() {
       // Set user as logged in
       localStorage.setItem("userLoggedIn", "true");
       setIsLoading(false);
+      
+      // Show welcome notification on successful login
+      if (isNative) {
+        showNotification("Welcome to GEN Z CLG", "You have successfully logged in!");
+      }
+      
+      // Show toast and redirect to dashboard
+      toast.success("Login successful!");
       navigate("/");
     }, 1500);
+  };
+
+  const handleEmailLogin = () => {
+    setIsLoading(true);
+    // Simulate authentication delay
+    setTimeout(() => {
+      // Set user as logged in
+      localStorage.setItem("userLoggedIn", "true");
+      setIsLoading(false);
+      
+      // Show welcome notification on successful login
+      if (isNative) {
+        showNotification("Welcome to GEN Z CLG", "You have successfully logged in!");
+      }
+      
+      // Show toast and redirect to dashboard
+      toast.success("Login successful!");
+      navigate("/");
+    }, 1000);
   };
 
   return (
@@ -101,18 +131,15 @@ export default function Login() {
             {/* Email login button with animation */}
             <Button
               variant="outline"
+              disabled={isLoading}
               className="w-full py-6 text-base font-medium border-purple-500/50 bg-transparent text-white hover:bg-purple-900/30 transition-all duration-300 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-[1.02] group"
-              onClick={() => {
-                // Set user as logged in
-                localStorage.setItem("userLoggedIn", "true");
-                navigate("/");
-              }}
+              onClick={handleEmailLogin}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
               </svg>
               <span className="group-hover:translate-x-1 transition-transform duration-300">
-                Email & Password
+                {isLoading ? "Authenticating..." : "Email & Password"}
               </span>
             </Button>
           </div>

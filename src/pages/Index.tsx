@@ -2,12 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Index = () => {
   const navigate = useNavigate();
   
+  // Check if user is already logged in
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+  
   const handleGetStarted = () => {
-    navigate("/dashboard");
+    navigate("/login");
   };
 
   return (

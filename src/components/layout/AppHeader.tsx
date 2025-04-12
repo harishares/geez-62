@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { Bell, Search, Palette, Menu, User } from "lucide-react";
+import { Bell, Search, Palette, Menu, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
-  DropdownMenuTrigger 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { toast } from "sonner";
@@ -49,6 +50,14 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
   const handleNotification = async () => {
     toast.success("Notification sent!");
     await showNotification("GEN Z CLG", "You have a new notification!");
+  };
+
+  const handleLogout = () => {
+    // Remove the logged in flag
+    localStorage.removeItem("userLoggedIn");
+    toast.success("Logged out successfully");
+    // Redirect to login page
+    navigate("/login");
   };
 
   return (
@@ -139,22 +148,36 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
             <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-accent" />
           </Button>
           
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="relative"
-            onClick={navigateToSettings}
-          >
-            <Avatar className="h-8 w-8">
-              {profilePhoto ? (
-                <AvatarImage src={profilePhoto} alt="Profile" />
-              ) : (
-                <AvatarFallback>
-                  <User className="h-4 w-4" />
-                </AvatarFallback>
-              )}
-            </Avatar>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative"
+              >
+                <Avatar className="h-8 w-8">
+                  {profilePhoto ? (
+                    <AvatarImage src={profilePhoto} alt="Profile" />
+                  ) : (
+                    <AvatarFallback>
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-background/95 backdrop-blur-sm border-border">
+              <DropdownMenuItem onClick={navigateToSettings}>
+                <User className="h-4 w-4 mr-2" />
+                Profile Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="text-red-500 hover:text-red-600">
+                <LogOut className="h-4 w-4 mr-2" />
+                Log Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
