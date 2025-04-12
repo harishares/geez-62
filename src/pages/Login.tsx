@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -20,7 +20,7 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
       {/* Background Image */}
-      <div className="fixed inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full opacity-75">
         <img 
           src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
           alt="Digital Network Background" 
