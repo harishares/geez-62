@@ -1,18 +1,35 @@
 
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const navigate = useNavigate();
   
+  // Check if the user is already logged in, and if so, redirect to dashboard
+  useEffect(() => {
+    const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+    if (userLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate]);
+  
   const handleGetStarted = () => {
-    navigate("/dashboard");
+    navigate("/login");
   };
 
   return (
-    <div className="min-h-[calc(100vh-theme(spacing.16))] flex items-center justify-center relative px-4">
-      <div className="text-center z-10 p-6 md:p-8 backdrop-blur-sm bg-background/30 rounded-xl border border-primary/20 shadow-lg max-w-md w-full">
+    <div className="min-h-screen flex items-center justify-center relative px-4">
+      <div className="fixed inset-0 w-full h-full">
+        <img 
+          src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
+          alt="Digital Network Background" 
+          className="object-cover w-full h-full"
+        />
+      </div>
+      
+      <div className="text-center z-10 p-6 md:p-8 backdrop-blur-xl bg-black/40 rounded-xl border border-purple-500/30 shadow-lg max-w-md w-full">
         <div className="mx-auto w-16 h-16 flex items-center justify-center mb-4 rounded-full bg-primary/20">
           <Sparkles className="h-8 w-8 text-primary" />
         </div>
