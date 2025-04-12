@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { 
   ActivitySquare, 
   BarChart3, 
@@ -17,8 +18,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
@@ -76,34 +75,11 @@ const navItems = [
 type AppSidebarProps = {
   isMobileSheet?: boolean;
   onNavigate?: () => void;
-  profilePhoto?: string | null;
 };
 
-export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: AppSidebarProps) {
+export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-  
-  // Flag to check if user is logged in (simple simulation)
-  const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-  
-  const handleProfileClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    // If user is already logged in, don't redirect to login page again
-    if (isLoggedIn) {
-      // Instead navigate to a profile or settings page
-      navigate("/settings");
-    } else {
-      // If not logged in, go to login page
-      navigate("/login");
-    }
-  };
-
-  const handleProfilePhotoChange = (photoUrl: string) => {
-    // Store in localStorage to persist across the app
-    localStorage.setItem("userProfilePhoto", photoUrl);
-  };
 
   return (
     <aside 
@@ -175,23 +151,10 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
         </ul>
       </nav>
       
-      <div className="p-4 border-t border-border mt-auto">
-        <a 
-          href="#" 
-          className={cn(
-            "flex items-center gap-3 hover:opacity-80 transition-opacity", 
-            collapsed && !isMobileSheet && "justify-center"
-          )}
-          onClick={handleProfileClick}
-        >
-          <div className="h-8 w-8 rounded-full overflow-hidden">
-            <Avatar className="h-full w-full">
-              {profilePhoto ? (
-                <AvatarImage src={profilePhoto} alt="Profile" />
-              ) : (
-                <AvatarFallback className="text-xs">JD</AvatarFallback>
-              )}
-            </Avatar>
+      <div className="p-4 border-t border-border">
+        <Link to="/login" className={cn("flex items-center gap-3 hover:opacity-80 transition-opacity", collapsed && !isMobileSheet && "justify-center")}>
+          <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+            <span className="font-medium text-xs">JD</span>
           </div>
           {(!collapsed || isMobileSheet) && (
             <div>
@@ -199,7 +162,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
               <p className="text-xs text-muted-foreground">john@example.com</p>
             </div>
           )}
-        </a>
+        </Link>
       </div>
     </aside>
   );
