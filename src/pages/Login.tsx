@@ -15,7 +15,7 @@ export default function Login() {
       // Set user as logged in
       localStorage.setItem("userLoggedIn", "true");
       setIsLoading(false);
-      navigate("/");
+      navigate("/"); // Redirect to dashboard, which is root route
     }, 1500);
   };
 
@@ -105,7 +105,7 @@ export default function Login() {
               onClick={() => {
                 // Set user as logged in
                 localStorage.setItem("userLoggedIn", "true");
-                navigate("/");
+                navigate("/"); // Redirect to dashboard after login
               }}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
