@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   ActivitySquare, 
@@ -17,8 +18,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
@@ -76,10 +75,9 @@ const navItems = [
 type AppSidebarProps = {
   isMobileSheet?: boolean;
   onNavigate?: () => void;
-  profilePhoto?: string | null;
 };
 
-export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: AppSidebarProps) {
+export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -98,11 +96,6 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
       // If not logged in, go to login page
       navigate("/login");
     }
-  };
-
-  const handleProfilePhotoChange = (photoUrl: string) => {
-    // Store in localStorage to persist across the app
-    localStorage.setItem("userProfilePhoto", photoUrl);
   };
 
   return (
@@ -184,14 +177,8 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
           )}
           onClick={handleProfileClick}
         >
-          <div className="h-8 w-8 rounded-full overflow-hidden">
-            <Avatar className="h-full w-full">
-              {profilePhoto ? (
-                <AvatarImage src={profilePhoto} alt="Profile" />
-              ) : (
-                <AvatarFallback className="text-xs">JD</AvatarFallback>
-              )}
-            </Avatar>
+          <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+            <span className="font-medium text-xs">JD</span>
           </div>
           {(!collapsed || isMobileSheet) && (
             <div>

@@ -21,9 +21,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useCapacitor } from "@/hooks/use-capacitor";
-import { toast } from "sonner";
-import { useState } from "react";
 
 // Sample data - in a real app, this would come from an API or state
 const weeklyData = [
@@ -51,37 +48,13 @@ const paceData = [
 ];
 
 export default function Progress() {
-  const { showNotification } = useCapacitor();
-  const [timeRange, setTimeRange] = useState("week");
-  
-  const handleTimeRangeChange = (value: string) => {
-    setTimeRange(value);
-    toast.success(`Showing data for: ${value === "week" ? "This Week" : value === "month" ? "This Month" : "This Year"}`);
-  };
-  
-  const shareProgress = () => {
-    showNotification(
-      "Progress Shared", 
-      "Your progress has been shared with your friends!"
-    );
-    toast.success("Progress shared successfully!");
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Progress</h1>
-          <p className="text-muted-foreground">
-            Analyze your performance progress over time.
-          </p>
-        </div>
-        <button
-          onClick={shareProgress}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-        >
-          Share Progress
-        </button>
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Progress</h1>
+        <p className="text-muted-foreground">
+          Analyze your performance progress over time.
+        </p>
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -93,7 +66,7 @@ export default function Progress() {
           </TabsList>
 
           <div className="flex justify-end mt-4">
-            <Select value={timeRange} onValueChange={handleTimeRangeChange}>
+            <Select defaultValue="week">
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Time Range" />
               </SelectTrigger>
@@ -114,7 +87,7 @@ export default function Progress() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] md:h-[400px]">
+                <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <RechartsBarChart data={weeklyData}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
@@ -151,7 +124,7 @@ export default function Progress() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] md:h-[400px]">
+                <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <RechartsBarChart data={monthlyData}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
@@ -190,7 +163,7 @@ export default function Progress() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] md:h-[400px]">
+                <div className="h-[400px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <RechartsLineChart data={paceData}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
@@ -235,7 +208,7 @@ export default function Progress() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center p-8 md:p-12 text-muted-foreground">
+                <div className="flex items-center justify-center p-12 text-muted-foreground">
                   <div className="text-center">
                     <Target className="h-10 w-10 mx-auto mb-3 text-muted-foreground/50" />
                     <h3 className="text-lg font-medium">Coming Soon</h3>

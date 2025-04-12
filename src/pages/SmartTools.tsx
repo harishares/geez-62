@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Bell, BrainCircuit, Clock, Filter, Lightbulb, Plus, Search, Sparkles, User, Bot, Database, Code, FileText, MessageSquare, Cpu, Lock, GitBranch, Book, VideoIcon, Globe, CloudLightning } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -832,40 +831,4 @@ export default function SmartTools() {
             <CardHeader>
               <CardTitle>AI Study Assistant</CardTitle>
               <CardDescription>Get personalized help with your studies</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="p-4 rounded-lg border border-purple-800/30 bg-black/15 backdrop-blur-sm">
-                <h3 className="font-medium mb-3">Coming Soon</h3>
-                <p className="text-sm text-white/70">
-                  Our AI Study Assistant will provide personalized study recommendations,
-                  answer questions, and help you understand complex topics. Stay tuned!
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="resume-builder" className="mt-4">
-          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
-            <CardHeader>
-              <CardTitle>AI Resume Builder</CardTitle>
-              <CardDescription>Create a standout resume with AI assistance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="p-4 rounded-lg border border-purple-800/30 bg-black/15 backdrop-blur-sm">
-                <h3 className="font-medium mb-3">Coming Soon</h3>
-                <p className="text-sm text-white/70">
-                  Our AI Resume Builder will help you craft professional resumes tailored to specific
-                  job descriptions, with industry-specific language and formatting. Stay tuned!
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-      
-      {/* Task Timer component */}
-      <TaskTimer taskName={activeSessionId ? focusSessions.find(s => s.id === activeSessionId)?.title : "Current Task"} />
-    </div>
-  );
-}
+            </Card
