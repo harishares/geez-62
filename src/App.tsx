@@ -18,6 +18,7 @@ import Login from "./pages/Login";
 import Rank from "./pages/Rank";
 import DailyTasks from "./pages/DailyTasks";
 import { useEffect, useState } from "react";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,13 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Landing page route */}
+            <Route path="/welcome" element={isLoggedIn ? <Navigate to="/" replace /> : <Index />} />
+            
+            {/* Login route */}
             <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
+            
+            {/* Protected routes - require login */}
             <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/smart-tools" element={<SmartTools />} />
@@ -55,6 +62,8 @@ const App = () => {
               <Route path="/earn" element={<Earn />} />
               <Route path="/settings" element={<Settings />} />
             </Route>
+            
+            {/* 404 page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
