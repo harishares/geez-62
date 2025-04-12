@@ -13,7 +13,7 @@ export default function Login() {
     // Set user as logged in immediately
     localStorage.setItem("userLoggedIn", "true");
     // Then navigate to dashboard
-    navigate("/");
+    navigate("/dashboard");
     setIsLoading(false);
   };
 
@@ -104,7 +104,7 @@ export default function Login() {
                 // Set user as logged in
                 localStorage.setItem("userLoggedIn", "true");
                 // Redirect directly to dashboard
-                navigate("/");
+                navigate("/dashboard");
               }}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

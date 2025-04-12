@@ -57,7 +57,15 @@ const App = () => {
             <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login />} />
             
             {/* Dashboard as a separate route for direct navigation */}
-            <Route path="/dashboard" element={isLoggedIn ? <AppLayout><Dashboard /></AppLayout> : <Navigate to="/login" replace />} />
+            <Route path="/dashboard" element={
+              isLoggedIn ? (
+                <AppLayout>
+                  <Dashboard />
+                </AppLayout>
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            } />
             
             {/* Protected routes - require login */}
             <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>

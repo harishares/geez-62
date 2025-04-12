@@ -7,7 +7,11 @@ import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TaskTimer } from "@/components/ui/task-timer";
 
-export function AppLayout() {
+interface AppLayoutProps {
+  children?: React.ReactNode;
+}
+
+export function AppLayout({ children }: AppLayoutProps) {
   const isMobile = useIsMobile();
   const location = useLocation();
   const [currentTask, setCurrentTask] = useState("Current Task");
@@ -48,7 +52,7 @@ export function AppLayout() {
         <AppHeader profilePhoto={profilePhoto} />
         <main className="flex-1 p-4 md:p-6 overflow-auto bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
-            <Outlet />
+            {children || <Outlet />}
           </div>
         </main>
         
