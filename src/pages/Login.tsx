@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -12,8 +12,6 @@ export default function Login() {
     setIsLoading(true);
     // Simulate authentication delay
     setTimeout(() => {
-      // Set user as logged in
-      localStorage.setItem("userLoggedIn", "true");
       setIsLoading(false);
       navigate("/");
     }, 1500);
@@ -22,7 +20,7 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
       {/* Background Image */}
-      <div className="fixed inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full opacity-75">
         <img 
           src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
           alt="Digital Network Background" 
@@ -102,11 +100,7 @@ export default function Login() {
             <Button
               variant="outline"
               className="w-full py-6 text-base font-medium border-purple-500/50 bg-transparent text-white hover:bg-purple-900/30 transition-all duration-300 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-[1.02] group"
-              onClick={() => {
-                // Set user as logged in
-                localStorage.setItem("userLoggedIn", "true");
-                navigate("/");
-              }}
+              onClick={() => navigate("/")}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
