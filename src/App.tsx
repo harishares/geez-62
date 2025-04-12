@@ -26,20 +26,8 @@ const App = () => {
   
   // Check login status on app load
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-      setIsLoggedIn(userLoggedIn);
-    };
-    
-    // Check immediately
-    checkLoginStatus();
-    
-    // Set up event listener for storage changes
-    window.addEventListener('storage', checkLoginStatus);
-    
-    return () => {
-      window.removeEventListener('storage', checkLoginStatus);
-    };
+    const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+    setIsLoggedIn(userLoggedIn);
   }, []);
 
   // Show nothing until we check login status
@@ -57,7 +45,6 @@ const App = () => {
             <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
             <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Navigate to="/" replace />} />
               <Route path="/smart-tools" element={<SmartTools />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/rank" element={<Rank />} />
