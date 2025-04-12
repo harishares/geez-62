@@ -44,17 +44,17 @@ export function AppLayout() {
       
       {!isMobile && <AppSidebar profilePhoto={profilePhoto} />}
       
-      <div className="flex-1 flex flex-col relative">
+      <div className="flex-1 flex flex-col">
         <AppHeader profilePhoto={profilePhoto} />
         <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <Outlet />
         </main>
         
         {isMobile && <MobileNavigation />}
-        
-        {/* TaskTimer - Now in a relative container so it can be dragged within bounds */}
-        <TaskTimer taskName={currentTask} />
       </div>
+      
+      {/* Single TaskTimer visible on all pages */}
+      <TaskTimer taskName={currentTask} />
     </div>
   );
 }
