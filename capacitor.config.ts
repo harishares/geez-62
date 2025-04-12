@@ -10,13 +10,6 @@ const config: CapacitorConfig = {
     url: 'https://8018cb86-6e54-4758-816c-af7ea10f0ff4.lovableproject.com?forceHideBadge=true',
     cleartext: true
   },
-  plugins: {
-    LocalNotifications: {
-      smallIcon: "ic_stat_icon_config_sample",
-      iconColor: "#7700FF",
-      sound: "beep.wav"
-    }
-  },
   android: {
     buildOptions: {
       keystorePath: null,

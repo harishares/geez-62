@@ -7,14 +7,16 @@ export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Simulate login with Google - immediately redirect to dashboard
+  // Simulate login with Google
   const handleGoogleLogin = () => {
     setIsLoading(true);
-    // Set user as logged in immediately
-    localStorage.setItem("userLoggedIn", "true");
-    // Then navigate to dashboard
-    navigate("/dashboard");
-    setIsLoading(false);
+    // Simulate authentication delay
+    setTimeout(() => {
+      // Set user as logged in
+      localStorage.setItem("userLoggedIn", "true");
+      setIsLoading(false);
+      navigate("/");
+    }, 1500);
   };
 
   return (
@@ -103,8 +105,7 @@ export default function Login() {
               onClick={() => {
                 // Set user as logged in
                 localStorage.setItem("userLoggedIn", "true");
-                // Redirect directly to dashboard
-                navigate("/dashboard");
+                navigate("/");
               }}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
