@@ -1,11 +1,30 @@
 
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
+
 const Index = () => {
   return (
-    <div className="min-h-[calc(100vh-theme(spacing.16))] flex items-center justify-center relative">
-      <div className="text-center z-10 p-8 backdrop-blur-sm bg-background/30 rounded-xl border border-primary/20 shadow-lg">
-        <h1 className="text-4xl font-bold mb-4 text-white">Welcome to GEN Z CLG</h1>
-        <p className="text-xl text-purple-200">Connect. Learn. Earn.</p>
-        <p className="mt-6 text-purple-100/80">Your gateway to a collaborative learning experience</p>
+    <div className="container mx-auto">
+      <div className="grid gap-6">
+        <Card className="p-6 performance-card">
+          <h1 className="text-3xl font-bold mb-4">Welcome to GEN Z CLG</h1>
+          <p className="text-lg mb-6">Your portal to connect, learn, and earn in the digital economy.</p>
+          
+          <div className="flex flex-wrap gap-4">
+            <Button className="hover-scale group" variant="default">
+              <Sparkles className="mr-2 h-4 w-4" />
+              <span className="group-hover:translate-x-1 transition-transform duration-300">
+                Get Started
+              </span>
+            </Button>
+            <Button className="hover-scale group" variant="outline">
+              <span className="group-hover:translate-x-1 transition-transform duration-300">
+                Explore Features
+              </span>
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );

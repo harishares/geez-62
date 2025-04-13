@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,14 +19,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
-      {/* Background Image */}
-      <div className="fixed inset-0 w-full h-full">
-        <img 
-          src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
-          alt="Digital Network Background" 
-          className="object-cover w-full h-full"
-        />
-      </div>
+      {/* Animated Background */}
+      <AnimatedBackground />
       
       {/* Glowing border box */}
       <div className="relative z-10 w-full max-w-md px-8 py-12 backdrop-blur-xl bg-black/40 rounded-xl border border-purple-500/30 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
