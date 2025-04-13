@@ -1,35 +1,19 @@
 
-import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { TaskTimer } from "@/components/ui/task-timer";
 
 export function AppLayout() {
   const isMobile = useIsMobile();
-  const location = useLocation();
-  const [currentTask, setCurrentTask] = useState("Current Task");
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
     // Get saved theme or use dark-purple as default
     const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     document.documentElement.dataset.theme = savedTheme;
-    
-    // Load profile photo from localStorage if available
-    const savedPhoto = localStorage.getItem("userProfilePhoto");
-    if (savedPhoto) {
-      setProfilePhoto(savedPhoto);
-    }
-    
-    // Update task name based on current route
-    const pathSegments = location.pathname.split("/");
-    const currentPath = pathSegments[1] || "dashboard";
-    const formattedPath = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
-    setCurrentTask(formattedPath === "Dashboard" ? "General Work" : `${formattedPath} Task`);
-  }, [location.pathname]);
+  }, []);
 
   return (
     <div className="flex min-h-screen overflow-hidden">
@@ -42,19 +26,16 @@ export function AppLayout() {
         />
       </div>
       
-      {!isMobile && <AppSidebar profilePhoto={profilePhoto} />}
+      {!isMobile && <AppSidebar />}
       
       <div className="flex-1 flex flex-col">
-        <AppHeader profilePhoto={profilePhoto} />
+        <AppHeader />
         <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <Outlet />
         </main>
         
         {isMobile && <MobileNavigation />}
       </div>
-      
-      {/* Single TaskTimer visible on all pages */}
-      <TaskTimer taskName={currentTask} />
     </div>
   );
 }

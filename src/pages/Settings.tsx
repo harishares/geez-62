@@ -1,4 +1,4 @@
-import { useState, useRef, ChangeEvent, useEffect } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { Bell, Shield, UserCog, Palette, Globe, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
-import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
 
 export default function Settings() {
   // Profile state
@@ -38,22 +37,8 @@ export default function Settings() {
   const [animations, setAnimations] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // Load profile photo on component mount
-  useEffect(() => {
-    const savedPhoto = localStorage.getItem("userProfilePhoto");
-    if (savedPhoto) {
-      setAvatarUrl(savedPhoto);
-    }
-  }, []);
-
   // Handler for profile input changes
   const handleProfileChange = () => {
-    setIsFormChanged(true);
-  };
-
-  // Handler for profile photo change
-  const handleProfilePhotoChange = (photoUrl: string) => {
-    setAvatarUrl(photoUrl);
     setIsFormChanged(true);
   };
 
@@ -93,11 +78,6 @@ export default function Settings() {
       description: "Your profile changes have been saved successfully.",
     });
     setIsFormChanged(false);
-    
-    // Save profile photo to localStorage for persistence across app
-    if (avatarUrl) {
-      localStorage.setItem("userProfilePhoto", avatarUrl);
-    }
   };
 
   // Handler for saving appearance changes
@@ -144,15 +124,24 @@ export default function Settings() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                <div className="h-20 w-20 overflow-hidden">
-                  <ProfilePhotoUploader
-                    onPhotoChange={handleProfilePhotoChange}
-                    currentPhoto={avatarUrl}
-                  />
-                </div>
+                <Avatar className="h-20 w-20 cursor-pointer hover:opacity-80 transition-all border-2 border-purple-500/50" onClick={handleAvatarClick}>
+                  {avatarUrl ? (
+                    <AvatarImage src={avatarUrl} alt="Profile" />
+                  ) : (
+                    <AvatarFallback className="text-xl">JD</AvatarFallback>
+                  )}
+                </Avatar>
+                <input 
+                  type="file" 
+                  ref={fileInputRef}
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={handleFileChange} 
+                />
                 <div className="space-y-1">
                   <h3 className="font-medium text-lg">{name}</h3>
                   <p className="text-sm text-muted-foreground">{university} • {major} • {year}</p>
+                  <Button variant="outline" size="sm" onClick={handleAvatarClick}>Change Avatar</Button>
                 </div>
               </div>
               
