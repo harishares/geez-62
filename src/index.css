@@ -4,8 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root,
-  [data-theme="default"] {
+  :root {
     --background: 258 100% 98%;
     --foreground: 240 10% 3.9%;
 
@@ -44,162 +43,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 262 83% 65%;
-  }
-  
-  [data-theme="dark-purple"] {
-    --background: 260 35% 7%;
-    --foreground: 0 0% 98%;
-
-    --card: 261 35% 12%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 261 35% 15%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 262 83% 65%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 15% 20%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 262 83% 65%;
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 240 15% 20%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 260 20% 20%;
-    --input: 260 20% 20%;
-    --ring: 262 83% 65%;
-
-    --sidebar-background: 262 35% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 262 83% 65%; 
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 260 20% 18%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 260 20% 18%;
-    --sidebar-ring: 262 83% 65%;
-  }
-
-  [data-theme="blue"] {
-    --background: 210 100% 98%;
-    --foreground: 210 10% 3.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 210 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 210 10% 3.9%;
-
-    --primary: 210 83% 55%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 199 94% 48%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 210 94% 53%;
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 210 4.8% 95.9%;
-    --muted-foreground: 210 3.8% 46.1%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 210 5.9% 90%;
-    --input: 210 5.9% 90%;
-    --ring: 210 83% 55%;
-
-    --sidebar-background: 210 10% 95%;
-    --sidebar-foreground: 210 5.3% 26.1%;
-    --sidebar-primary: 210 83% 55%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 210 4.8% 95.9%;
-    --sidebar-accent-foreground: 210 5.9% 10%;
-    --sidebar-border: 210 13% 91%;
-    --sidebar-ring: 210 83% 55%;
-  }
-
-  [data-theme="green"] {
-    --background: 120 100% 98%;
-    --foreground: 120 10% 3.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 120 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 120 10% 3.9%;
-
-    --primary: 142 83% 45%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 165 94% 48%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 142 94% 53%;
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 120 4.8% 95.9%;
-    --muted-foreground: 120 3.8% 46.1%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 120 5.9% 90%;
-    --input: 120 5.9% 90%;
-    --ring: 142 83% 45%;
-
-    --sidebar-background: 120 10% 95%;
-    --sidebar-foreground: 120 5.3% 26.1%;
-    --sidebar-primary: 142 83% 45%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 120 4.8% 95.9%;
-    --sidebar-accent-foreground: 120 5.9% 10%;
-    --sidebar-border: 120 13% 91%;
-    --sidebar-ring: 142 83% 45%;
-  }
-
-  [data-theme="orange"] {
-    --background: 30 100% 98%;
-    --foreground: 30 10% 3.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 30 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 30 10% 3.9%;
-
-    --primary: 24 94% 53%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 30 94% 48%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 24 94% 53%;
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 30 4.8% 95.9%;
-    --muted-foreground: 30 3.8% 46.1%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 30 5.9% 90%;
-    --input: 30 5.9% 90%;
-    --ring: 24 94% 53%;
-
-    --sidebar-background: 30 10% 95%;
-    --sidebar-foreground: 30 5.3% 26.1%;
-    --sidebar-primary: 24 94% 53%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 30 4.8% 95.9%;
-    --sidebar-accent-foreground: 30 5.9% 10%;
-    --sidebar-border: 30 13% 91%;
-    --sidebar-ring: 24 94% 53%;
   }
 
   .dark {
@@ -252,64 +95,6 @@
   }
 }
 
-/* Spark border effects for tabs */
-.spark-border {
-  position: relative;
-}
-
-.spark-border::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.25rem;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.spark-border:hover::before,
-.spark-border[data-state=active]::before {
-  opacity: 1;
-}
-
-.spark-border[data-state=active]::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.8) 0%, transparent 15%),
-    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.8) 0%, transparent 15%),
-    linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5) 50%, transparent);
-  pointer-events: none;
-  opacity: 0.4;
-  z-index: 1;
-  animation: spark-flicker 3s infinite;
-}
-
-@keyframes spark-flicker {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.2; }
-}
-
-/* Match the spark border style to the dark-purple theme */
-[data-theme="dark-purple"] .spark-border[data-state=active]::before {
-  border: 1px solid rgba(163, 137, 252, 0.5);
-  box-shadow: 0 0 8px rgba(163, 137, 252, 0.5);
-}
-
-[data-theme="dark-purple"] .spark-border[data-state=active]::after {
-  background-image: 
-    radial-gradient(circle at top left, rgba(163, 137, 252, 0.8) 0%, transparent 15%),
-    radial-gradient(circle at bottom right, rgba(163, 137, 252, 0.8) 0%, transparent 15%),
-    linear-gradient(to right, transparent, rgba(163, 137, 252, 0.5) 50%, transparent);
-}
-
-/* Keep all existing styles */
 .performance-card {
   @apply rounded-xl border bg-card text-card-foreground shadow-sm relative overflow-hidden;
 }
@@ -319,48 +104,10 @@
   @apply absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent;
 }
 
-/* Updated card styling to match the purple design */
-[data-theme="dark-purple"] .performance-card,
-[data-theme="dark-purple"] .stat-card,
-[data-theme="dark-purple"] .card {
-  @apply bg-opacity-20 backdrop-blur-sm border-purple-800/40;
-  background-color: rgba(38, 30, 65, 0.4);
-}
-
-[data-theme="dark-purple"] .performance-card::before {
-  @apply bg-gradient-to-br from-purple-500/20 via-transparent to-transparent;
-}
-
 .stat-card {
   @apply rounded-lg p-4 border bg-white text-foreground transition-all hover:shadow-md;
 }
 
-[data-theme="dark-purple"] .stat-card {
-  @apply bg-opacity-20 backdrop-blur-sm;
-}
-
-/* Add glassy table styles */
-[data-theme="dark-purple"] .table-container {
-  @apply rounded-xl overflow-hidden border border-purple-800/40;
-}
-
-[data-theme="dark-purple"] table {
-  @apply bg-black/15 backdrop-blur-lg;
-}
-
-[data-theme="dark-purple"] th {
-  @apply bg-black/30 text-white/90 border-b border-purple-800/30;
-}
-
-[data-theme="dark-purple"] td {
-  @apply border-b border-purple-800/20 text-white/80;
-}
-
-[data-theme="dark-purple"] tr:hover td {
-  @apply bg-purple-900/20;
-}
-
-/* Rest of existing styles */
 .gradient-border {
   position: relative;
   border-radius: 0.5rem;
@@ -375,13 +122,4 @@
   border-radius: 0.625rem;
   background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
   opacity: 0.5;
-}
-
-[data-theme="dark-purple"] .gradient-border {
-  background: rgba(38, 30, 65, 0.4);
-}
-
-[data-theme="dark-purple"] .gradient-border::before {
-  background: linear-gradient(to right, #9b87f5, #7E69AB);
-  opacity: 0.7;
 }
