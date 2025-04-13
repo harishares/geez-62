@@ -1,7 +1,6 @@
 
-import { Coins, Filter, Plus, Search, Award, Lightbulb, Briefcase, DollarSign, ExternalLink } from "lucide-react";
+import { Coins, Filter, Plus, Search, Award, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,7 +18,6 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { toast } from "@/hooks/use-toast";
 
 export default function Earn() {
   // Sample data for earning opportunities
@@ -50,46 +48,6 @@ export default function Earn() {
       duration: "1-2 hours",
       requirements: "No special skills required",
       description: "Participate in user research studies for new products and services.",
-    },
-  ];
-
-  // New corporate projects data
-  const corporateProjects = [
-    {
-      id: 1,
-      type: "Web Development",
-      company: "TechSolutions Inc.",
-      project: "E-commerce Platform Redesign",
-      compensation: "$2,000-3,500",
-      duration: "2-3 months",
-      skills: ["React", "Node.js", "UI/UX"],
-      deadline: "Apr 30, 2025",
-      description: "Collaborate with our design team to implement a modern e-commerce experience for a leading retail client.",
-      featured: true,
-    },
-    {
-      id: 2,
-      type: "Data Analysis",
-      company: "FinTech Innovations",
-      project: "Customer Behavior Analysis",
-      compensation: "$1,500-2,000",
-      duration: "1-2 months",
-      skills: ["Python", "SQL", "Data Visualization"],
-      deadline: "May 15, 2025",
-      description: "Analyze customer transaction data to identify patterns and provide actionable insights for product improvement.",
-      featured: false,
-    },
-    {
-      id: 3,
-      type: "UX Research",
-      company: "HealthTech Solutions",
-      project: "Medical App User Testing",
-      compensation: "$1,800-2,200",
-      duration: "6-8 weeks",
-      skills: ["User Testing", "Prototyping", "Research Methods"],
-      deadline: "Apr 25, 2025",
-      description: "Conduct user testing sessions for a new healthcare app, analyze feedback and provide recommendations for improvements.",
-      featured: true,
     },
   ];
 
@@ -124,17 +82,6 @@ export default function Earn() {
     "Brand Ambassador": "bg-green-500/20 text-green-500 border-green-500/20",
     "Content Creator": "bg-blue-500/20 text-blue-500 border-blue-500/20",
     "Research Participant": "bg-purple-500/20 text-purple-500 border-purple-500/20",
-    "Web Development": "bg-indigo-500/20 text-indigo-400 border-indigo-500/20",
-    "Data Analysis": "bg-cyan-500/20 text-cyan-400 border-cyan-500/20",
-    "UX Research": "bg-pink-500/20 text-pink-400 border-pink-500/20",
-  };
-
-  const handleApply = (projectId: number) => {
-    toast({
-      title: "Application Submitted",
-      description: "Your application has been received. We'll notify you of updates.",
-      variant: "default",
-    });
   };
 
   return (
@@ -156,138 +103,43 @@ export default function Earn() {
               className="pl-8"
             />
           </div>
-          <Button variant="outline" size="icon" className="hover:bg-purple-900/20 hover:border-purple-500/50 transition-colors">
+          <Button variant="outline" size="icon">
             <Filter className="h-4 w-4" />
           </Button>
         </div>
-        <AnimatedButton glowColor="rgba(139, 92, 246, 0.6)">
+        <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Set Earning Preferences
-        </AnimatedButton>
+          Add Preferences
+        </Button>
       </div>
 
-      <Tabs defaultValue="corporate">
+      <Tabs defaultValue="opportunities">
         <div className="flex items-center justify-between">
-          <TabsList className="p-1 bg-black/20 backdrop-blur-sm border border-purple-800/30">
-            <TabsTrigger value="corporate" className="spark-border data-[state=active]:bg-purple-800/30">
-              <Briefcase className="h-4 w-4 mr-2" />
-              Corporate Projects
-            </TabsTrigger>
-            <TabsTrigger value="opportunities" className="spark-border data-[state=active]:bg-purple-800/30">
-              <DollarSign className="h-4 w-4 mr-2" />
-              Quick Opportunities
-            </TabsTrigger>
-            <TabsTrigger value="apps" className="spark-border data-[state=active]:bg-purple-800/30">
-              <Lightbulb className="h-4 w-4 mr-2" />
-              App Recommendations
-            </TabsTrigger>
-            <TabsTrigger value="earnings" className="spark-border data-[state=active]:bg-purple-800/30">
-              <Coins className="h-4 w-4 mr-2" />
-              My Earnings
-            </TabsTrigger>
+          <TabsList>
+            <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
+            <TabsTrigger value="apps">App Recommendations</TabsTrigger>
+            <TabsTrigger value="influencer">Micro-Influencer</TabsTrigger>
+            <TabsTrigger value="earnings">My Earnings</TabsTrigger>
           </TabsList>
           <div className="hidden sm:block">
             <Select defaultValue="earnings">
-              <SelectTrigger className="w-[180px] border-purple-800/30 bg-black/20 backdrop-blur-sm">
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="earnings">Highest earnings</SelectItem>
-                <SelectItem value="deadline">Upcoming deadline</SelectItem>
-                <SelectItem value="featured">Featured</SelectItem>
                 <SelectItem value="recommended">Recommended</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="popularity">Popularity</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <TabsContent value="corporate" className="mt-4">
-          <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
-            <CardHeader className="pb-2">
-              <CardTitle>Corporate Projects</CardTitle>
-              <CardDescription>
-                Real-world projects from companies looking for student talent
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {corporateProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    className={`relative flex flex-col p-4 rounded-lg border ${project.featured ? 'border-purple-500/50' : 'border-purple-800/30'} hover:bg-purple-900/20 transition-colors bg-black/15 backdrop-blur-sm ${project.featured ? 'shadow-[0_0_12px_rgba(139,92,246,0.3)]' : ''}`}
-                  >
-                    {project.featured && (
-                      <div className="absolute -top-3 right-4 px-3 py-1 bg-purple-600 rounded-full text-xs font-medium text-white shadow-lg">
-                        Featured Project
-                      </div>
-                    )}
-                    <div className="flex justify-between mb-2 mt-2">
-                      <div
-                        className={`inline-flex px-3 py-1 rounded-full text-xs font-medium border ${
-                          categoryColors[
-                            project.type as keyof typeof categoryColors
-                          ] || "bg-violet-500/10 text-violet-400 border-violet-500/20"
-                        }`}
-                      >
-                        {project.type}
-                      </div>
-                      <span className="text-xs text-red-300/80 font-medium flex items-center">
-                        <svg className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Deadline: {project.deadline}
-                      </span>
-                    </div>
-                    
-                    <div className="mb-4">
-                      <div className="font-medium text-white/90 text-lg mb-1">{project.project}</div>
-                      <p className="text-sm text-white/70">
-                        {project.company} • {project.compensation} • {project.duration}
-                      </p>
-                      <p className="text-sm text-white/70 mt-2">
-                        {project.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-1 mt-3">
-                        {project.skills.map((skill, i) => (
-                          <span key={i} className="inline-flex px-2 py-0.5 bg-purple-500/10 text-purple-300 text-xs rounded border border-purple-500/20">
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-white/60">Skills match: Strong</span>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="hover:bg-purple-900/30 hover:border-purple-500/50 transition-colors group"
-                        >
-                          <span className="group-hover:translate-x-0.5 transition-transform duration-200">Details</span>
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </Button>
-                        <AnimatedButton 
-                          size="sm"
-                          onClick={() => handleApply(project.id)}
-                          className="bg-purple-600 hover:bg-purple-700"
-                        >
-                          Apply Now
-                        </AnimatedButton>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="opportunities" className="mt-4">
           <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
             <CardHeader className="pb-2">
-              <CardTitle>Quick Earning Opportunities</CardTitle>
+              <CardTitle>Earning Opportunities</CardTitle>
               <CardDescription>
                 AI-matched opportunities based on your profile and skills
               </CardDescription>
@@ -323,13 +175,9 @@ export default function Earn() {
                       </div>
                     </div>
 
-                    <AnimatedButton 
-                      variant="outline" 
-                      size="sm" 
-                      className="mt-2 sm:mt-0 border-purple-500/30 hover:border-purple-400/60"
-                    >
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
                       Apply
-                    </AnimatedButton>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -367,13 +215,9 @@ export default function Earn() {
                       </div>
                     </div>
 
-                    <AnimatedButton 
-                      variant="outline" 
-                      size="sm" 
-                      className="mt-2 sm:mt-0 border-purple-500/30 hover:border-purple-400/60"
-                    >
+                    <Button variant="outline" size="sm" className="mt-2 sm:mt-0">
                       Install
-                    </AnimatedButton>
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -397,9 +241,7 @@ export default function Earn() {
                   <p className="text-sm mt-2">
                     Apply for opportunities to start earning
                   </p>
-                  <AnimatedButton className="mt-4 bg-purple-600 hover:bg-purple-700">
-                    Explore Opportunities
-                  </AnimatedButton>
+                  <Button className="mt-4">Explore Opportunities</Button>
                 </div>
               </div>
             </CardContent>
