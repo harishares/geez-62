@@ -13,20 +13,11 @@ export function AppLayout() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full -z-10 opacity-75">
-        <img 
-          src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
-          alt="Digital Network Background" 
-          className="object-cover w-full h-full"
-        />
-      </div>
-      
       <AppSidebar />
       
       <div className="flex-1 flex flex-col">
         <AppHeader />
-        <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
+        <main className="flex-1 p-4 md:p-6 bg-[radial-gradient(ellipse_at_top,rgba(95,75,139,0.2),transparent)]">
           <Outlet />
         </main>
       </div>

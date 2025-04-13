@@ -18,12 +18,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full opacity-75">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[radial-gradient(ellipse_at_top,rgba(95,75,139,0.4),rgba(25,20,41,0.9))] relative overflow-hidden">
+      {/* Animated network lines inspired by the image */}
+      <div className="absolute inset-0 w-full h-full opacity-30">
         <img 
-          src="/lovable-uploads/796b2bf1-a44e-4399-8064-677f9a614493.png" 
-          alt="Digital Network Background" 
+          src="/lovable-uploads/10ea9ef5-97d5-4db4-b482-b39d1b98aa36.png" 
+          alt="Network Background" 
           className="object-cover w-full h-full"
         />
       </div>
@@ -38,7 +38,7 @@ export default function Login() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white">GEN Z CLG</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-white">Trackify</h1>
             <p className="text-purple-300/80">Connect. Learn. Earn.</p>
           </div>
 
@@ -114,7 +114,7 @@ export default function Login() {
           {/* Footer links */}
           <div className="text-center text-sm">
             <p className="text-purple-300/60">
-              By continuing, you agree to GEN Z CLG's {" "}
+              By continuing, you agree to Trackify's {" "}
               <a href="#" className="text-purple-400 hover:text-purple-300 hover:underline">
                 Terms of Service
               </a>{" "}

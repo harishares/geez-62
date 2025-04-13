@@ -22,9 +22,9 @@ export function AppHeader() {
   };
 
   return (
-    <header className="w-full border-b border-border sticky top-0 z-10 bg-background/80 backdrop-blur">
+    <header className="w-full border-b border-border sticky top-0 z-10 bg-background/95 backdrop-blur">
       <div className="container flex items-center justify-between h-16 px-4 md:px-6">
-        <h1 className="text-lg font-semibold md:text-xl">GEN Z CLG</h1>
+        <h1 className="text-lg font-semibold md:text-xl">GEN Z</h1>
         
         <div className="flex items-center gap-4">
           <div className="relative hidden md:flex items-center">
@@ -32,7 +32,7 @@ export function AppHeader() {
             <Input
               type="search"
               placeholder="Search..."
-              className="pl-8 w-[200px] lg:w-[300px] bg-background/50"
+              className="pl-8 w-[200px] lg:w-[300px] bg-background"
             />
           </div>
           
