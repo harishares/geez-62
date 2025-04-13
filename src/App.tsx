@@ -41,21 +41,59 @@ const App = () => {
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/login" element={<Navigate to="/dashboard" replace />} />
             
-            {/* Dashboard as a separate route */}
-            <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
+            {/* Dashboard route */}
+            <Route path="/dashboard" element={
+              <AppLayout>
+                <Dashboard />
+              </AppLayout>
+            } />
             
             {/* All other routes within the app layout */}
-            <Route element={<AppLayout />}>
-              <Route path="/smart-tools" element={<SmartTools />} />
-              <Route path="/progress" element={<Progress />} />
-              <Route path="/rank" element={<Rank />} />
-              <Route path="/daily-tasks" element={<DailyTasks />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/learning" element={<Learning />} />
-              <Route path="/networking" element={<Networking />} />
-              <Route path="/earn" element={<Earn />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
+            <Route path="/smart-tools" element={
+              <AppLayout>
+                <SmartTools />
+              </AppLayout>
+            } />
+            <Route path="/progress" element={
+              <AppLayout>
+                <Progress />
+              </AppLayout>
+            } />
+            <Route path="/rank" element={
+              <AppLayout>
+                <Rank />
+              </AppLayout>
+            } />
+            <Route path="/daily-tasks" element={
+              <AppLayout>
+                <DailyTasks />
+              </AppLayout>
+            } />
+            <Route path="/events" element={
+              <AppLayout>
+                <Events />
+              </AppLayout>
+            } />
+            <Route path="/learning" element={
+              <AppLayout>
+                <Learning />
+              </AppLayout>
+            } />
+            <Route path="/networking" element={
+              <AppLayout>
+                <Networking />
+              </AppLayout>
+            } />
+            <Route path="/earn" element={
+              <AppLayout>
+                <Earn />
+              </AppLayout>
+            } />
+            <Route path="/settings" element={
+              <AppLayout>
+                <Settings />
+              </AppLayout>
+            } />
             
             {/* 404 page */}
             <Route path="*" element={<NotFound />} />

@@ -1,13 +1,17 @@
 
-import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useEffect, useState, ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { TaskTimer } from "@/components/ui/task-timer";
 
-export function AppLayout() {
+type AppLayoutProps = {
+  children: ReactNode;
+};
+
+export function AppLayout({ children }: AppLayoutProps) {
   const isMobile = useIsMobile();
   const location = useLocation();
   const [currentTask, setCurrentTask] = useState("Current Task");
@@ -48,7 +52,7 @@ export function AppLayout() {
         <AppHeader profilePhoto={profilePhoto} />
         <main className="flex-1 p-4 md:p-6 overflow-auto bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
-            <Outlet />
+            {children}
           </div>
         </main>
         
