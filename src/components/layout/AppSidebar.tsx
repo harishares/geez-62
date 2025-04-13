@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { 
   ActivitySquare, 
   BarChart3, 
@@ -80,23 +80,6 @@ type AppSidebarProps = {
 export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
-  
-  // Flag to check if user is logged in (simple simulation)
-  const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-  
-  const handleProfileClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    // If user is already logged in, don't redirect to login page again
-    if (isLoggedIn) {
-      // Instead navigate to a profile or settings page
-      navigate("/settings");
-    } else {
-      // If not logged in, go to login page
-      navigate("/login");
-    }
-  };
 
   return (
     <aside 
@@ -169,14 +152,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
       </nav>
       
       <div className="p-4 border-t border-border mt-auto">
-        <a 
-          href="#" 
-          className={cn(
-            "flex items-center gap-3 hover:opacity-80 transition-opacity", 
-            collapsed && !isMobileSheet && "justify-center"
-          )}
-          onClick={handleProfileClick}
-        >
+        <Link to="/login" className={cn("flex items-center gap-3 hover:opacity-80 transition-opacity", collapsed && !isMobileSheet && "justify-center")}>
           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
             <span className="font-medium text-xs">JD</span>
           </div>
@@ -186,7 +162,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
               <p className="text-xs text-muted-foreground">john@example.com</p>
             </div>
           )}
-        </a>
+        </Link>
       </div>
     </aside>
   );
