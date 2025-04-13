@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -249,11 +250,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  
-  /* Add responsive padding for main content */
-  main {
-    @apply pb-16 md:pb-0;
-  }
 }
 
 /* Spark border effects for tabs */
@@ -388,21 +384,4 @@
 [data-theme="dark-purple"] .gradient-border::before {
   background: linear-gradient(to right, #9b87f5, #7E69AB);
   opacity: 0.7;
-}
-
-/* Mobile responsive styling */
-@media (max-width: 768px) {
-  .performance-card, 
-  .stat-card,
-  .card {
-    @apply rounded-md;
-  }
-  
-  .table-container {
-    @apply overflow-x-auto -mx-4 px-4;
-  }
-  
-  table {
-    @apply min-w-max;
-  }
 }
