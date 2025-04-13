@@ -44,7 +44,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             {/* Landing page redirect */}
-            <Route path="/welcome" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Index />} />
+            <Route path="/welcome" element={isLoggedIn ? <Navigate to="/" replace /> : <Index />} />
             
             {/* Root path - redirect to dashboard if logged in, otherwise to login page */}
             <Route path="/" element={
@@ -57,98 +57,20 @@ const App = () => {
             <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login />} />
             
             {/* Dashboard as a separate route for direct navigation */}
-            <Route path="/dashboard" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Dashboard />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
+            <Route path="/dashboard" element={isLoggedIn ? <AppLayout><Dashboard /></AppLayout> : <Navigate to="/login" replace />} />
             
             {/* Protected routes - require login */}
-            <Route path="/smart-tools" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <SmartTools />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/progress" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Progress />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/rank" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Rank />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/daily-tasks" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <DailyTasks />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/events" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Events />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/learning" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Learning />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/networking" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Networking />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/earn" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Earn />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
-            <Route path="/settings" element={
-              isLoggedIn ? (
-                <AppLayout>
-                  <Settings />
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            } />
+            <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>
+              <Route path="/smart-tools" element={<SmartTools />} />
+              <Route path="/progress" element={<Progress />} />
+              <Route path="/rank" element={<Rank />} />
+              <Route path="/daily-tasks" element={<DailyTasks />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/learning" element={<Learning />} />
+              <Route path="/networking" element={<Networking />} />
+              <Route path="/earn" element={<Earn />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
             
             {/* 404 page */}
             <Route path="*" element={<NotFound />} />

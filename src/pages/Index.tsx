@@ -11,7 +11,7 @@ const Index = () => {
   useEffect(() => {
     const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
     if (userLoggedIn) {
-      navigate("/dashboard"); // Redirect to dashboard if logged in
+      navigate("/"); // Redirect to dashboard if logged in
     }
   }, [navigate]);
   
