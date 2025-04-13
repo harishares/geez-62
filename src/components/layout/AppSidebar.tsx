@@ -151,7 +151,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate }: AppSidebarProp
         </ul>
       </nav>
       
-      <div className="p-4 border-t border-border mt-auto">
+      <div className="p-4 border-t border-border">
         <Link to="/login" className={cn("flex items-center gap-3 hover:opacity-80 transition-opacity", collapsed && !isMobileSheet && "justify-center")}>
           <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden">
             <span className="font-medium text-xs">JD</span>

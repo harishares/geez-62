@@ -1,4 +1,5 @@
-import { useState, useRef, ChangeEvent } from "react";
+
+import { useState } from "react";
 import { Bell, Shield, UserCog, Palette, Globe, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -13,87 +14,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { toast } from "@/hooks/use-toast";
 
 export default function Settings() {
-  // Profile state
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john@example.com");
-  const [university, setUniversity] = useState("Massachusetts Institute of Technology");
-  const [major, setMajor] = useState("Computer Science");
-  const [year, setYear] = useState("Junior");
-  const [graduation, setGraduation] = useState("May 2026");
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [isFormChanged, setIsFormChanged] = useState(false);
-  
-  // Theme state
   const [theme, setTheme] = useState("dark-purple");
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Interface options
-  const [compactMode, setCompactMode] = useState(false);
-  const [animations, setAnimations] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // Handler for profile input changes
-  const handleProfileChange = () => {
-    setIsFormChanged(true);
-  };
-
-  // Handler for theme change
   const handleThemeChange = (value: string) => {
-    // Only allow dark-purple theme
-    if (value === "dark-purple") {
-      setTheme(value);
-      document.documentElement.dataset.theme = value;
-      localStorage.setItem("app-theme", value);
-    }
-  };
-
-  // Handler for avatar change
-  const handleAvatarClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setAvatarUrl(event.target.result as string);
-          setIsFormChanged(true);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Handler for saving profile changes
-  const handleSaveProfile = () => {
-    toast({
-      title: "Profile Updated",
-      description: "Your profile changes have been saved successfully.",
-    });
-    setIsFormChanged(false);
-  };
-
-  // Handler for saving appearance changes
-  const handleSaveAppearance = () => {
-    toast({
-      title: "Appearance Updated",
-      description: "Your appearance preferences have been saved.",
-    });
-  };
-
-  // Handler for saving AI settings
-  const handleSaveAiSettings = () => {
-    toast({
-      title: "AI Settings Updated",
-      description: "Your AI preferences have been saved successfully.",
-    });
+    setTheme(value);
+    document.documentElement.dataset.theme = value;
+    localStorage.setItem("app-theme", value);
   };
 
   return (
@@ -124,24 +54,13 @@ export default function Settings() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                <Avatar className="h-20 w-20 cursor-pointer hover:opacity-80 transition-all border-2 border-purple-500/50" onClick={handleAvatarClick}>
-                  {avatarUrl ? (
-                    <AvatarImage src={avatarUrl} alt="Profile" />
-                  ) : (
-                    <AvatarFallback className="text-xl">JD</AvatarFallback>
-                  )}
+                <Avatar className="h-20 w-20">
+                  <AvatarFallback className="text-xl">JD</AvatarFallback>
                 </Avatar>
-                <input 
-                  type="file" 
-                  ref={fileInputRef}
-                  className="hidden" 
-                  accept="image/*" 
-                  onChange={handleFileChange} 
-                />
                 <div className="space-y-1">
-                  <h3 className="font-medium text-lg">{name}</h3>
-                  <p className="text-sm text-muted-foreground">{university} • {major} • {year}</p>
-                  <Button variant="outline" size="sm" onClick={handleAvatarClick}>Change Avatar</Button>
+                  <h3 className="font-medium text-lg">John Doe</h3>
+                  <p className="text-sm text-muted-foreground">MIT • Computer Science • Junior</p>
+                  <Button variant="outline" size="sm">Change Avatar</Button>
                 </div>
               </div>
               
@@ -150,78 +69,31 @@ export default function Settings() {
               <div className="grid gap-4 md:grid-cols-2 py-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input 
-                    id="name" 
-                    value={name} 
-                    onChange={(e) => {
-                      setName(e.target.value);
-                      handleProfileChange();
-                    }} 
-                  />
+                  <Input id="name" defaultValue="John Doe" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email" 
-                    value={email} 
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      handleProfileChange();
-                    }}
-                  />
+                  <Input id="email" defaultValue="john@example.com" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="university">University</Label>
-                  <Input 
-                    id="university" 
-                    value={university} 
-                    onChange={(e) => {
-                      setUniversity(e.target.value);
-                      handleProfileChange();
-                    }}
-                  />
+                  <Input id="university" defaultValue="Massachusetts Institute of Technology" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="major">Major</Label>
-                  <Input 
-                    id="major" 
-                    value={major} 
-                    onChange={(e) => {
-                      setMajor(e.target.value);
-                      handleProfileChange();
-                    }}
-                  />
+                  <Input id="major" defaultValue="Computer Science" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="year">Year</Label>
-                  <Input 
-                    id="year" 
-                    value={year} 
-                    onChange={(e) => {
-                      setYear(e.target.value);
-                      handleProfileChange();
-                    }}
-                  />
+                  <Input id="year" defaultValue="Junior" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="graduation">Expected Graduation</Label>
-                  <Input 
-                    id="graduation" 
-                    value={graduation} 
-                    onChange={(e) => {
-                      setGraduation(e.target.value);
-                      handleProfileChange();
-                    }}
-                  />
+                  <Input id="graduation" defaultValue="May 2026" />
                 </div>
               </div>
               
-              <Button 
-                onClick={handleSaveProfile} 
-                disabled={!isFormChanged}
-              >
-                Save Changes
-              </Button>
+              <Button>Save Changes</Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -257,52 +129,48 @@ export default function Settings() {
                     </Label>
                   </div>
                   
-                  {/* Other themes disabled */}
-                  <div className="opacity-50 pointer-events-none">
+                  <div>
                     <RadioGroupItem 
                       value="blue" 
                       id="theme-blue" 
                       className="peer sr-only" 
-                      disabled
                     />
                     <Label
                       htmlFor="theme-blue"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                     >
                       <Palette className="mb-3 h-6 w-6" />
-                      Blue (Disabled)
+                      Blue
                     </Label>
                   </div>
                   
-                  <div className="opacity-50 pointer-events-none">
+                  <div>
                     <RadioGroupItem 
                       value="green" 
                       id="theme-green" 
                       className="peer sr-only" 
-                      disabled
                     />
                     <Label
                       htmlFor="theme-green"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                     >
                       <Palette className="mb-3 h-6 w-6" />
-                      Green (Disabled)
+                      Green
                     </Label>
                   </div>
                   
-                  <div className="opacity-50 pointer-events-none">
+                  <div>
                     <RadioGroupItem 
                       value="orange" 
                       id="theme-orange" 
                       className="peer sr-only" 
-                      disabled
                     />
                     <Label
                       htmlFor="theme-orange"
-                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4"
+                      className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                     >
                       <Palette className="mb-3 h-6 w-6" />
-                      Orange (Disabled)
+                      Orange
                     </Label>
                   </div>
                 </RadioGroup>
@@ -320,11 +188,7 @@ export default function Settings() {
                       Use a more compact layout for the interface
                     </p>
                   </div>
-                  <Switch 
-                    id="compact-mode" 
-                    checked={compactMode}
-                    onCheckedChange={setCompactMode}
-                  />
+                  <Switch id="compact-mode" />
                 </div>
                 
                 <div className="flex items-center justify-between">
@@ -334,11 +198,7 @@ export default function Settings() {
                       Enable or disable interface animations
                     </p>
                   </div>
-                  <Switch 
-                    id="animations" 
-                    checked={animations}
-                    onCheckedChange={setAnimations}
-                  />
+                  <Switch id="animations" defaultChecked />
                 </div>
                 
                 <div className="flex items-center justify-between">
@@ -348,15 +208,11 @@ export default function Settings() {
                       Start with a collapsed sidebar for more screen space
                     </p>
                   </div>
-                  <Switch 
-                    id="sidebar-collapsed" 
-                    checked={sidebarCollapsed}
-                    onCheckedChange={setSidebarCollapsed}
-                  />
+                  <Switch id="sidebar-collapsed" />
                 </div>
               </div>
               
-              <Button onClick={handleSaveAppearance}>Save Preferences</Button>
+              <Button>Save Preferences</Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -448,7 +304,7 @@ export default function Settings() {
                 </div>
               </div>
               
-              <Button onClick={handleSaveAiSettings}>Update AI Settings</Button>
+              <Button>Update AI Settings</Button>
             </CardContent>
           </Card>
         </TabsContent>
