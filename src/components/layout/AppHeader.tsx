@@ -53,11 +53,9 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
   };
 
   const handleLogout = () => {
-    // Remove the logged in flag
-    localStorage.removeItem("userLoggedIn");
-    // Redirect to login page
-    navigate("/login");
-    toast.success("Logged out successfully");
+    // Since we're always logged in, just navigate back to dashboard
+    navigate("/dashboard");
+    toast.success("Session refreshed");
   };
 
   return (
@@ -174,7 +172,7 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500">
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>Refresh Session</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

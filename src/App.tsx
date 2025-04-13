@@ -14,27 +14,18 @@ import Earn from "./pages/Earn";
 import SmartTools from "./pages/SmartTools";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
 import Rank from "./pages/Rank";
 import DailyTasks from "./pages/DailyTasks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-  
-  // Check login status on app load
+  // Set logged in state on app load to ensure all protected routes are accessible
   useEffect(() => {
-    const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-    setIsLoggedIn(userLoggedIn);
+    localStorage.setItem("userLoggedIn", "true");
   }, []);
-
-  // Show nothing until we check login status
-  if (isLoggedIn === null) {
-    return null;
-  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -43,24 +34,18 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Landing page redirect */}
-            <Route path="/welcome" element={isLoggedIn ? <Navigate to="/" replace /> : <Index />} />
+            {/* Welcome landing page */}
+            <Route path="/welcome" element={<Index />} />
             
-            {/* Root path - redirect to dashboard if logged in, otherwise to login page */}
-            <Route path="/" element={
-              isLoggedIn ? 
-                <Navigate to="/dashboard" replace /> : 
-                <Navigate to="/login" replace />
-            } />
+            {/* Root path - redirect straight to dashboard */}
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
             
-            {/* Login route */}
-            <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login />} />
+            {/* Dashboard as a separate route */}
+            <Route path="/dashboard" element={<AppLayout><Dashboard /></AppLayout>} />
             
-            {/* Dashboard as a separate route for direct navigation */}
-            <Route path="/dashboard" element={isLoggedIn ? <AppLayout><Dashboard /></AppLayout> : <Navigate to="/login" replace />} />
-            
-            {/* Protected routes - require login */}
-            <Route element={isLoggedIn ? <AppLayout /> : <Navigate to="/login" replace />}>
+            {/* All other routes within the app layout */}
+            <Route element={<AppLayout />}>
               <Route path="/smart-tools" element={<SmartTools />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/rank" element={<Rank />} />

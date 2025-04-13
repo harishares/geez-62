@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   ActivitySquare, 
@@ -6,7 +7,6 @@ import {
   BookOpen,
   ChevronLeft, 
   ChevronRight, 
-  GraduationCap,
   Home, 
   Network,
   Settings, 
@@ -17,13 +17,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navItems = [
   {
     name: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: Home
   },
   {
@@ -84,25 +83,9 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Flag to check if user is logged in (simple simulation)
-  const isLoggedIn = localStorage.getItem("userLoggedIn") === "true";
-  
   const handleProfileClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    
-    // If user is already logged in, don't redirect to login page again
-    if (isLoggedIn) {
-      // Instead navigate to a profile or settings page
-      navigate("/settings");
-    } else {
-      // If not logged in, go to login page
-      navigate("/login");
-    }
-  };
-
-  const handleProfilePhotoChange = (photoUrl: string) => {
-    // Store in localStorage to persist across the app
-    localStorage.setItem("userProfilePhoto", photoUrl);
+    navigate("/settings");
   };
 
   return (
