@@ -12,9 +12,7 @@ import {
   Network,
   Settings, 
   Sparkles,
-  Target,
-  Award,
-  ListChecks
+  Target
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -34,16 +32,6 @@ const navItems = [
     name: "Progress",
     path: "/progress",
     icon: BarChart3
-  },
-  {
-    name: "Rank",
-    path: "/rank",
-    icon: Award
-  },
-  {
-    name: "Daily Tasks",
-    path: "/daily-tasks",
-    icon: ListChecks
   },
   {
     name: "Events",
