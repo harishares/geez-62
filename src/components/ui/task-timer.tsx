@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Clock, Pause, Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,19 +13,20 @@ export function TaskTimer({ taskName = "Current Task" }: TaskTimerProps) {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [timerType, setTimerType] = useState<"focus" | "break">("focus");
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    let interval: number | null = null;
+    
     if (isActive) {
-      intervalRef.current = setInterval(() => {
+      interval = setInterval(() => {
         setSeconds(seconds => seconds + 1);
       }, 1000);
-    } else if (!isActive && seconds !== 0 && intervalRef.current) {
-      clearInterval(intervalRef.current);
+    } else if (!isActive && seconds !== 0 && interval) {
+      clearInterval(interval);
     }
     
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (interval) clearInterval(interval);
     };
   }, [isActive, seconds]);
 
