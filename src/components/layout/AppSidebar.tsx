@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
@@ -13,7 +12,8 @@ import {
   Sparkles,
   Target,
   Award,
-  ListChecks
+  ListChecks,
+  Shield
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,11 @@ const navItems = [
     name: "Smart Tools",
     path: "/smart-tools",
     icon: Sparkles
+  },
+  {
+    name: "LAW F U",
+    path: "/learning",
+    icon: Shield
   },
   {
     name: "Progress",
