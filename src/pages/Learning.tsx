@@ -1,5 +1,4 @@
-
-import { BookOpen, Filter, GraduationCap, Plus, Search, ExternalLink, Check, Play, Award } from "lucide-react";
+import { BookOpen, Filter, GraduationCap, Plus, Search, ExternalLink, Check, Play, Award, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Input } from "@/components/ui/input";
@@ -194,9 +193,13 @@ export default function Learning() {
         </AnimatedButton>
       </div>
 
-      <Tabs defaultValue="free">
+      <Tabs defaultValue="law" className="space-y-4">
         <div className="flex items-center justify-between">
           <TabsList className="p-1 bg-black/20 backdrop-blur-sm border border-purple-800/30">
+            <TabsTrigger value="law" className="spark-border data-[state=active]:bg-purple-800/30">
+              <Shield className="h-4 w-4 mr-2" />
+              LAW F U
+            </TabsTrigger>
             <TabsTrigger value="free" className="spark-border data-[state=active]:bg-purple-800/30">
               <GraduationCap className="h-4 w-4 mr-2" />
               Free Courses
@@ -228,6 +231,10 @@ export default function Learning() {
             </Select>
           </div>
         </div>
+
+        <TabsContent value="law" className="mt-4">
+          <LawEducation />
+        </TabsContent>
 
         <TabsContent value="free" className="mt-4">
           <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
