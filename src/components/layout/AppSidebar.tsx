@@ -32,7 +32,7 @@ const navItems = [
   },
   {
     name: "LAW F U",
-    path: "/learning",
+    path: "/law-fu",
     icon: Shield
   },
   {

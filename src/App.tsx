@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,13 +15,12 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Rank from "./pages/Rank";
 import DailyTasks from "./pages/DailyTasks";
-import { useEffect } from "react";
+import LawEducation from "./pages/LawEducation";
 import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Set logged in state on app load to ensure all protected routes are accessible
   useEffect(() => {
     localStorage.setItem("userLoggedIn", "true");
   }, []);
@@ -34,21 +32,14 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Welcome landing page */}
             <Route path="/welcome" element={<Index />} />
-            
-            {/* Root path - redirect straight to dashboard */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-            
-            {/* Dashboard route */}
             <Route path="/dashboard" element={
               <AppLayout>
                 <Dashboard />
               </AppLayout>
             } />
-            
-            {/* All other routes within the app layout */}
             <Route path="/smart-tools" element={
               <AppLayout>
                 <SmartTools />
@@ -79,6 +70,11 @@ const App = () => {
                 <Learning />
               </AppLayout>
             } />
+            <Route path="/law-fu" element={
+              <AppLayout>
+                <LawEducation />
+              </AppLayout>
+            } />
             <Route path="/networking" element={
               <AppLayout>
                 <Networking />
@@ -94,8 +90,6 @@ const App = () => {
                 <Settings />
               </AppLayout>
             } />
-            
-            {/* 404 page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
