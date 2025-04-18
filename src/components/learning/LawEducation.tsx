@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Shield, Youtube, Language } from "lucide-react";
+import { Shield, Youtube, Languages } from "lucide-react"; // Fixed import: Language → Languages
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ export function LawEducation() {
             className="border-purple-500/30"
             onClick={() => setSelectedLanguage(selectedLanguage === "english" ? "tamil" : "english")}
           >
-            <Language className="h-4 w-4 mr-2" />
+            <Languages className="h-4 w-4 mr-2" />
             {selectedLanguage === "english" ? "தமிழ்" : "English"}
           </Button>
         </div>
