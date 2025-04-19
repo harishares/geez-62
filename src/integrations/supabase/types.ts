@@ -9,7 +9,317 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      content_bookmarks: {
+        Row: {
+          content_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_bookmarks_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_content"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_content: {
+        Row: {
+          created_at: string
+          description: string
+          difficulty: string
+          duration: number | null
+          id: string
+          is_free: boolean
+          mentor_id: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          difficulty?: string
+          duration?: number | null
+          id?: string
+          is_free?: boolean
+          mentor_id: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          difficulty?: string
+          duration?: number | null
+          id?: string
+          is_free?: boolean
+          mentor_id?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          video_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_content_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentor_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read: boolean
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read?: boolean
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read?: boolean
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
+      mentors: {
+        Row: {
+          available_slots: Json | null
+          bio: string
+          category: Database["public"]["Enums"]["mentor_category"]
+          created_at: string
+          experience_years: number
+          full_name: string
+          hourly_rate: number
+          id: string
+          intro_video_url: string | null
+          languages: string[]
+          rating: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_slots?: Json | null
+          bio: string
+          category: Database["public"]["Enums"]["mentor_category"]
+          created_at?: string
+          experience_years: number
+          full_name: string
+          hourly_rate: number
+          id?: string
+          intro_video_url?: string | null
+          languages: string[]
+          rating?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_slots?: Json | null
+          bio?: string
+          category?: Database["public"]["Enums"]["mentor_category"]
+          created_at?: string
+          experience_years?: number
+          full_name?: string
+          hourly_rate?: number
+          id?: string
+          intro_video_url?: string | null
+          languages?: string[]
+          rating?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mentorship_sessions: {
+        Row: {
+          created_at: string
+          duration_minutes: number
+          id: string
+          mentor_id: string
+          mentor_joined: boolean
+          room_id: string | null
+          scheduled_at: string
+          session_type: string
+          status: string
+          updated_at: string
+          user_feedback: string | null
+          user_id: string
+          user_joined: boolean
+          user_rating: number | null
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          mentor_id: string
+          mentor_joined?: boolean
+          room_id?: string | null
+          scheduled_at: string
+          session_type?: string
+          status?: string
+          updated_at?: string
+          user_feedback?: string | null
+          user_id: string
+          user_joined?: boolean
+          user_rating?: number | null
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          mentor_id?: string
+          mentor_joined?: boolean
+          room_id?: string | null
+          scheduled_at?: string
+          session_type?: string
+          status?: string
+          updated_at?: string
+          user_feedback?: string | null
+          user_id?: string
+          user_joined?: boolean
+          user_rating?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_sessions_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentorship_subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          mentor_id: string | null
+          payment_id: string | null
+          payment_method: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["subscription_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mentor_id?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mentor_id?: string | null
+          payment_id?: string | null
+          payment_method?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_subscriptions_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          course: string | null
+          created_at: string
+          description: string | null
+          full_name: string | null
+          id: string
+          industry: string | null
+          org_name: string | null
+          skills: string[] | null
+          study_year: number | null
+          university: string | null
+          updated_at: string
+          user_role: Database["public"]["Enums"]["user_role"]
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          course?: string | null
+          created_at?: string
+          description?: string | null
+          full_name?: string | null
+          id: string
+          industry?: string | null
+          org_name?: string | null
+          skills?: string[] | null
+          study_year?: number | null
+          university?: string | null
+          updated_at?: string
+          user_role: Database["public"]["Enums"]["user_role"]
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          course?: string | null
+          created_at?: string
+          description?: string | null
+          full_name?: string | null
+          id?: string
+          industry?: string | null
+          org_name?: string | null
+          skills?: string[] | null
+          study_year?: number | null
+          university?: string | null
+          updated_at?: string
+          user_role?: Database["public"]["Enums"]["user_role"]
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +328,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      mentor_category:
+        | "academics"
+        | "career"
+        | "technology"
+        | "business"
+        | "arts"
+        | "personal_development"
+        | "other"
+      subscription_status: "none" | "trial" | "active" | "cancelled" | "expired"
+      user_role: "student" | "organization"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +452,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      mentor_category: [
+        "academics",
+        "career",
+        "technology",
+        "business",
+        "arts",
+        "personal_development",
+        "other",
+      ],
+      subscription_status: ["none", "trial", "active", "cancelled", "expired"],
+      user_role: ["student", "organization"],
+    },
   },
 } as const
