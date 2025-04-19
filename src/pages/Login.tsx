@@ -19,7 +19,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signInWithEmail, signInWithGoogle } = useAuth();
+  const { signInWithEmail, signInWithGoogle, signUp } = useAuth();
 
   // Registration state
   const [showRegister, setShowRegister] = useState(false);
@@ -27,12 +27,23 @@ export default function Login() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [userRole, setUserRole] = useState<"student" | "organization">("student");
+  const [registerLoading, setRegisterLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     await signInWithEmail(email, password);
     setIsLoading(false);
+  };
+
+  const handleSignUp = async () => {
+    setRegisterLoading(true);
+    try {
+      await signUp(registerEmail, registerPassword, userRole, fullName);
+      setShowRegister(false);
+    } finally {
+      setRegisterLoading(false);
+    }
   };
 
   return (
@@ -205,13 +216,10 @@ export default function Login() {
 
                 <Button
                   className="w-full"
-                  onClick={async () => {
-                    const { signUp } = useAuth();
-                    await signUp(registerEmail, registerPassword, userRole, fullName);
-                    setShowRegister(false);
-                  }}
+                  onClick={handleSignUp}
+                  disabled={registerLoading}
                 >
-                  Create Account
+                  {registerLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </div>
             </DialogContent>
