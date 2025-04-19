@@ -1,19 +1,37 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/lib/hooks/useAuth";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function Login() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signInWithEmail, signInWithGoogle } = useAuth();
 
-  // Simulate login with Google - immediately redirect to dashboard
-  const handleGoogleLogin = () => {
+  // Registration state
+  const [showRegister, setShowRegister] = useState(false);
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [userRole, setUserRole] = useState<"student" | "organization">("student");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
-    // Set user as logged in immediately
-    localStorage.setItem("userLoggedIn", "true");
-    // Then navigate to dashboard
-    navigate("/");
+    await signInWithEmail(email, password);
     setIsLoading(false);
   };
 
@@ -28,7 +46,7 @@ export default function Login() {
         />
       </div>
       
-      {/* Glowing border box */}
+      {/* Login Form */}
       <div className="relative z-10 w-full max-w-md px-8 py-12 backdrop-blur-xl bg-black/40 rounded-xl border border-purple-500/30 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
         <div className="space-y-8">
           {/* Logo and heading */}
@@ -38,30 +56,63 @@ export default function Login() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight text-white">GEN Z CLG</h1>
-            <p className="text-purple-300/80">Connect. Learn. Earn.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-white">Welcome Back</h1>
+            <p className="text-purple-300/80">Sign in to continue</p>
           </div>
 
-          {/* Login section */}
-          <div className="space-y-6">
-            <div className="text-center mb-8">
-              <p className="text-lg text-white/90">Sign in to your account</p>
-              <p className="text-sm text-purple-300/60 mt-1">Access your student dashboard</p>
+          {/* Login Form */}
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-white">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-white">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
             </div>
 
-            {/* Google login button with animation */}
-            <Button
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              className="w-full py-6 text-base font-medium bg-white hover:bg-gray-100 text-gray-800 transition-all duration-300 hover:shadow-[0_0_15px_rgba(139,92,246,0.7)] hover:scale-[1.02] group"
-            >
-              {isLoading ? (
-                <svg className="animate-spin h-5 w-5 text-purple-600 mr-2" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              ) : (
-                <svg className="h-6 w-6 mr-2" viewBox="0 0 24 24">
+            <div className="space-y-4">
+              <Button
+                type="submit"
+                className="w-full bg-purple-600 hover:bg-purple-700"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing in..." : "Sign in"}
+              </Button>
+
+              <Button
+                type="button"
+                onClick={() => signInWithGoogle()}
+                variant="outline"
+                className="w-full border-purple-500/30 text-white hover:bg-purple-600/20"
+              >
+                <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                   <path
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                     fill="#4285F4"
@@ -78,62 +129,94 @@ export default function Login() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     fill="#EA4335"
                   />
-                  <path d="M1 1h22v22H1z" fill="none" />
                 </svg>
-              )}
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                {isLoading ? "Connecting..." : "Continue with Google"}
-              </span>
-            </Button>
-
-            {/* OR divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-purple-800/30"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 text-purple-300/60 bg-black/40">Or continue with</span>
-              </div>
+                Continue with Google
+              </Button>
             </div>
+          </form>
 
-            {/* Email login button with animation */}
-            <Button
-              variant="outline"
-              className="w-full py-6 text-base font-medium border-purple-500/50 bg-transparent text-white hover:bg-purple-900/30 transition-all duration-300 hover:border-purple-400 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:scale-[1.02] group"
-              onClick={() => {
-                // Set user as logged in
-                localStorage.setItem("userLoggedIn", "true");
-                // Redirect directly to dashboard
-                navigate("/");
-              }}
-            >
-              <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-              </svg>
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                Email & Password
-              </span>
-            </Button>
-          </div>
+          {/* Register Dialog */}
+          <Dialog open={showRegister} onOpenChange={setShowRegister}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full text-purple-300 hover:text-purple-200 hover:bg-purple-600/20"
+              >
+                Don't have an account? Sign up
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Create an Account</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>I am a</Label>
+                  <RadioGroup
+                    value={userRole}
+                    onValueChange={(value: "student" | "organization") =>
+                      setUserRole(value)
+                    }
+                    className="flex space-x-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="student" id="student" />
+                      <Label htmlFor="student">Student</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="organization" id="organization" />
+                      <Label htmlFor="organization">Organization</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
 
-          {/* Footer links */}
-          <div className="text-center text-sm">
-            <p className="text-purple-300/60">
-              By continuing, you agree to GEN Z CLG's {" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300 hover:underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300 hover:underline">
-                Privacy Policy
-              </a>
-            </p>
-          </div>
+                <div className="space-y-2">
+                  <Label>Full Name</Label>
+                  <Input
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder={
+                      userRole === "student"
+                        ? "Enter your full name"
+                        : "Enter organization name"
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                    placeholder="Enter your email"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Password</Label>
+                  <Input
+                    type="password"
+                    value={registerPassword}
+                    onChange={(e) => setRegisterPassword(e.target.value)}
+                    placeholder="Choose a password"
+                  />
+                </div>
+
+                <Button
+                  className="w-full"
+                  onClick={async () => {
+                    const { signUp } = useAuth();
+                    await signUp(registerEmail, registerPassword, userRole, fullName);
+                    setShowRegister(false);
+                  }}
+                >
+                  Create Account
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 -mt-6 -mr-6 h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 blur-xl opacity-70"></div>
-        <div className="absolute bottom-0 left-0 -mb-6 -ml-6 h-12 w-12 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 blur-xl opacity-70"></div>
       </div>
     </div>
   );

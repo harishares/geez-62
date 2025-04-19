@@ -9,7 +9,57 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          course: string | null
+          created_at: string
+          description: string | null
+          full_name: string | null
+          id: string
+          industry: string | null
+          org_name: string | null
+          skills: string[] | null
+          study_year: number | null
+          university: string | null
+          updated_at: string
+          user_role: Database["public"]["Enums"]["user_role"]
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          course?: string | null
+          created_at?: string
+          description?: string | null
+          full_name?: string | null
+          id: string
+          industry?: string | null
+          org_name?: string | null
+          skills?: string[] | null
+          study_year?: number | null
+          university?: string | null
+          updated_at?: string
+          user_role: Database["public"]["Enums"]["user_role"]
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          course?: string | null
+          created_at?: string
+          description?: string | null
+          full_name?: string | null
+          id?: string
+          industry?: string | null
+          org_name?: string | null
+          skills?: string[] | null
+          study_year?: number | null
+          university?: string | null
+          updated_at?: string
+          user_role?: Database["public"]["Enums"]["user_role"]
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +68,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "student" | "organization"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +183,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["student", "organization"],
+    },
   },
 } as const
