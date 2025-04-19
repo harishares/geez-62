@@ -14,7 +14,8 @@ import {
   Award,
   ListChecks,
   Shield,
-  Rocket
+  Rocket,
+  Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -65,6 +66,11 @@ const navItems = [
     name: "Learning",
     path: "/learning",
     icon: BookOpen
+  },
+  {
+    name: "Mentorship",
+    path: "/mentorship",
+    icon: Users
   },
   {
     name: "Networking",

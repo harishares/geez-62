@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -15,7 +14,8 @@ import {
   Menu,
   X,
   Shield,
-  Rocket
+  Rocket,
+  Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -70,6 +70,11 @@ const mobileNavItemsSecondary = [
     name: "Learning",
     path: "/learning",
     icon: BookOpen
+  },
+  {
+    name: "Mentorship",
+    path: "/mentorship",
+    icon: Users
   },
   {
     name: "Networking",
