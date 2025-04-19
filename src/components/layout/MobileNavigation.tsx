@@ -13,7 +13,9 @@ import {
   Award,
   ListChecks,
   Menu,
-  X
+  X,
+  Shield,
+  Rocket
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -23,13 +25,31 @@ import { toast } from "sonner";
 const mobileNavItems = [
   {
     name: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: Home
   },
   {
     name: "Smart Tools",
     path: "/smart-tools",
     icon: Sparkles
+  },
+  {
+    name: "Startup Hub",
+    path: "/startup-hub",
+    icon: Rocket
+  },
+  {
+    name: "Daily Tasks",
+    path: "/daily-tasks",
+    icon: ListChecks
+  }
+];
+
+const mobileNavItemsSecondary = [
+  {
+    name: "LAW FU",
+    path: "/law-fu",
+    icon: Shield
   },
   {
     name: "Progress",
@@ -41,14 +61,6 @@ const mobileNavItems = [
     path: "/rank",
     icon: Award
   },
-  {
-    name: "Daily Tasks",
-    path: "/daily-tasks",
-    icon: ListChecks
-  }
-];
-
-const mobileNavItemsSecondary = [
   {
     name: "Events",
     path: "/events",
@@ -123,7 +135,7 @@ export function MobileNavigation() {
             </Button>
           </SheetTrigger>
           <SheetContent side="bottom" className="bg-sidebar h-auto rounded-t-xl">
-            <div className="grid grid-cols-5 gap-1 py-3">
+            <div className="grid grid-cols-4 gap-1 py-3">
               {mobileNavItemsSecondary.map((item) => (
                 <NavItem 
                   key={item.name} 

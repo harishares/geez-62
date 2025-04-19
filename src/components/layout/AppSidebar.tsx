@@ -13,7 +13,8 @@ import {
   Target,
   Award,
   ListChecks,
-  Shield
+  Shield,
+  Rocket
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,11 @@ const navItems = [
     name: "LAW F U",
     path: "/law-fu",
     icon: Shield
+  },
+  {
+    name: "Startup Hub",
+    path: "/startup-hub",
+    icon: Rocket
   },
   {
     name: "Progress",

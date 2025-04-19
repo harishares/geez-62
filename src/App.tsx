@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react"; // Added missing import
+import { useEffect } from "react";
 import { AppLayout } from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Progress from "./pages/Progress";
@@ -17,7 +17,8 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Rank from "./pages/Rank";
 import DailyTasks from "./pages/DailyTasks";
-import LawFU from "./pages/LawFU"; // Renamed import to match the new file
+import LawFU from "./pages/LawFU";
+import StartupHub from "./pages/StartupHub";
 import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
@@ -75,6 +76,11 @@ const App = () => {
             <Route path="/law-fu" element={
               <AppLayout>
                 <LawFU />
+              </AppLayout>
+            } />
+            <Route path="/startup-hub" element={
+              <AppLayout>
+                <StartupHub />
               </AppLayout>
             } />
             <Route path="/networking" element={
