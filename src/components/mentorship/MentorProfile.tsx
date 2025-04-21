@@ -10,6 +10,7 @@ import { Calendar, MessageSquare, PhoneCall, Star, User, Video } from "lucide-re
 import { UPIPayment } from "@/components/payment/UPIPayment";
 import { SubscriptionCard } from "./SubscriptionCard";
 import { toast } from "sonner";
+import type { Json } from "@/integrations/supabase/types";
 
 type Mentor = {
   id: string;
@@ -20,8 +21,11 @@ type Mentor = {
   rating: number;
   bio: string;
   intro_video_url?: string;
-  available_slots?: string[];
+  available_slots?: string[] | Json;
   hourly_rate: number;
+  created_at?: string;
+  updated_at?: string;
+  user_id?: string;
 };
 
 type MentorProfileProps = {
