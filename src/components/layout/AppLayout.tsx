@@ -5,7 +5,6 @@ import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { TaskTimer } from "@/components/ui/task-timer";
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -57,9 +56,6 @@ export function AppLayout({ children }: AppLayoutProps) {
         </main>
         
         {isMobile && <MobileNavigation />}
-        
-        {/* TaskTimer - Now in a relative container so it can be dragged within bounds */}
-        <TaskTimer taskName={currentTask} />
       </div>
     </div>
   );

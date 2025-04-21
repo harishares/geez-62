@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Shield, Youtube, Languages, BookOpen, Film, Category } from "lucide-react";
+import { Shield, Youtube, Languages, BookOpen, Film, Tags } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -128,7 +127,7 @@ const lawContent: Record<"english" | "tamil", LawArticle[]> = {
     {
       id: "self-defense-tamil",
       title: "சுய பாதுகாப்பு & தொல்லையின்மையைப் பாதுகாக்கும் சட்டங்கள்",
-      description: "உங்களை உடல்/முயற்சித் தொல்லையிலிருந்து சட்டரீதியாக பாதுகாப்பது எப்படி.",
+      description: "உங்களை உடல்/முயற்சித் தொல்லைிலிருந்து சட்டரீதியாக பாதுகாப்பது எப்படி.",
       videoUrl: "https://youtube.com/watch?v=example22",
       category: "Self-Protection, Criminal Law"
     },
@@ -170,7 +169,7 @@ const lawContent: Record<"english" | "tamil", LawArticle[]> = {
     {
       id: "consumer-rights-tamil",
       title: "நுகர்வோர் பாதுகாப்பு சட்டங்கள்",
-      description: "நுகர்வோர் சட்ட உரிமைகள்.",
+      description: "நுகர்வோர் சட்ட உரிமைகள்.",
       videoUrl: "https://youtube.com/watch?v=example14",
       category: "Consumer & Property"
     },
@@ -262,7 +261,7 @@ export function LawEducation() {
               )}
               onClick={() => setActiveCategory("All")}
             >
-              <Category className="h-4 w-4 mr-1" />
+              <Tags className="h-4 w-4 mr-1" />
               All
             </Button>
             {categories.map((cat) => (
@@ -318,4 +317,3 @@ export function LawEducation() {
     </Card>
   );
 }
-

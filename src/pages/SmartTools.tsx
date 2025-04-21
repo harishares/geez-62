@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Bell, BrainCircuit, Clock, Filter, Lightbulb, Plus, Search, Sparkles, User, Bot, Database, Code, FileText, MessageSquare, Cpu, Lock, GitBranch, Book, VideoIcon, Globe, CloudLightning } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,7 +36,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { TaskTimer } from "@/components/ui/task-timer";
 
-// New AI Tools data
 const aiTools = [
   {
     id: 1,
@@ -162,7 +160,6 @@ const aiTools = [
 ];
 
 export default function SmartTools() {
-  // State for reminders
   const [studyReminders, setStudyReminders] = useState([
     {
       id: 1,
@@ -193,7 +190,6 @@ export default function SmartTools() {
     },
   ]);
 
-  // State for focus sessions
   const [focusSessions, setFocusSessions] = useState([
     {
       id: 1,
@@ -227,14 +223,12 @@ export default function SmartTools() {
     },
   ]);
 
-  // State for the custom focus session form
   const [sessionLength, setSessionLength] = useState<number[]>([45]);
   const [breakInterval, setBreakInterval] = useState<number[]>([25]);
   const [blockNotifications, setBlockNotifications] = useState(false);
   const [customSessionName, setCustomSessionName] = useState("");
   const [customSessionBackground, setCustomSessionBackground] = useState("None");
   
-  // State for reminders
   const [newAlert, setNewAlert] = useState({
     title: "",
     course: "",
@@ -243,7 +237,6 @@ export default function SmartTools() {
     priority: "Medium"
   });
   
-  // State to track active focus session
   const [activeSessionId, setActiveSessionId] = useState<number | null>(null);
 
   const priorityColors = {
@@ -252,14 +245,12 @@ export default function SmartTools() {
     Low: "bg-blue-500/20 text-blue-300 border-blue-500/20",
   };
 
-  // Handler for toggling reminder active state
   const toggleReminderActive = (id: number) => {
     setStudyReminders(studyReminders.map(reminder => 
       reminder.id === id ? { ...reminder, active: !reminder.active } : reminder
     ));
   };
 
-  // Handler for creating a new custom focus session
   const handleCreateCustomSession = () => {
     if (!customSessionName.trim()) {
       toast({
@@ -294,7 +285,6 @@ export default function SmartTools() {
     });
   };
 
-  // Handler for starting a focus session
   const handleStartSession = (id: number) => {
     const session = focusSessions.find(s => s.id === id);
     if (!session) return;
@@ -309,7 +299,6 @@ export default function SmartTools() {
     // In a real app, you would set up timers here
   };
 
-  // Handler for adding a new alert
   const handleAddAlert = () => {
     if (!newAlert.title.trim() || !newAlert.course.trim()) {
       toast({
@@ -345,11 +334,9 @@ export default function SmartTools() {
     });
   };
 
-  // State for AI tools filtering
   const [toolsFilter, setToolsFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   
-  // Filter AI tools based on search and category
   const filteredTools = aiTools.filter(tool => {
     const matchesSearch = toolsFilter === "" || 
       tool.name.toLowerCase().includes(toolsFilter.toLowerCase()) ||
@@ -864,7 +851,6 @@ export default function SmartTools() {
         </TabsContent>
       </Tabs>
       
-      {/* Task Timer component */}
       <TaskTimer taskName={activeSessionId ? focusSessions.find(s => s.id === activeSessionId)?.title : "Current Task"} />
     </div>
   );
