@@ -113,8 +113,9 @@ export function MobileNavigation() {
         onClick={handleClick}
         className={cn(
           "flex flex-col items-center gap-1 p-2 rounded-md transition-all duration-200",
-          isActive
-            ? "holo-glow text-sidebar-accent-foreground font-medium bg-gradient-to-t from-purple-900/40 via-purple-900/10 to-transparent"
+          "text-sidebar-foreground",
+          isActive 
+            ? "text-sidebar-accent-foreground font-medium" 
             : "text-sidebar-foreground/80 hover:text-sidebar-foreground"
         )}
       >
