@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Bell, Search, Palette, Menu, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,21 +16,22 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useCapacitor } from "@/hooks/use-capacitor";
+import { useUser } from "@/hooks/useUser";
 
 type AppHeaderProps = {
   profilePhoto?: string | null;
 };
 
-export function AppHeader({ profilePhoto }: AppHeaderProps) {
+export function AppHeader({ profilePhoto }: { profilePhoto?: string | null }) {
   const [theme, setTheme] = useState("default");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { showNotification } = useCapacitor();
+  const { profile, user, logout } = useUser();
 
   useEffect(() => {
-    // Get saved theme
     const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     setTheme(savedTheme);
   }, []);
@@ -53,7 +53,6 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
   };
 
   const handleLogout = () => {
-    // Since we're always logged in, just navigate back to dashboard
     navigate("/dashboard");
     toast.success("Session refreshed");
   };
@@ -79,7 +78,6 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
         <h1 className="text-lg font-semibold md:text-xl">GEN Z CLG</h1>
         
         <div className="flex items-center gap-2 md:gap-4">
-          {/* Search for desktop */}
           <div className="relative hidden md:flex items-center">
             <Search className="absolute left-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -89,7 +87,6 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
             />
           </div>
           
-          {/* Search for mobile */}
           {isMobile && (
             <Sheet open={searchOpen} onOpenChange={setSearchOpen}>
               <SheetTrigger asChild>
@@ -154,11 +151,13 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
                 className="relative"
               >
                 <Avatar className="h-8 w-8">
-                  {profilePhoto ? (
-                    <AvatarImage src={profilePhoto} alt="Profile" />
+                  {(profile?.avatar_url || profilePhoto) ? (
+                    <AvatarImage src={profile?.avatar_url || profilePhoto} alt="Profile" />
                   ) : (
                     <AvatarFallback>
-                      <User className="h-4 w-4" />
+                      {profile?.full_name
+                        ? profile.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0,2)
+                        : <User className="h-4 w-4" />}
                     </AvatarFallback>
                   )}
                 </Avatar>
@@ -170,9 +169,9 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
                 <span>My Profile</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500">
+              <DropdownMenuItem onClick={logout as any} className="text-red-500 focus:text-red-500">
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Refresh Session</span>
+                <span>Log Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

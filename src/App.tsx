@@ -20,24 +20,24 @@ import LawFU from "./pages/LawFU";
 import StartupHub from "./pages/StartupHub";
 import Index from "./pages/Index";
 import Mentorship from "./pages/Mentorship";
+import { useUser } from "@/hooks/useUser";
+import Auth from "./pages/Auth";
 
-const queryClient = new QueryClient();
+// Don't force localStorage login for everyone anymore
 
-const App = () => {
-  useEffect(() => {
-    localStorage.setItem("userLoggedIn", "true");
-  }, []);
+function AppRoutes() {
+  const { session, loading } = useUser();
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/welcome" element={<Index />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/welcome" element={<Index />} />
+        {session ? (
+          <>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={
               <AppLayout>
                 <Dashboard />
@@ -103,12 +103,29 @@ const App = () => {
                 <Settings />
               </AppLayout>
             } />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Navigate to="/auth" replace />} />
+            <Route path="*" element={<Navigate to="/auth" replace />} />
+          </>
+        )}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AppRoutes />
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
