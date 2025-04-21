@@ -1,121 +1,231 @@
+
 import { useState } from "react";
-import { Shield, Youtube, Languages } from "lucide-react"; 
+import { Shield, Youtube, Languages, BookOpen, Film, Category } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type Category = "Fundamental Rights" | "Self-Protection, Criminal Law" | "Cyber Laws" | "Work" | "Home Safety & Family" | "Consumer & Property" | "Emergencies" | "Women & Children" | "Technology" | "Student" | "Others";
 
 type LawArticle = {
   id: string;
   title: string;
   description: string;
   videoUrl: string;
+  category: Category;
 };
 
-const lawContent = {
+const lawContent: Record<"english" | "tamil", LawArticle[]> = {
   english: [
     {
       id: "fundamental-rights",
       title: "Understanding Fundamental Rights",
-      description: "Learn about your basic rights guaranteed by the Indian Constitution",
-      videoUrl: "https://youtube.com/watch?v=example1"
+      description: "Your basic rights guaranteed by the Constitution.",
+      videoUrl: "https://youtube.com/watch?v=example1",
+      category: "Fundamental Rights"
+    },
+    {
+      id: "women-rights",
+      title: "Women & Children Rights",
+      description: "Protection laws for women and children.",
+      videoUrl: "https://youtube.com/watch?v=example19",
+      category: "Women & Children"
+    },
+    {
+      id: "self-defense",
+      title: "Self Defense & Harassment Laws",
+      description: "How to legally protect yourself from physical and verbal abuse.",
+      videoUrl: "https://youtube.com/watch?v=example18",
+      category: "Self-Protection, Criminal Law"
     },
     {
       id: "criminal-laws",
       title: "Essential Criminal Laws for Self-Protection",
-      description: "Important criminal laws to protect yourself from crimes",
-      videoUrl: "https://youtube.com/watch?v=example2"
+      description: "Key criminal laws to protect yourself.",
+      videoUrl: "https://youtube.com/watch?v=example2",
+      category: "Self-Protection, Criminal Law"
     },
     {
       id: "cyber-security",
       title: "Cyber Security and Digital Rights",
-      description: "Protect yourself from online fraud, cyberbullying, and digital crimes",
-      videoUrl: "https://youtube.com/watch?v=example3"
+      description: "Stay safe and secure online.",
+      videoUrl: "https://youtube.com/watch?v=example3",
+      category: "Cyber Laws"
+    },
+    {
+      id: "student-rights",
+      title: "Student Rights & Exam Malpractices",
+      description: "Rights and remedies for students.",
+      videoUrl: "https://youtube.com/watch?v=example17",
+      category: "Student"
     },
     {
       id: "workplace-rights",
       title: "Workplace Rights and Protection",
-      description: "Laws protecting employees from harassment, discrimination, and unfair practices",
-      videoUrl: "https://youtube.com/watch?v=example4"
+      description: "Protection from harassment and discrimination at work.",
+      videoUrl: "https://youtube.com/watch?v=example4",
+      category: "Work"
     },
     {
       id: "domestic-violence",
       title: "Protection Against Domestic Violence",
-      description: "Legal remedies and protection measures against domestic violence",
-      videoUrl: "https://youtube.com/watch?v=example5"
+      description: "Legal remedies and protection at home.",
+      videoUrl: "https://youtube.com/watch?v=example5",
+      category: "Home Safety & Family"
     },
     {
       id: "consumer-rights",
       title: "Consumer Protection Laws",
-      description: "Your rights as a consumer and protection against fraud",
-      videoUrl: "https://youtube.com/watch?v=example6"
+      description: "Your rights as a consumer and how to handle fraud.",
+      videoUrl: "https://youtube.com/watch?v=example6",
+      category: "Consumer & Property"
     },
     {
       id: "property-rights",
       title: "Property Rights and Protection",
-      description: "Laws protecting your property rights and preventing fraud",
-      videoUrl: "https://youtube.com/watch?v=example7"
+      description: "Protect your property from fraud.",
+      videoUrl: "https://youtube.com/watch?v=example7",
+      category: "Consumer & Property"
     },
     {
       id: "emergency-rights",
       title: "Rights During Emergency Situations",
-      description: "Legal rights and protection during emergencies and disasters",
-      videoUrl: "https://youtube.com/watch?v=example8"
+      description: "Your rights and protection during emergencies and disasters.",
+      videoUrl: "https://youtube.com/watch?v=example8",
+      category: "Emergencies"
+    },
+    {
+      id: "internet-technology",
+      title: "Technology Use & Internet Laws",
+      description: "Everything you need to know about technology law.",
+      videoUrl: "https://youtube.com/watch?v=example20",
+      category: "Technology"
+    },
+    {
+      id: "other-laws",
+      title: "Other Useful Laws",
+      description: "Miscellaneous Indian laws everyone should know.",
+      videoUrl: "https://youtube.com/watch?v=example21",
+      category: "Others"
     }
   ],
   tamil: [
     {
       id: "fundamental-rights-tamil",
-      title: "அடிப்படை உரிமைகளைப் புரிந்துகொள்வது",
-      description: "இந்திய அரசியலமைப்பால் உத்தரவாதம் அளிக்கப்பட்ட உங்கள் அடிப்படை உரிமைகளைப் பற்றி அறிக",
-      videoUrl: "https://youtube.com/watch?v=example9"
+      title: "அடிப்படை உரிமைகள்",
+      description: "அரசியலமைப்பால் உங்களுக்கான அடிப்படை உரிமைகள்.",
+      videoUrl: "https://youtube.com/watch?v=example9",
+      category: "Fundamental Rights"
+    },
+    {
+      id: "women-rights-tamil",
+      title: "பெண்கள் மற்றும் குழந்தைகள் உரிமைகள்",
+      description: "பெண்கள் மற்றும் குழந்தைகளுக்கான பாதுகாப்பு சட்டங்கள்.",
+      videoUrl: "https://youtube.com/watch?v=example23",
+      category: "Women & Children"
+    },
+    {
+      id: "self-defense-tamil",
+      title: "சுய பாதுகாப்பு & தொல்லையின்மையைப் பாதுகாக்கும் சட்டங்கள்",
+      description: "உங்களை உடல்/முயற்சித் தொல்லையிலிருந்து சட்டரீதியாக பாதுகாப்பது எப்படி.",
+      videoUrl: "https://youtube.com/watch?v=example22",
+      category: "Self-Protection, Criminal Law"
     },
     {
       id: "criminal-laws-tamil",
       title: "சுய பாதுகாப்புக்கான குற்றவியல் சட்டங்கள்",
-      description: "குற்றங்களில் இருந்து உங்களைப் பாதுகாக்க முக்கியமான குற்றவியல் சட்டங்கள்",
-      videoUrl: "https://youtube.com/watch?v=example10"
+      description: "உங்களைப் பாதுகாக்கும் முக்கிய சட்டங்கள்.",
+      videoUrl: "https://youtube.com/watch?v=example10",
+      category: "Self-Protection, Criminal Law"
     },
     {
       id: "cyber-security-tamil",
       title: "இணைய பாதுகாப்பு மற்றும் டிஜிட்டல் உரிமைகள்",
-      description: "ஆன்லைன் மோசடி, சைபர் துன்புறுத்தல் மற்றும் டிஜிட்டல் குற்றங்களில் இருந்து பாதுகாப்பு",
-      videoUrl: "https://youtube.com/watch?v=example11"
+      description: "ஆன்லைன் பாதுகாப்பு மற்றும் சட்ட உரிமைகள்.",
+      videoUrl: "https://youtube.com/watch?v=example11",
+      category: "Cyber Laws"
+    },
+    {
+      id: "student-rights-tamil",
+      title: "மாணவர் உரிமைகள் மற்றும் பரீட்சை முறைகேடுகள்",
+      description: "மாணவருக்கான உரிமைகள் மற்றும் தீர்வுகள்.",
+      videoUrl: "https://youtube.com/watch?v=example24",
+      category: "Student"
     },
     {
       id: "workplace-rights-tamil",
       title: "பணியிட உரிமைகள் மற்றும் பாதுகாப்பு",
-      description: "துன்புறுத்தல், பாகுபாடு மற்றும் அநீதியான நடைமுறைகளில் இருந்து பணியாளர்களைப் பாதுகாக்கும் சட்டங்கள்",
-      videoUrl: "https://youtube.com/watch?v=example12"
+      description: "பணியிடத்தில் சட்ட பாதுகாப்பு.",
+      videoUrl: "https://youtube.com/watch?v=example12",
+      category: "Work"
     },
     {
       id: "domestic-violence-tamil",
       title: "குடும்ப வன்முறைக்கு எதிரான பாதுகாப்பு",
-      description: "குடும்ப வன்முறைக்கு எதிரான சட்ட தீர்வுகள் மற்றும் பாதுகாப்பு நடவடிக்கைகள்",
-      videoUrl: "https://youtube.com/watch?v=example13"
+      description: "வீட்டில் சட்ட பாதுகாப்பு.",
+      videoUrl: "https://youtube.com/watch?v=example13",
+      category: "Home Safety & Family"
     },
     {
       id: "consumer-rights-tamil",
       title: "நுகர்வோர் பாதுகாப்பு சட்டங்கள்",
-      description: "நுகர்வோராக உங்கள் உரிமைகள் மற்றும் மோசடிக்கு எதிரான பாதுகாப்பு",
-      videoUrl: "https://youtube.com/watch?v=example14"
+      description: "நுகர்வோர் சட்ட உரிமைகள்.",
+      videoUrl: "https://youtube.com/watch?v=example14",
+      category: "Consumer & Property"
     },
     {
       id: "property-rights-tamil",
       title: "சொத்து உரிமைகள் மற்றும் பாதுகாப்பு",
-      description: "உங்கள் சொத்து உரிமைகளைப் பாதுகாக்கும் சட்டங்கள் மற்றும் மோசடியைத் தடுத்தல்",
-      videoUrl: "https://youtube.com/watch?v=example15"
+      description: "சொத்துக்களை பாதுகாக்கும் சட்டங்கள்.",
+      videoUrl: "https://youtube.com/watch?v=example15",
+      category: "Consumer & Property"
     },
     {
       id: "emergency-rights-tamil",
       title: "அவசரகால உரிமைகள்",
-      description: "அவசரநிலைகள் மற்றும் பேரழிவுகளின் போது சட்ட உரிமைகள் மற்றும் பாதுகாப்பு",
-      videoUrl: "https://youtube.com/watch?v=example16"
+      description: "அவசரநேரங்களில் சட்ட பாதுகாப்பு.",
+      videoUrl: "https://youtube.com/watch?v=example16",
+      category: "Emergencies"
+    },
+    {
+      id: "internet-technology-tamil",
+      title: "உயிர்நிலை மற்றும் இணைய சட்டங்கள்",
+      description: "நுட்ப இந்து சட்டங்கள்.",
+      videoUrl: "https://youtube.com/watch?v=example25",
+      category: "Technology"
+    },
+    {
+      id: "other-laws-tamil",
+      title: "பிற பயனுள்ள சட்டங்கள்",
+      description: "அனைவரும் அறிந்து கொள்ளவேண்டிய சட்டங்கள்.",
+      videoUrl: "https://youtube.com/watch?v=example26",
+      category: "Others"
     }
   ]
 };
 
+const categories: Category[] = [
+  "Fundamental Rights",
+  "Self-Protection, Criminal Law",
+  "Women & Children",
+  "Cyber Laws",
+  "Student",
+  "Work",
+  "Home Safety & Family",
+  "Consumer & Property",
+  "Emergencies",
+  "Technology",
+  "Others"
+];
+
 export function LawEducation() {
   const [selectedLanguage, setSelectedLanguage] = useState<"english" | "tamil">("english");
+  const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
+
+  const articles = lawContent[selectedLanguage].filter(
+    (article) => activeCategory === "All" || article.category === activeCategory
+  );
 
   return (
     <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
@@ -135,15 +245,47 @@ export function LawEducation() {
           </Button>
         </div>
         <CardDescription>
-          {selectedLanguage === "english" 
+          {selectedLanguage === "english"
             ? "Learn essential Indian laws to protect yourself and understand your rights"
             : "உங்களைப் பாதுகாக்க அத்தியாவசிய இந்திய சட்டங்களைக் கற்றுக்கொள்ளுங்கள்"}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[600px]">
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant={activeCategory === "All" ? "default" : "outline"}
+              className={cn(
+                "rounded-full transition-all duration-200",
+                activeCategory === "All" ? "bg-purple-700 text-white animate-pulse" : ""
+              )}
+              onClick={() => setActiveCategory("All")}
+            >
+              <Category className="h-4 w-4 mr-1" />
+              All
+            </Button>
+            {categories.map((cat) => (
+              <Button
+                key={cat}
+                size="sm"
+                variant={activeCategory === cat ? "default" : "outline"}
+                className={cn(
+                  "rounded-full hover:scale-105 transition-all duration-200",
+                  activeCategory === cat
+                    ? "bg-purple-500 text-white shadow-lg animate-glow"
+                    : ""
+                )}
+                onClick={() => setActiveCategory(cat)}
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <ScrollArea className="h-[500px]">
           <div className="space-y-4">
-            {lawContent[selectedLanguage].map((article) => (
+            {articles.map((article) => (
               <Card key={article.id} className="border border-purple-800/30">
                 <CardHeader>
                   <CardTitle className="text-lg">{article.title}</CardTitle>
@@ -152,11 +294,11 @@ export function LawEducation() {
                 <CardContent>
                   <div className="flex items-center gap-2">
                     <Youtube className="h-5 w-5 text-purple-400" />
-                    <a 
+                    <a
                       href={article.videoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-400 hover:text-purple-300 transition-colors"
+                      className="text-purple-400 hover:text-purple-300 transition-colors underline"
                     >
                       Watch Video Explanation
                     </a>
@@ -164,9 +306,16 @@ export function LawEducation() {
                 </CardContent>
               </Card>
             ))}
+            {articles.length === 0 && (
+              <div className="text-center text-muted-foreground mt-10">
+                <BookOpen className="mx-auto h-8 w-8 mb-4" />
+                No topics for this category yet.
+              </div>
+            )}
           </div>
         </ScrollArea>
       </CardContent>
     </Card>
   );
 }
+

@@ -197,23 +197,43 @@ export default function Learning() {
       <Tabs defaultValue="law" className="space-y-4">
         <div className="flex items-center justify-between">
           <TabsList className="p-1 bg-black/20 backdrop-blur-sm border border-purple-800/30">
-            <TabsTrigger value="law" className="spark-border data-[state=active]:bg-purple-800/30">
+            <TabsTrigger
+              value="law"
+              className="spark-border data-[state=active]:bg-purple-800/30 transition-transform duration-200"
+              style={{ transition: "transform 0.2s, box-shadow 0.2s" }}
+            >
               <Shield className="h-4 w-4 mr-2" />
               LAW F U
             </TabsTrigger>
-            <TabsTrigger value="free" className="spark-border data-[state=active]:bg-purple-800/30">
+            <TabsTrigger
+              value="free"
+              className="spark-border data-[state=active]:bg-purple-800/30 transition-transform duration-200"
+              style={{ transition: "transform 0.2s, box-shadow 0.2s" }}
+            >
               <GraduationCap className="h-4 w-4 mr-2" />
               Free Courses
             </TabsTrigger>
-            <TabsTrigger value="inprogress" className="spark-border data-[state=active]:bg-purple-800/30">
+            <TabsTrigger
+              value="inprogress"
+              className="spark-border data-[state=active]:bg-purple-800/30 transition-transform duration-200"
+              style={{ transition: "transform 0.2s, box-shadow 0.2s" }}
+            >
               <BookOpen className="h-4 w-4 mr-2" />
               In Progress
             </TabsTrigger>
-            <TabsTrigger value="recommended" className="spark-border data-[state=active]:bg-purple-800/30">
+            <TabsTrigger
+              value="recommended"
+              className="spark-border data-[state=active]:bg-purple-800/30 transition-transform duration-200"
+              style={{ transition: "transform 0.2s, box-shadow 0.2s" }}
+            >
               <Award className="h-4 w-4 mr-2" />
               Recommended
             </TabsTrigger>
-            <TabsTrigger value="certifications" className="spark-border data-[state=active]:bg-purple-800/30">
+            <TabsTrigger
+              value="certifications"
+              className="spark-border data-[state=active]:bg-purple-800/30 transition-transform duration-200"
+              style={{ transition: "transform 0.2s, box-shadow 0.2s" }}
+            >
               <Award className="h-4 w-4 mr-2" />
               Certifications
             </TabsTrigger>

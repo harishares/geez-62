@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +23,6 @@ type VideoContent = {
   video_url?: string;
 };
 
-// Sample video library data
 const SAMPLE_VIDEOS: VideoContent[] = [
   {
     id: "1",
@@ -89,7 +87,7 @@ const SAMPLE_VIDEOS: VideoContent[] = [
 ];
 
 export function VideoLibrary() {
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [difficulty, setDifficulty] = useState<string>("all");
   const [category, setCategory] = useState<string>("all");
@@ -116,7 +114,6 @@ export function VideoLibrary() {
     toast.success(`Downloading "${video.title}"`);
   };
   
-  // Filter videos based on search, difficulty and category
   const filteredVideos = SAMPLE_VIDEOS.filter(video => {
     const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          video.mentor.toLowerCase().includes(searchQuery.toLowerCase());
@@ -126,12 +123,10 @@ export function VideoLibrary() {
     return matchesSearch && matchesDifficulty && matchesCategory;
   });
   
-  // Group categories for filter
   const categories = Array.from(new Set(SAMPLE_VIDEOS.map(video => video.category)));
   
   return (
     <div className="space-y-6">
-      {/* Filters */}
       <div className="flex flex-col gap-4 sm:flex-row justify-between items-stretch sm:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -170,7 +165,6 @@ export function VideoLibrary() {
         </div>
       </div>
       
-      {/* Tabs for All/Free/Premium */}
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="w-full max-w-md">
           <TabsTrigger value="all">All Videos</TabsTrigger>
@@ -209,35 +203,16 @@ export function VideoLibrary() {
         </TabsContent>
       </Tabs>
       
-      {/* Video Player Dialog */}
       {selectedVideo && (
         <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
           <DialogContent className="sm:max-w-3xl">
             <div className="space-y-4">
               <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg overflow-hidden">
-                {(isSubscribed || selectedVideo.is_free) ? (
-                  <iframe
-                    src={selectedVideo.video_url || "https://www.youtube.com/embed/dQw4w9WgXcQ"}
-                    className="h-full w-full"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full w-full bg-muted p-6">
-                    <Video className="h-16 w-16 mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-semibold mb-2">Premium Content</h3>
-                    <p className="text-center text-sm text-muted-foreground mb-4">
-                      Subscribe to Mentorship Pro to unlock this video and all other premium content.
-                    </p>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button>Upgrade to Pro</Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-md">
-                        <UPIPayment amount={50} onSuccess={handleSubscriptionSuccess} />
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                )}
+                <iframe
+                  src={selectedVideo.video_url || "https://www.youtube.com/embed/dQw4w9WgXcQ"}
+                  className="h-full w-full"
+                  allowFullScreen
+                />
               </AspectRatio>
               
               <div>
@@ -278,8 +253,7 @@ export function VideoLibrary() {
         </Dialog>
       )}
       
-      {/* Subscription prompt for non-subscribers */}
-      {!isSubscribed && (
+      {!isSubscribed ? (
         <div className="bg-muted/50 p-6 rounded-lg border border-border mt-8">
           <div className="text-center space-y-3 max-w-xl mx-auto">
             <BookOpen className="mx-auto h-8 w-8 text-primary" />
@@ -297,7 +271,7 @@ export function VideoLibrary() {
             </Dialog>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

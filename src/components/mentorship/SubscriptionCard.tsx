@@ -15,10 +15,10 @@ import { Check, Video, PhoneCall, MessageSquare, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 export function SubscriptionCard() {
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  // Simulate free trial by default -- if "isSubscribed" allow all premium features
+  const [isSubscribed, setIsSubscribed] = useState(true);
 
   const handlePaymentSuccess = () => {
-    // Update subscription status
     setIsSubscribed(true);
     toast.success("You're now subscribed to Mentorship Pro!");
   };
