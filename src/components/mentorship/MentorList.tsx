@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowRight, Star, Book, User } from "lucide-react";
 import { MentorProfile } from "./MentorProfile";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 // Define the mentor data structure
 type Mentor = {
@@ -20,8 +21,11 @@ type Mentor = {
   rating: number;
   bio: string;
   intro_video_url?: string;
-  available_slots?: string[];
+  available_slots?: string[] | Json;
   hourly_rate: number;
+  created_at?: string;
+  updated_at?: string;
+  user_id?: string;
 };
 
 const SAMPLE_MENTORS: Mentor[] = [
@@ -75,7 +79,23 @@ export function MentorList() {
           // Fall back to sample data if there's an error
           setMentors(SAMPLE_MENTORS);
         } else if (data && data.length > 0) {
-          setMentors(data);
+          // Transform Supabase data to match our Mentor type
+          const transformedMentors: Mentor[] = data.map(mentor => ({
+            id: mentor.id,
+            full_name: mentor.full_name,
+            category: mentor.category,
+            experience_years: mentor.experience_years,
+            languages: mentor.languages,
+            rating: mentor.rating || 0,
+            bio: mentor.bio,
+            intro_video_url: mentor.intro_video_url || undefined,
+            available_slots: mentor.available_slots,
+            hourly_rate: mentor.hourly_rate,
+            created_at: mentor.created_at,
+            updated_at: mentor.updated_at,
+            user_id: mentor.user_id
+          }));
+          setMentors(transformedMentors);
         } else {
           // Use sample data if no mentors found
           setMentors(SAMPLE_MENTORS);

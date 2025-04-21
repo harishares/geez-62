@@ -237,7 +237,7 @@ export function MentorshipSessions() {
                           <p className="text-sm text-muted-foreground">{session.topic}</p>
                         </div>
                       </div>
-                      <Badge variant={session.status === 'cancelled' ? "destructive" : "success"}>
+                      <Badge variant={session.status === 'cancelled' ? "destructive" : "secondary"}>
                         {session.status === 'cancelled' ? 'Cancelled' : 'Completed'}
                       </Badge>
                     </div>
