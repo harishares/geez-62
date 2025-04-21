@@ -20,7 +20,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUser } from "@/hooks/useUser";
 
 const navItems = [
   {
@@ -100,8 +99,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { profile, user, logout } = useUser();
-
+  
   const handleProfileClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate("/settings");
@@ -188,26 +186,17 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
         >
           <div className="h-8 w-8 rounded-full overflow-hidden">
             <Avatar className="h-full w-full">
-              {(profile?.avatar_url || profilePhoto) ? (
-                <AvatarImage src={profile?.avatar_url || profilePhoto} alt="Profile" />
+              {profilePhoto ? (
+                <AvatarImage src={profilePhoto} alt="Profile" />
               ) : (
-                <AvatarFallback className="text-xs">
-                  {profile?.full_name
-                    ? profile.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0,2)
-                    : "JD"}
-                </AvatarFallback>
+                <AvatarFallback className="text-xs">JD</AvatarFallback>
               )}
             </Avatar>
           </div>
           {(!collapsed || isMobileSheet) && (
             <div>
-              <p className="text-sm font-medium">{profile?.full_name || "John Doe"}</p>
-              <p className="text-xs text-muted-foreground">{user?.email || "john@example.com"}</p>
-              <button
-                className="text-xs text-red-500 underline ml-0.5 mt-1"
-                onClick={logout as any}>
-                Log out
-              </button>
+              <p className="text-sm font-medium">John Doe</p>
+              <p className="text-xs text-muted-foreground">john@example.com</p>
             </div>
           )}
         </a>

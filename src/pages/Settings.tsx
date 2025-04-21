@@ -17,19 +17,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { ProfilePhotoUploader } from "@/components/profile/ProfilePhotoUploader";
-import { useUser } from "@/hooks/useUser";
 
 export default function Settings() {
-  const { profile, updateProfile, user } = useUser();
-
   // Profile state
-  const [name, setName] = useState(profile?.full_name || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [university, setUniversity] = useState(profile?.university || "");
-  const [major, setMajor] = useState(profile?.course || "");
-  const [year, setYear] = useState(profile?.study_year ? String(profile.study_year) : "");
-  const [graduation, setGraduation] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || null);
+  const [name, setName] = useState("John Doe");
+  const [email, setEmail] = useState("john@example.com");
+  const [university, setUniversity] = useState("Massachusetts Institute of Technology");
+  const [major, setMajor] = useState("Computer Science");
+  const [year, setYear] = useState("Junior");
+  const [graduation, setGraduation] = useState("May 2026");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isFormChanged, setIsFormChanged] = useState(false);
   
   // Theme state
@@ -43,14 +40,11 @@ export default function Settings() {
 
   // Load profile photo on component mount
   useEffect(() => {
-    setName(profile?.full_name || "");
-    setEmail(user?.email || "");
-    setUniversity(profile?.university || "");
-    setMajor(profile?.course || "");
-    setYear(profile?.study_year ? String(profile.study_year) : "");
-    setAvatarUrl(profile?.avatar_url || null);
-    // eslint-disable-next-line
-  }, [profile, user]);
+    const savedPhoto = localStorage.getItem("userProfilePhoto");
+    if (savedPhoto) {
+      setAvatarUrl(savedPhoto);
+    }
+  }, []);
 
   // Handler for profile input changes
   const handleProfileChange = () => {
@@ -93,19 +87,17 @@ export default function Settings() {
   };
 
   // Handler for saving profile changes
-  const handleSaveProfile = async () => {
-    await updateProfile({
-      full_name: name || null,
-      university: university || null,
-      course: major || null,
-      study_year: year ? parseInt(year) : null,
-      avatar_url: avatarUrl || null
-    });
-    setIsFormChanged(false);
+  const handleSaveProfile = () => {
     toast({
       title: "Profile Updated",
       description: "Your profile changes have been saved successfully.",
     });
+    setIsFormChanged(false);
+    
+    // Save profile photo to localStorage for persistence across app
+    if (avatarUrl) {
+      localStorage.setItem("userProfilePhoto", avatarUrl);
+    }
   };
 
   // Handler for saving appearance changes

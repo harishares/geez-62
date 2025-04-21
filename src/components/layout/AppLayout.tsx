@@ -1,10 +1,10 @@
+
 import { useEffect, useState, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { AppSidebar } from "./AppSidebar";
 import { AppHeader } from "./AppHeader";
 import { MobileNavigation } from "./MobileNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useUser } from "@/hooks/useUser";
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -13,14 +13,20 @@ type AppLayoutProps = {
 export function AppLayout({ children }: AppLayoutProps) {
   const isMobile = useIsMobile();
   const location = useLocation();
-  const { profile } = useUser();
   const [currentTask, setCurrentTask] = useState("Current Task");
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
     // Get saved theme or use dark-purple as default
     const savedTheme = localStorage.getItem("app-theme") || "dark-purple";
     document.documentElement.dataset.theme = savedTheme;
-
+    
+    // Load profile photo from localStorage if available
+    const savedPhoto = localStorage.getItem("userProfilePhoto");
+    if (savedPhoto) {
+      setProfilePhoto(savedPhoto);
+    }
+    
     // Update task name based on current route
     const pathSegments = location.pathname.split("/");
     const currentPath = pathSegments[1] || "dashboard";
@@ -38,14 +44,17 @@ export function AppLayout({ children }: AppLayoutProps) {
           className="object-cover w-full h-full"
         />
       </div>
-      {!isMobile && <AppSidebar profilePhoto={profile?.avatar_url} />}
+      
+      {!isMobile && <AppSidebar profilePhoto={profilePhoto} />}
+      
       <div className="flex-1 flex flex-col relative w-full">
-        <AppHeader profilePhoto={profile?.avatar_url} />
+        <AppHeader profilePhoto={profilePhoto} />
         <main className="flex-1 p-4 md:p-6 overflow-auto bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
         </main>
+        
         {isMobile && <MobileNavigation />}
       </div>
     </div>
