@@ -34,7 +34,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { TaskTimer } from "@/components/ui/task-timer";
 
 const aiTools = [
   {
@@ -295,8 +294,6 @@ export default function SmartTools() {
       title: `${session.title} Started`,
       description: `Focus session started for ${session.focusTime} minutes.`,
     });
-    
-    // In a real app, you would set up timers here
   };
 
   const handleAddAlert = () => {
@@ -850,8 +847,6 @@ export default function SmartTools() {
           </Card>
         </TabsContent>
       </Tabs>
-      
-      <TaskTimer taskName={activeSessionId ? focusSessions.find(s => s.id === activeSessionId)?.title : "Current Task"} />
     </div>
   );
 }
