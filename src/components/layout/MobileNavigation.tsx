@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -115,9 +116,12 @@ export function MobileNavigation() {
           "flex flex-col items-center gap-1 p-2 rounded-md transition-all duration-200",
           "text-sidebar-foreground",
           isActive 
-            ? "text-sidebar-accent-foreground font-medium" 
+            ? "holo-glow bg-gradient-to-t from-purple-900/40 via-purple-900/10 to-transparent text-sidebar-accent-foreground font-medium" 
             : "text-sidebar-foreground/80 hover:text-sidebar-foreground"
         )}
+        style={{
+          boxShadow: isActive ? undefined : undefined,
+        }}
       >
         <item.icon size={20} />
         <span className="text-xs">{item.name}</span>
