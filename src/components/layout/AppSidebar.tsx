@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
@@ -149,7 +148,7 @@ export function AppSidebar({ isMobileSheet = false, onNavigate, profilePhoto }: 
                     "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200",
                     "text-sidebar-foreground group relative overflow-hidden",
                     isActive 
-                      ? "holo-glow bg-gradient-to-r from-purple-900/20 via-purple-800/20 to-purple-900/10 text-sidebar-accent-foreground font-medium"
+                      ? "bg-gradient-to-r from-purple-900/20 via-purple-800/20 to-purple-900/10 text-sidebar-accent-foreground font-medium"
                       : "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                   )}
                   onClick={onNavigate}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -103,8 +102,6 @@ export function MobileNavigation() {
     
     const handleClick = (e: React.MouseEvent) => {
       if (onClick) onClick();
-      
-      // Show toast when clicking navigation items to indicate functionality
       toast.success(`Navigating to ${item.name}`);
     };
     
@@ -116,7 +113,7 @@ export function MobileNavigation() {
           "flex flex-col items-center gap-1 p-2 rounded-md transition-all duration-200",
           "text-sidebar-foreground",
           isActive 
-            ? "holo-glow bg-gradient-to-t from-purple-900/40 via-purple-900/10 to-transparent text-sidebar-accent-foreground font-medium" 
+            ? "bg-gradient-to-t from-purple-900/40 via-purple-900/10 to-transparent text-sidebar-accent-foreground font-medium" 
             : "text-sidebar-foreground/80 hover:text-sidebar-foreground"
         )}
         style={{
@@ -131,7 +128,6 @@ export function MobileNavigation() {
 
   return (
     <>
-      {/* Fixed bottom navigation for primary items */}
       <div className="fixed bottom-0 left-0 right-0 bg-sidebar border-t border-border z-20 flex justify-around py-1">
         {mobileNavItems.map((item) => (
           <NavItem key={item.name} item={item} />
@@ -157,7 +153,6 @@ export function MobileNavigation() {
         </Sheet>
       </div>
       
-      {/* Add padding to prevent content from being hidden under the navigation */}
       <div className="h-16 w-full md:hidden"></div>
     </>
   );
