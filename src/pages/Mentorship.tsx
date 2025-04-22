@@ -1,10 +1,10 @@
 
 import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SubscriptionCard } from "@/components/mentorship/SubscriptionCard";
 import { MentorList } from "@/components/mentorship/MentorList";
 import { VideoLibrary } from "@/components/mentorship/VideoLibrary";
 import { MentorshipSessions } from "@/components/mentorship/MentorshipSessions";
-import { SubscriptionCard } from "@/components/mentorship/SubscriptionCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Mentorship() {
   const [selectedTab, setSelectedTab] = useState("browse");
