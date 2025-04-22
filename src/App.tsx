@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
-import { AppSidebar } from "./components/layout/AppSidebar";
+import { AppLayout } from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import SmartTools from "./pages/SmartTools";
 import LawFU from "./pages/LawFU";
@@ -32,31 +32,26 @@ const App = () => {
   return (
     <Router>
       <TooltipProvider>
-        <div className="min-h-screen flex">
-          <AppSidebar />
-          <div className="flex-1 ml-64">
-            <main className="p-4 md:p-6 min-h-screen bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
-              <Toaster />
-              <Sonner />
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/smart-tools" element={<SmartTools />} />
-                <Route path="/law-fu" element={<LawFU />} />
-                <Route path="/startup-hub" element={<StartupHub />} />
-                <Route path="/progress" element={<Progress />} />
-                <Route path="/rank" element={<Rank />} />
-                <Route path="/daily-tasks" element={<DailyTasks />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/learning" element={<Learning />} />
-                <Route path="/mentorship" element={<Mentorship />} />
-                <Route path="/networking" element={<Networking />} />
-                <Route path="/earn" element={<Earn />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-          </div>
-        </div>
+        <AppLayout>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/smart-tools" element={<SmartTools />} />
+            <Route path="/law-fu" element={<LawFU />} />
+            <Route path="/startup-hub" element={<StartupHub />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/rank" element={<Rank />} />
+            <Route path="/daily-tasks" element={<DailyTasks />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/learning" element={<Learning />} />
+            <Route path="/mentorship" element={<Mentorship />} />
+            <Route path="/networking" element={<Networking />} />
+            <Route path="/earn" element={<Earn />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AppLayout>
       </TooltipProvider>
     </Router>
   );

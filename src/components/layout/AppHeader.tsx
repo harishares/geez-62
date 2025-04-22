@@ -70,7 +70,11 @@ export function AppHeader({ profilePhoto }: AppHeaderProps) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 bg-sidebar">
               <div className="h-full overflow-y-auto">
-                <AppSidebar isMobileSheet={true} onNavigate={() => setSidebarOpen(false)} profilePhoto={profilePhoto} />
+                <AppSidebar 
+                  isMobileSheet={true} 
+                  onNavigate={() => setSidebarOpen(false)} 
+                  profilePhoto={profilePhoto} 
+                />
               </div>
             </SheetContent>
           </Sheet>

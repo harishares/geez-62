@@ -86,8 +86,21 @@ const navItems = [
   }
 ];
 
-export function AppSidebar() {
+type AppSidebarProps = {
+  profilePhoto?: string | null;
+  isMobileSheet?: boolean;
+  onNavigate?: () => void;
+};
+
+export function AppSidebar({ profilePhoto, isMobileSheet, onNavigate }: AppSidebarProps) {
   const location = useLocation();
+  
+  const handleNavigation = () => {
+    // Call onNavigate if provided (for mobile sheet closing)
+    if (onNavigate) {
+      onNavigate();
+    }
+  };
   
   return (
     <aside className="h-screen bg-purple-900/90 w-64 fixed left-0 top-0 border-r border-purple-800/30">
@@ -115,6 +128,7 @@ export function AppSidebar() {
                       ? "bg-purple-800/50 text-white font-medium"
                       : "hover:bg-purple-800/30"
                   )}
+                  onClick={handleNavigation}
                 >
                   <item.icon size={20} className="flex-shrink-0" />
                   <span>{item.name}</span>
