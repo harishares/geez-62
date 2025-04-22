@@ -1,11 +1,24 @@
 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
-import { Header } from "./components/layout/Header";
-import { Footer } from "./components/layout/Footer";
+import { AppSidebar } from "./components/layout/AppSidebar";
 import Dashboard from "./pages/Dashboard";
+import SmartTools from "./pages/SmartTools";
+import LawFU from "./pages/LawFU";
+import StartupHub from "./pages/StartupHub";
+import Progress from "./pages/Progress";
+import Rank from "./pages/Rank";
+import DailyTasks from "./pages/DailyTasks";
+import Events from "./pages/Events";
+import Learning from "./pages/Learning";
+import Mentorship from "./pages/Mentorship";
+import Networking from "./pages/Networking";
+import Earn from "./pages/Earn";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   useEffect(() => {
@@ -17,19 +30,35 @@ const App = () => {
   }, []);
 
   return (
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 p-4 md:p-6 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto">
-            <Dashboard />
+    <Router>
+      <TooltipProvider>
+        <div className="min-h-screen flex">
+          <AppSidebar />
+          <div className="flex-1 ml-64">
+            <main className="p-4 md:p-6 min-h-screen bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm">
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/smart-tools" element={<SmartTools />} />
+                <Route path="/law-fu" element={<LawFU />} />
+                <Route path="/startup-hub" element={<StartupHub />} />
+                <Route path="/progress" element={<Progress />} />
+                <Route path="/rank" element={<Rank />} />
+                <Route path="/daily-tasks" element={<DailyTasks />} />
+                <Route path="/events" element={<Events />} />
+                <Route path="/learning" element={<Learning />} />
+                <Route path="/mentorship" element={<Mentorship />} />
+                <Route path="/networking" element={<Networking />} />
+                <Route path="/earn" element={<Earn />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
           </div>
-        </main>
-        <Footer />
-      </div>
-    </TooltipProvider>
+        </div>
+      </TooltipProvider>
+    </Router>
   );
 };
 
