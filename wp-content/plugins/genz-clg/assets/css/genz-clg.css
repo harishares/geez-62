@@ -1,0 +1,97 @@
+
+/**
+ * GenZ CLG WordPress Plugin Styles
+ */
+
+.genz-clg-container {
+  /* Ensure the container doesn't inherit problematic WordPress styles */
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1A1F2C;
+}
+
+/* Reset some common WordPress theme styles that could interfere */
+.genz-clg-container * {
+  box-sizing: border-box;
+  max-width: none;
+}
+
+.genz-clg-container h1,
+.genz-clg-container h2,
+.genz-clg-container h3,
+.genz-clg-container h4,
+.genz-clg-container h5,
+.genz-clg-container h6,
+.genz-clg-container p,
+.genz-clg-container ul,
+.genz-clg-container ol,
+.genz-clg-container li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  color: inherit;
+}
+
+/* Responsive container adjustments */
+@media (max-width: 768px) {
+  .genz-clg-container {
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Loading state */
+.genz-clg-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.genz-clg-loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #8B5CF6;
+  width: 40px;
+  height: 40px;
+  animation: genz-clg-spin 1s linear infinite;
+}
+
+@keyframes genz-clg-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Admin dashboard widget styles */
+.wp-admin .genz-clg-dashboard-widget .inside {
+  margin: 0;
+  padding: 0;
+}
+
+.genz-clg-dashboard-widget-content {
+  padding: 12px;
+}
+
+.genz-clg-stat-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9fafb;
+  border-left: 3px solid #8B5CF6;
+}
+
+.genz-clg-stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1A1F2C;
+}
+
+.genz-clg-stat-label {
+  font-size: 14px;
+  color: #666;
+}
