@@ -1,4 +1,3 @@
-
 <?php
 /**
  * GenZ CLG Theme functions and definitions
@@ -8,6 +7,13 @@
 define('GENZ_THEME_VERSION', '1.0.0');
 define('GENZ_THEME_DIR', get_template_directory());
 define('GENZ_THEME_URI', get_template_directory_uri());
+
+// Add Elementor support
+function genz_clg_theme_add_elementor_support() {
+    add_theme_support('elementor');
+    add_theme_support('elementor-pro');
+}
+add_action('after_setup_theme', 'genz_clg_theme_add_elementor_support');
 
 // Enqueue styles and scripts
 function genz_clg_theme_enqueue_assets() {
@@ -55,6 +61,12 @@ function genz_clg_theme_enqueue_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'genz_clg_theme_enqueue_assets');
+
+// Add Elementor locations support
+function genz_clg_theme_register_elementor_locations($elementor_theme_manager) {
+    $elementor_theme_manager->register_all_core_location();
+}
+add_action('elementor/theme/register_locations', 'genz_clg_theme_register_elementor_locations');
 
 // Setup theme features
 function genz_clg_theme_setup() {
