@@ -77,6 +77,35 @@ function genz_clg_dashboard_widget_content() {
                 flex-wrap: wrap;
                 gap: 8px;
             }
+            .genz-clg-app-info {
+                margin-bottom: 12px;
+                padding: 12px;
+                background-color: #fff;
+                border: 1px solid #eee;
+                border-radius: 3px;
+            }
+            .genz-clg-app-info h3 {
+                margin-top: 0;
+                margin-bottom: 8px;
+                font-size: 16px;
+                color: #23282d;
+            }
+            .genz-clg-feature-list {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            .genz-clg-feature-list li {
+                padding: 4px 0 4px 24px;
+                position: relative;
+            }
+            .genz-clg-feature-list li:before {
+                content: "✓";
+                color: <?php echo esc_attr($primary_color); ?>;
+                position: absolute;
+                left: 0;
+                font-weight: bold;
+            }
         </style>
 
         <div class="genz-clg-status">
@@ -87,6 +116,17 @@ function genz_clg_dashboard_widget_content() {
                 <span class="genz-clg-status-indicator genz-clg-status-inactive"></span>
                 <span>React App needs to be built and installed</span>
             <?php endif; ?>
+        </div>
+
+        <div class="genz-clg-app-info">
+            <h3>GenZ CLG App Features</h3>
+            <ul class="genz-clg-feature-list">
+                <li>Modern Dashboard Interface</li>
+                <li>Startup Hub for Entrepreneurs</li>
+                <li>Law Education Resources</li>
+                <li>Mentorship Platform</li>
+                <li>Networking Tools</li>
+            </ul>
         </div>
 
         <div class="genz-clg-stat-item">
@@ -116,6 +156,9 @@ function genz_clg_dashboard_widget_content() {
                 </a>
                 <a href="<?php echo esc_url(admin_url('post-new.php?post_type=page&genz_clg_shortcode=1')); ?>" class="button">
                     Create New Page
+                </a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=genz-clg-tools')); ?>" class="button">
+                    Smart Tools
                 </a>
             </div>
         <?php endif; ?>
@@ -157,3 +200,4 @@ function genz_clg_get_user_count() {
     $user_query = new WP_User_Query(array('role' => 'subscriber'));
     return $user_query->get_total();
 }
+
