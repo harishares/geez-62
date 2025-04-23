@@ -1,0 +1,15 @@
+
+/*
+Theme Name: GenZ CLG Theme
+Theme URI: https://example.com/genz-clg-theme
+Author: GenZ CLG Team
+Author URI: https://example.com
+Description: A custom WordPress theme for the GenZ CLG platform
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: genz-clg-theme
+*/
+
+/* Import the base styles */
+@import url('assets/css/style.css');
