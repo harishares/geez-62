@@ -12,7 +12,9 @@ Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: genz-modern
-Tags: custom-logo, custom-menu, editor-style, featured-images, full-width-template, rtl-language-support, theme-options, translation-ready, block-patterns
+Tags: custom-logo, custom-menu, editor-style, featured-images, full-width-template, rtl-language-support, theme-options, translation-ready, block-patterns, elementor-ready
+
+This theme is designed to work with Elementor page builder and includes several essential plugins for enhanced functionality.
 */
 
 /* Import Tailwind CSS */

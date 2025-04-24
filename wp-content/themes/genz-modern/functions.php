@@ -1,4 +1,3 @@
-
 <?php
 /**
  * GenZ Modern Theme functions and definitions
@@ -52,6 +51,13 @@ function genz_modern_setup() {
     add_theme_support('responsive-embeds');
 }
 add_action('after_setup_theme', 'genz_modern_setup');
+
+// Add Elementor support
+function genz_modern_add_elementor_support() {
+    add_theme_support('elementor');
+    add_theme_support('elementor-pro');
+}
+add_action('after_setup_theme', 'genz_modern_add_elementor_support');
 
 // Enqueue scripts and styles
 function genz_modern_enqueue_assets() {
@@ -115,3 +121,57 @@ function genz_modern_widgets_init() {
     ));
 }
 add_action('widgets_init', 'genz_modern_widgets_init');
+
+// Register Required Plugins
+require_once get_template_directory() . '/inc/tgm/class-tgm-plugin-activation.php';
+
+function genz_modern_register_required_plugins() {
+    $plugins = array(
+        array(
+            'name'      => 'Elementor',
+            'slug'      => 'elementor',
+            'required'  => true,
+        ),
+        array(
+            'name'      => 'Elementor Pro',
+            'slug'      => 'elementor-pro',
+            'required'  => false,
+        ),
+        array(
+            'name'      => 'Contact Form 7',
+            'slug'      => 'contact-form-7',
+            'required'  => true,
+        ),
+        array(
+            'name'      => 'Custom Post Type UI',
+            'slug'      => 'custom-post-type-ui',
+            'required'  => true,
+        ),
+        array(
+            'name'      => 'Advanced Custom Fields',
+            'slug'      => 'advanced-custom-fields',
+            'required'  => true,
+        ),
+    );
+
+    $config = array(
+        'id'           => 'genz-modern',
+        'default_path' => '',
+        'menu'         => 'tgmpa-install-plugins',
+        'parent_slug'  => 'themes.php',
+        'capability'   => 'edit_theme_options',
+        'has_notices'  => true,
+        'dismissable'  => false,
+        'dismiss_msg'  => '',
+        'is_automatic' => true,
+    );
+
+    tgmpa($plugins, $config);
+}
+add_action('tgmpa_register', 'genz_modern_register_required_plugins');
+
+// Add Elementor locations support
+function genz_modern_register_elementor_locations($elementor_theme_manager) {
+    $elementor_theme_manager->register_all_core_location();
+}
+add_action('elementor/theme/register_locations', 'genz_modern_register_elementor_locations');
