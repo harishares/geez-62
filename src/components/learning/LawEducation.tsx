@@ -1,9 +1,13 @@
-import { useState } from "react";
-import { Shield, Youtube, Languages, BookOpen, Film, Tags } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { useState, useEffect } from "react";
+import { Shield, Youtube, Languages, BookOpen, Film, Tags, Search, Bookmark } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 type Category = "Fundamental Rights" | "Self-Protection, Criminal Law" | "Cyber Laws" | "Work" | "Home Safety & Family" | "Consumer & Property" | "Emergencies" | "Women & Children" | "Technology" | "Student" | "Others";
 
@@ -218,30 +222,83 @@ const categories: Category[] = [
   "Others"
 ];
 
+const getCategoryIcon = (category: Category | "All") => {
+  switch(category) {
+    case "Fundamental Rights": return Shield;
+    case "Self-Protection, Criminal Law": return Shield;
+    case "Women & Children": return Shield;
+    case "Cyber Laws": return Shield;
+    case "Student": return BookOpen;
+    case "Work": return Shield;
+    case "Home Safety & Family": return Shield;
+    case "Consumer & Property": return Shield;
+    case "Emergencies": return Shield;
+    case "Technology": return Shield;
+    case "Others": return Shield;
+    case "All": return Tags;
+    default: return Shield;
+  }
+};
+
 export function LawEducation() {
   const [selectedLanguage, setSelectedLanguage] = useState<"english" | "tamil">("english");
   const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [savedArticles, setSavedArticles] = useState<string[]>([]);
+  const [showSaved, setShowSaved] = useState(false);
 
-  const articles = lawContent[selectedLanguage].filter(
-    (article) => activeCategory === "All" || article.category === activeCategory
-  );
+  // Filter articles based on category, search term, and saved status
+  const filteredArticles = lawContent[selectedLanguage].filter(article => {
+    const matchesCategory = activeCategory === "All" || article.category === activeCategory;
+    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          article.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSaved = !showSaved || savedArticles.includes(article.id);
+    
+    return matchesCategory && matchesSearch && (showSaved ? matchesSaved : true);
+  });
+
+  // Load saved articles from localStorage on component mount
+  useEffect(() => {
+    const saved = localStorage.getItem("savedLawArticles");
+    if (saved) {
+      setSavedArticles(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save articles to localStorage when savedArticles changes
+  useEffect(() => {
+    localStorage.setItem("savedLawArticles", JSON.stringify(savedArticles));
+  }, [savedArticles]);
+
+  const toggleSaveArticle = (id: string) => {
+    setSavedArticles(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(articleId => articleId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
 
   return (
-    <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
+    <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)] overflow-hidden hover:shadow-lg hover:shadow-purple-800/20 transition-all duration-300">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 animate-float">
             <Shield className="h-6 w-6 text-purple-400" />
             <CardTitle>LAW F U - Legal Education for Self-Protection</CardTitle>
           </div>
-          <Button
+          <AnimatedButton
             variant="outline"
             className="border-purple-500/30"
             onClick={() => setSelectedLanguage(selectedLanguage === "english" ? "tamil" : "english")}
+            hoverScale={true}
+            pulseEffect={false}
+            glowColor="rgba(168, 85, 247, 0.5)"
           >
             <Languages className="h-4 w-4 mr-2" />
             {selectedLanguage === "english" ? "தமிழ்" : "English"}
-          </Button>
+          </AnimatedButton>
         </div>
         <CardDescription>
           {selectedLanguage === "english"
@@ -250,70 +307,177 @@ export function LawEducation() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4">
-          <div className="flex flex-wrap gap-2">
-            <Button
+        <div className="space-y-4">
+          {/* Search and Filter Controls */}
+          <div className="flex flex-col sm:flex-row gap-3 items-center">
+            <div className="relative w-full sm:max-w-xs">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder={selectedLanguage === "english" ? "Search topics..." : "தலைப்புகளைத் தேடுங்கள்..."}
+                className="pl-8 bg-background/50 border-purple-800/30 focus:border-purple-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <AnimatedButton
+              variant={showSaved ? "default" : "outline"}
               size="sm"
-              variant={activeCategory === "All" ? "default" : "outline"}
               className={cn(
-                "rounded-full transition-all duration-200",
-                activeCategory === "All" ? "bg-purple-700 text-white animate-pulse" : ""
+                "rounded-full hover:scale-105 transition-all duration-200",
+                showSaved ? "bg-purple-600 text-white" : "border-purple-500/30"
               )}
-              onClick={() => setActiveCategory("All")}
+              onClick={() => setShowSaved(!showSaved)}
             >
-              <Tags className="h-4 w-4 mr-1" />
-              All
-            </Button>
-            {categories.map((cat) => (
-              <Button
-                key={cat}
-                size="sm"
-                variant={activeCategory === cat ? "default" : "outline"}
-                className={cn(
-                  "rounded-full hover:scale-105 transition-all duration-200",
-                  activeCategory === cat
-                    ? "bg-purple-500 text-white shadow-lg animate-glow"
-                    : ""
-                )}
-                onClick={() => setActiveCategory(cat)}
-              >
-                {cat}
-              </Button>
-            ))}
+              <Bookmark className="h-4 w-4 mr-1" />
+              {showSaved ? "Showing Saved" : "Show Saved"}
+            </AnimatedButton>
           </div>
-        </div>
-        <ScrollArea className="h-[500px]">
-          <div className="space-y-4">
-            {articles.map((article) => (
-              <Card key={article.id} className="border border-purple-800/30">
-                <CardHeader>
-                  <CardTitle className="text-lg">{article.title}</CardTitle>
-                  <CardDescription>{article.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-2">
-                    <Youtube className="h-5 w-5 text-purple-400" />
-                    <a
-                      href={article.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-400 hover:text-purple-300 transition-colors underline"
+
+          {/* Category Pills */}
+          <div className="mb-4">
+            <h3 className="text-sm font-medium mb-2 text-muted-foreground">Filter by Category:</h3>
+            <div className="flex flex-wrap gap-2">
+              <AnimatedButton
+                size="sm"
+                variant={activeCategory === "All" ? "default" : "outline"}
+                className={cn(
+                  "rounded-full transition-all duration-200",
+                  activeCategory === "All" ? "bg-purple-700 text-white animate-pulse" : "",
+                  "hover-glow"
+                )}
+                onClick={() => setActiveCategory("All")}
+              >
+                <Tags className="h-4 w-4 mr-1" />
+                All
+              </AnimatedButton>
+              {categories.map((cat) => {
+                const CategoryIcon = getCategoryIcon(cat);
+                return (
+                  <AnimatedButton
+                    key={cat}
+                    size="sm"
+                    variant={activeCategory === cat ? "default" : "outline"}
+                    className={cn(
+                      "rounded-full hover:scale-105 transition-all duration-200",
+                      activeCategory === cat
+                        ? "bg-purple-500 text-white shadow-lg animate-glow"
+                        : ""
+                    )}
+                    onClick={() => setActiveCategory(cat)}
+                  >
+                    <CategoryIcon className="h-3.5 w-3.5 mr-1" />
+                    {cat}
+                  </AnimatedButton>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Content Area */}
+          <ScrollArea className="h-[500px] pr-4">
+            {filteredArticles.length > 0 ? (
+              <div className="space-y-4">
+                <Accordion type="multiple" className="w-full">
+                  {filteredArticles.map((article) => (
+                    <AccordionItem 
+                      key={article.id} 
+                      value={article.id}
+                      className={cn(
+                        "border border-purple-800/30 mb-3 rounded-lg overflow-hidden hover:shadow-md transition-all duration-300",
+                        "hover:border-purple-500/50 data-[state=open]:border-purple-500/50 data-[state=open]:shadow-md",
+                        "backdrop-blur-sm bg-[rgba(38,30,65,0.2)]"
+                      )}
                     >
-                      Watch Video Explanation
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-            {articles.length === 0 && (
-              <div className="text-center text-muted-foreground mt-10">
+                      <AccordionTrigger 
+                        className={cn(
+                          "px-4 py-3 hover:no-underline data-[state=open]:bg-purple-900/20",
+                          "group transition-all duration-300"
+                        )}
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full text-left gap-2">
+                          <div className="flex items-start gap-2">
+                            <CategoryIcon className="h-5 w-5 text-purple-400 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <h3 className="font-medium text-base group-hover:text-purple-300 transition-colors duration-200">
+                                {article.title}
+                              </h3>
+                              <p className="text-xs text-muted-foreground">{article.category}</p>
+                            </div>
+                          </div>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-8 w-8 p-0 rounded-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleSaveArticle(article.id);
+                            }}
+                          >
+                            <Bookmark 
+                              className={cn(
+                                "h-4 w-4", 
+                                savedArticles.includes(article.id) 
+                                  ? "fill-purple-500 text-purple-500" 
+                                  : "text-muted-foreground"
+                              )} 
+                            />
+                            <span className="sr-only">
+                              {savedArticles.includes(article.id) ? "Unsave" : "Save"} article
+                            </span>
+                          </Button>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-4 pt-2 pb-4 animate-fade-in">
+                        <div className="pl-7 space-y-3">
+                          <p className="text-sm">{article.description}</p>
+                          <div className="flex items-center gap-2">
+                            <Film className="h-4 w-4 text-purple-400" />
+                            <span className="text-xs text-muted-foreground">Video Explanation</span>
+                          </div>
+                          <AnimatedButton
+                            size="sm"
+                            className="bg-purple-600/80 hover:bg-purple-600 text-white rounded-md"
+                            onClick={() => window.open(article.videoUrl, '_blank')}
+                          >
+                            <Youtube className="h-4 w-4 mr-1.5" />
+                            Watch Video
+                          </AnimatedButton>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            ) : (
+              <div className="text-center text-muted-foreground mt-10 animate-fade-in">
                 <BookOpen className="mx-auto h-8 w-8 mb-4" />
-                No topics for this category yet.
+                <p>No topics found matching your criteria.</p>
+                <Button 
+                  variant="link" 
+                  className="mt-2 text-purple-400"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setActiveCategory("All");
+                    setShowSaved(false);
+                  }}
+                >
+                  Clear all filters
+                </Button>
               </div>
             )}
-          </div>
-        </ScrollArea>
+          </ScrollArea>
+        </div>
       </CardContent>
+      <CardFooter className="border-t border-border/30 bg-background/10 py-3 px-6">
+        <div className="text-xs text-muted-foreground flex justify-between w-full">
+          <span>Articles: {filteredArticles.length} of {lawContent[selectedLanguage].length}</span>
+          <span>Last updated: April 2025</span>
+        </div>
+      </CardFooter>
     </Card>
   );
 }
+
+const CategoryIcon = ({ className }: { className?: string }) => {
+  return <Shield className={className} />;
+};

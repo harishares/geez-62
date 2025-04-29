@@ -128,3 +128,45 @@
     radial-gradient(circle at bottom right, rgba(163, 137, 252, 0.8) 0%, transparent 15%),
     linear-gradient(to right, transparent, rgba(163, 137, 252, 0.5) 50%, transparent);
 }
+
+/* Fade in animation */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Card hover effects */
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+}
+
+/* Content reveal animation */
+@keyframes content-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-reveal {
+  animation: content-reveal 0.5s ease-out forwards;
+}
