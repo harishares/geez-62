@@ -11,12 +11,14 @@ const Index = () => {
   useEffect(() => {
     const userLoggedIn = localStorage.getItem("userLoggedIn") === "true";
     if (userLoggedIn) {
-      navigate("/"); // Redirect to dashboard if logged in
+      navigate("/dashboard"); // Redirect to dashboard if logged in
     }
   }, [navigate]);
   
   const handleGetStarted = () => {
-    navigate("/login");
+    // Set user as logged in and redirect directly to dashboard
+    localStorage.setItem("userLoggedIn", "true");
+    navigate("/dashboard");
   };
 
   return (
