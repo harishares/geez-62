@@ -1,9 +1,13 @@
+
 import { useState } from "react";
-import { Shield, Youtube, Languages, BookOpen, Film, Tags } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Shield, Youtube, Languages, BookOpen, Film, Tags, Search, Lightbulb, BookMarked, Gavel, Scale, Info } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 type Category = "Fundamental Rights" | "Self-Protection, Criminal Law" | "Cyber Laws" | "Work" | "Home Safety & Family" | "Consumer & Property" | "Emergencies" | "Women & Children" | "Technology" | "Student" | "Others";
 
@@ -218,52 +222,104 @@ const categories: Category[] = [
   "Others"
 ];
 
+const getCategoryIcon = (category: Category | "All") => {
+  switch (category) {
+    case "Fundamental Rights":
+      return <Scale className="h-4 w-4" />;
+    case "Self-Protection, Criminal Law":
+      return <Shield className="h-4 w-4" />;
+    case "Cyber Laws":
+      return <Lightbulb className="h-4 w-4" />;
+    case "Work":
+      return <BookMarked className="h-4 w-4" />;
+    case "Women & Children":
+      return <Shield className="h-4 w-4" />;
+    case "Student":
+      return <BookOpen className="h-4 w-4" />;
+    case "Home Safety & Family":
+      return <Shield className="h-4 w-4" />;
+    case "Consumer & Property":
+      return <Gavel className="h-4 w-4" />;
+    case "Emergencies":
+      return <Info className="h-4 w-4" />;
+    case "Technology":
+      return <Lightbulb className="h-4 w-4" />;
+    case "All":
+      return <Tags className="h-4 w-4" />;
+    default:
+      return <Info className="h-4 w-4" />;
+  }
+};
+
 export function LawEducation() {
   const [selectedLanguage, setSelectedLanguage] = useState<"english" | "tamil">("english");
   const [activeCategory, setActiveCategory] = useState<Category | "All">("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const articles = lawContent[selectedLanguage].filter(
-    (article) => activeCategory === "All" || article.category === activeCategory
+  const filteredArticles = lawContent[selectedLanguage].filter(
+    (article) => 
+      (activeCategory === "All" || article.category === activeCategory) &&
+      (searchQuery === "" || 
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (
-    <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-[rgba(38,30,65,0.4)]">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+    <Card className="bg-opacity-20 backdrop-blur-sm border-purple-800/40 bg-gradient-to-br from-purple-900/40 to-black/60">
+      <CardHeader className="border-b border-purple-800/30">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Shield className="h-6 w-6 text-purple-400" />
-            <CardTitle>LAW F U - Legal Education for Self-Protection</CardTitle>
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-600/20 border border-purple-500/30">
+              <Gavel className="h-5 w-5 text-purple-400" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-100">LAW F U</CardTitle>
+              <CardDescription className="text-purple-200/80">
+                Legal Education for Self-Protection
+              </CardDescription>
+            </div>
           </div>
           <Button
             variant="outline"
-            className="border-purple-500/30"
+            className="border-purple-500/30 hover:bg-purple-500/20 transition-all"
             onClick={() => setSelectedLanguage(selectedLanguage === "english" ? "tamil" : "english")}
           >
             <Languages className="h-4 w-4 mr-2" />
             {selectedLanguage === "english" ? "தமிழ்" : "English"}
           </Button>
         </div>
-        <CardDescription>
-          {selectedLanguage === "english"
-            ? "Learn essential Indian laws to protect yourself and understand your rights"
-            : "உங்களைப் பாதுகாக்க அத்தியாவசிய இந்திய சட்டங்களைக் கற்றுக்கொள்ளுங்கள்"}
-        </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="mb-4">
-          <div className="flex flex-wrap gap-2">
+      
+      <CardContent className="p-4 pt-6">
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder={selectedLanguage === "english" ? "Search legal topics..." : "சட்ட தலைப்புகளைத் தேடுங்கள்..."}
+                className="pl-9 border-purple-500/30 bg-purple-950/30 placeholder:text-purple-300/50"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          
+          <div className="mt-4 flex flex-wrap gap-2">
             <Button
               size="sm"
               variant={activeCategory === "All" ? "default" : "outline"}
               className={cn(
                 "rounded-full transition-all duration-200",
-                activeCategory === "All" ? "bg-purple-700 text-white animate-pulse" : ""
+                activeCategory === "All" 
+                  ? "bg-purple-700 hover:bg-purple-600" 
+                  : "hover:border-purple-400 hover:bg-purple-900/20"
               )}
               onClick={() => setActiveCategory("All")}
             >
-              <Tags className="h-4 w-4 mr-1" />
-              All
+              {getCategoryIcon("All")}
+              <span className="ml-1">All</span>
             </Button>
+            
             {categories.map((cat) => (
               <Button
                 key={cat}
@@ -272,48 +328,76 @@ export function LawEducation() {
                 className={cn(
                   "rounded-full hover:scale-105 transition-all duration-200",
                   activeCategory === cat
-                    ? "bg-purple-500 text-white shadow-lg animate-glow"
-                    : ""
+                    ? "bg-purple-600 text-white shadow-lg shadow-purple-500/20"
+                    : "border-purple-500/30 hover:border-purple-400/60 hover:bg-purple-900/20"
                 )}
                 onClick={() => setActiveCategory(cat)}
               >
-                {cat}
+                {getCategoryIcon(cat)}
+                <span className="ml-1">{cat}</span>
               </Button>
             ))}
           </div>
         </div>
-        <ScrollArea className="h-[500px]">
-          <div className="space-y-4">
-            {articles.map((article) => (
-              <Card key={article.id} className="border border-purple-800/30">
-                <CardHeader>
-                  <CardTitle className="text-lg">{article.title}</CardTitle>
-                  <CardDescription>{article.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-2">
-                    <Youtube className="h-5 w-5 text-purple-400" />
-                    <a
-                      href={article.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-400 hover:text-purple-300 transition-colors underline"
-                    >
-                      Watch Video Explanation
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-            {articles.length === 0 && (
-              <div className="text-center text-muted-foreground mt-10">
-                <BookOpen className="mx-auto h-8 w-8 mb-4" />
-                No topics for this category yet.
-              </div>
-            )}
+        
+        {filteredArticles.length === 0 ? (
+          <div className="text-center py-12">
+            <BookOpen className="mx-auto h-12 w-12 text-purple-400/50 mb-4" />
+            <h3 className="text-xl font-medium text-purple-300 mb-2">No topics found</h3>
+            <p className="text-purple-300/70 max-w-md mx-auto">
+              {selectedLanguage === "english"
+                ? "Try a different search term or category."
+                : "வேறு தேடல் சொற்றொடரை அல்லது வகையைப் முயற்சிக்கவும்."}
+            </p>
           </div>
-        </ScrollArea>
+        ) : (
+          <ScrollArea className="h-[500px] pr-4">
+            <Accordion type="multiple" className="space-y-4">
+              {filteredArticles.map((article) => (
+                <AccordionItem 
+                  key={article.id} 
+                  value={article.id}
+                  className="border border-purple-800/30 bg-purple-950/30 rounded-lg overflow-hidden hover:bg-purple-900/20 transition-colors"
+                >
+                  <AccordionTrigger className="px-4 py-3 hover:no-underline data-[state=open]:bg-purple-900/30 transition-colors">
+                    <div className="flex flex-col items-start text-left">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-purple-600/20 text-purple-300 hover:bg-purple-600/30">
+                          {article.category}
+                        </Badge>
+                      </div>
+                      <h3 className="text-lg font-medium text-purple-100 mt-2">{article.title}</h3>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-purple-950/20 px-4 py-4 text-purple-200/90">
+                    <p className="mb-4">{article.description}</p>
+                    <div className="flex items-center gap-2 mt-4">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="bg-purple-900/30 border-purple-500/30 hover:bg-purple-700/40 text-purple-200"
+                        onClick={() => window.open(article.videoUrl, "_blank")}
+                      >
+                        <Youtube className="h-4 w-4 mr-2 text-red-400" />
+                        {selectedLanguage === "english" ? "Watch Video Explanation" : "வீடியோ விளக்கத்தைப் பார்க்கவும்"}
+                      </Button>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </ScrollArea>
+        )}
       </CardContent>
+      
+      <CardFooter className="border-t border-purple-800/30 px-6 py-4 flex justify-between">
+        <div className="text-sm text-purple-300/70">
+          {filteredArticles.length} {selectedLanguage === "english" ? "topics available" : "தலைப்புகள் கிடைக்கின்றன"}
+        </div>
+        <Button size="sm" variant="link" className="text-purple-300 hover:text-purple-200">
+          {selectedLanguage === "english" ? "Suggest a Topic" : "ஒரு தலைப்பை பரிந்துரைக்க"}
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
