@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
@@ -14,7 +15,8 @@ import {
   ListChecks,
   Shield,
   Rocket,
-  Users
+  Users,
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,6 +42,11 @@ const navItems = [
     name: "Startup Hub",
     path: "/startup-hub",
     icon: Rocket
+  },
+  {
+    name: "Progress",
+    path: "/progress",
+    icon: TrendingUp
   },
   {
     name: "Rank",

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -14,7 +15,8 @@ import {
   X,
   Shield,
   Rocket,
-  Users
+  Users,
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -38,9 +40,9 @@ const mobileNavItems = [
     icon: Rocket
   },
   {
-    name: "Daily Tasks",
-    path: "/daily-tasks",
-    icon: ListChecks
+    name: "Progress",
+    path: "/progress",
+    icon: TrendingUp
   }
 ];
 
@@ -54,6 +56,11 @@ const mobileNavItemsSecondary = [
     name: "Rank",
     path: "/rank",
     icon: Award
+  },
+  {
+    name: "Daily Tasks",
+    path: "/daily-tasks",
+    icon: ListChecks
   },
   {
     name: "Events",
