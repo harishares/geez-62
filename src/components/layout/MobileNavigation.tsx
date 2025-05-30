@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   ActivitySquare, 
-  BarChart3, 
   BookOpen,
   Home, 
   Network,
@@ -50,11 +49,6 @@ const mobileNavItemsSecondary = [
     name: "LAW FU",
     path: "/law-fu",
     icon: Shield
-  },
-  {
-    name: "Progress",
-    path: "/progress",
-    icon: BarChart3
   },
   {
     name: "Rank",

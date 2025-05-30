@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   ActivitySquare, 
-  BarChart3, 
   BookOpen,
   ChevronLeft, 
   ChevronRight, 
