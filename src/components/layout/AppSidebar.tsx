@@ -42,11 +42,6 @@ const navItems = [
     icon: Rocket
   },
   {
-    name: "Progress",
-    path: "/progress",
-    icon: BarChart3
-  },
-  {
     name: "Rank",
     path: "/rank",
     icon: Award
